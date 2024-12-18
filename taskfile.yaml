@@ -1,0 +1,3 @@
+version: "3"
+output: interleaved
+dotenv: ["VoiceAssistant/.env.xcconfig"]

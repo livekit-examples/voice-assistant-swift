@@ -9,8 +9,8 @@ struct ConnectionDetails: Codable {
 
 class TokenService {
     private let sandboxId: String = {
-        guard let sandboxId = ProcessInfo.processInfo.environment["LK_SANDBOX_TOKEN_SERVER_ID"] else {
-            fatalError("LK_SANDBOX_TOKEN_SERVER_ID not found. Did you add it to Secrets.xcconfig?")
+        guard let sandboxId = ProcessInfo.processInfo.environment["LIVEKIT_SANDBOX_ID"] else {
+            fatalError("LIVEKIT_SANDBOX_ID not found. Did you add it to .env?")
         }
         return sandboxId
     }()

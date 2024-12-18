@@ -61,4 +61,4 @@ fastlane/Preview.html
 fastlane/screenshots/**/*.png
 fastlane/test_output
 
-Secrets.xcconfig
+.env.xcconfig
