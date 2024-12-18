@@ -1,0 +1,4 @@
+#include "Secrets.xcconfig"
+
+PRODUCT_BUNDLE_IDENTIFIER=com.livekit.example.VoiceAssistant
+DEVELOPMENT_TEAM = 76TVFCUKK7;
