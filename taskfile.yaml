@@ -1,3 +1,8 @@
 version: "3"
 output: interleaved
-dotenv: ["VoiceAssistant/.env.xcconfig"]
+
+vars:
+  env_file: "VoiceAssistant/.env.xcconfig"
+  env_example: "VoiceAssistant/.env.example.xcconfig"
+  env_no_livekit_keys: true
+
