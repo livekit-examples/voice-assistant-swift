@@ -4,5 +4,4 @@ output: interleaved
 vars:
   env_file: "VoiceAssistant/.env.xcconfig"
   env_example: "VoiceAssistant/.env.example.xcconfig"
-  env_no_livekit_keys: true
 
