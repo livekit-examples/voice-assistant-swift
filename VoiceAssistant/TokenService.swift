@@ -7,18 +7,45 @@ struct ConnectionDetails: Codable {
     let participantToken: String
 }
 
+/// An example service for fetching LiveKit authentication tokens
+///
+/// To use the LiveKit Cloud sandbox (development only)
+/// - Enable your sandbox here https://cloud.livekit.io/projects/p_/sandbox/templates/token-server
+/// - Create .env.xcconfig with your LIVEKIT_SANDBOX_ID
+///
+/// To use a hardcoded token (development only)
+/// - Generate a token: https://docs.livekit.io/home/cli/cli-setup/#generate-access-token
+/// - Set `hardcodedServerUrl` and `hardcodedToken` below
+///
+/// To use your own server (production applications)
+/// - Add a token endpoint to your server with a LiveKit Server SDK https://docs.livekit.io/home/server/generating-tokens/
+/// - Modify or replace this class as needed to connect to your new token server
+/// - Rejoice in your new production-ready LiveKit application!
+///
+/// See https://docs.livekit.io/home/get-started/authentication for more information
 class TokenService {
-    private let sandboxId: String = {
-        guard let sandboxId = ProcessInfo.processInfo.environment["LIVEKIT_SANDBOX_ID"] else {
-            fatalError("LIVEKIT_SANDBOX_ID not found. Did you add it to .env?")
+    func fetchConnectionDetails(roomName: String, participantName: String) async throws -> ConnectionDetails? {
+        if let hardcodedConnectionDetails = fetchHardcodedConnectionDetails(roomName: roomName, participantName: participantName) {
+            return hardcodedConnectionDetails
         }
-        return sandboxId
+
+        return try await fetchConnectionDetailsFromSandbox(roomName: roomName, participantName: participantName)
+    }
+
+    private let hardcodedServerUrl: String? = nil
+    private let hardcodedToken: String? = nil
+    
+    private let sandboxId: String? = {
+        ProcessInfo.processInfo.environment["LIVEKIT_SANDBOX_ID"]
     }()
 
-    private let baseUrl = "https://cloud-api.livekit.io/api/sandbox/connection-details"
+    private let sandboxUrl: String = "https://cloud-api.livekit.io/api/sandbox/connection-details"
+    private func fetchConnectionDetailsFromSandbox(roomName: String, participantName: String) async throws -> ConnectionDetails? {
+        guard let sandboxId else {
+            return nil
+        }
 
-    func fetchConnectionDetails(roomName: String, participantName: String) async throws -> ConnectionDetails {
-        var urlComponents = URLComponents(string: baseUrl)!
+        var urlComponents = URLComponents(string: sandboxUrl)!
         urlComponents.queryItems = [
             URLQueryItem(name: "roomName", value: roomName),
             URLQueryItem(name: "participantName", value: participantName),
@@ -30,16 +57,34 @@ class TokenService {
 
         let (data, response) = try await URLSession.shared.data(for: request)
 
-        guard let httpResponse = response as? HTTPURLResponse,
-              (200 ... 299).contains(httpResponse.statusCode)
-        else {
-            throw URLError(.badServerResponse)
+        guard let httpResponse = response as? HTTPURLResponse else {
+            debugPrint("Failed to connect to LiveKit Cloud sandbox")
+            return nil
         }
 
-        if let body = String(data: data, encoding: .utf8) {
-            print("Response body: \(body)")
+        guard (200 ... 299).contains(httpResponse.statusCode) else {
+            debugPrint("Error from LiveKit Cloud sandbox: \(httpResponse.statusCode), response: \(httpResponse)")
+            return nil
         }
 
-        return try JSONDecoder().decode(ConnectionDetails.self, from: data)
+        guard let connectionDetails = try? JSONDecoder().decode(ConnectionDetails.self, from: data) else {
+            debugPrint("Error parsing connection details from LiveKit Cloud sandbox, response: \(httpResponse)")
+            return nil
+        }
+
+        return connectionDetails
+    }
+
+    private func fetchHardcodedConnectionDetails(roomName: String, participantName: String) -> ConnectionDetails? {
+        guard let serverUrl = hardcodedServerUrl, let token = hardcodedToken else {
+            return nil
+        }
+
+        return .init(
+            serverUrl: serverUrl,
+            roomName: roomName,
+            participantName: participantName,
+            participantToken: token
+        )
     }
 }
