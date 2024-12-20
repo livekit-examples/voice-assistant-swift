@@ -8,8 +8,8 @@ struct ContentView: View {
         VStack(spacing: 24) {
             StatusView()
                 .frame(height: 256)
-            
-            ConnectButton()
+
+            ControlBar()
         }
         .padding()
         .environmentObject(room)
