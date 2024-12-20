@@ -13,5 +13,6 @@ struct ContentView: View {
         }
         .padding()
         .environmentObject(room)
+        .environmentObject(room.localParticipant)
     }
 }
