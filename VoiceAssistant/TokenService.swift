@@ -1,12 +1,3 @@
-import Foundation
-
-struct ConnectionDetails: Codable {
-    let serverUrl: String
-    let roomName: String
-    let participantName: String
-    let participantToken: String
-}
-
 /// An example service for fetching LiveKit authentication tokens
 ///
 /// To use the LiveKit Cloud sandbox (development only)
@@ -23,6 +14,15 @@ struct ConnectionDetails: Codable {
 /// - Rejoice in your new production-ready LiveKit application!
 ///
 /// See https://docs.livekit.io/home/get-started/authentication for more information
+import Foundation
+
+struct ConnectionDetails: Codable {
+    let serverUrl: String
+    let roomName: String
+    let participantName: String
+    let participantToken: String
+}
+
 class TokenService {
     func fetchConnectionDetails(roomName: String, participantName: String) async throws -> ConnectionDetails? {
         if let hardcodedConnectionDetails = fetchHardcodedConnectionDetails(roomName: roomName, participantName: participantName) {
@@ -36,7 +36,11 @@ class TokenService {
     private let hardcodedToken: String? = nil
     
     private let sandboxId: String? = {
-        ProcessInfo.processInfo.environment["LIVEKIT_SANDBOX_ID"]
+        if let value = Bundle.main.object(forInfoDictionaryKey: "LiveKitSandboxId") as? String {
+            // LK CLI will add unwanted double quotes
+            return value.trimmingCharacters(in: CharacterSet(charactersIn: "\""))
+        }
+        return nil
     }()
 
     private let sandboxUrl: String = "https://cloud-api.livekit.io/api/sandbox/connection-details"
