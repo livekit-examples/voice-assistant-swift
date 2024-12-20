@@ -7,24 +7,39 @@ struct ContentView: View {
     @StateObject private var room = Room()
 
     private var statusText: String {
-        switch room.connectionState {
-        case .disconnected:
-            "Disconnected"
-        case .connecting:
-            "Connecting"
-        case .reconnecting:
-            "Reconnecting"
-        case .connected:
-            "Connected"
+        if room.connectionState == .connected {
+            return agentParticipant?.agentState.description ?? "Waiting for agent"
+        } else {
+            switch room.connectionState {
+            case .disconnected:
+                return "Disconnected"
+            case .connecting:
+                return "Connecting"
+            case .reconnecting:
+                return "Reconnecting"
+            case .connected:
+                return "Connected"
+            }
         }
+
+    }
+
+    private var agentParticipant: RemoteParticipant? {
+        for participant in room.remoteParticipants.values {
+            if participant.kind == .agent {
+                return participant
+            }
+        }
+
+        return nil
     }
 
     var body: some View {
         VStack(spacing: 24) {
             Text(statusText)
-            .multilineTextAlignment(.center)
-            .foregroundStyle(.secondary)
-            .padding(.horizontal)
+                .multilineTextAlignment(.center)
+                .foregroundStyle(.secondary)
+                .padding(.horizontal)
 
             ConnectButton()
         }
@@ -54,6 +69,7 @@ private struct ConnectButton: View {
                             participantName: participantName
                         ) {
                             try await room.connect(url: connectionDetails.serverUrl, token: connectionDetails.participantToken)
+                            try await room.localParticipant.setMicrophone(enabled: true)
                         } else {
                             print("Failed to fetch connection details")
                         }
