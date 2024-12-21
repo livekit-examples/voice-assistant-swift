@@ -23,6 +23,7 @@ struct ControlBar: View {
         }
     }
 
+
     var body: some View {
         HStack(spacing: 16) {
             Spacer()
@@ -44,7 +45,7 @@ struct ControlBar: View {
                         } icon: {
                             Image(
                                 systemName: room.localParticipant.isMicrophoneEnabled()
-                                    ? "mic" : "mic.slash")
+                                ? "mic" : "mic.slash")
                         }
                         .labelStyle(.iconOnly)
                     }
@@ -57,7 +58,7 @@ struct ControlBar: View {
                 }
                 .background(.primary.opacity(0.1))
                 .cornerRadius(8)
-                
+
                 DisconnectButton(disconnectAction: disconnect)
                     .matchedGeometryEffect(id: "main-button", in: animation, properties: .position)
             case .transition:
@@ -129,6 +130,7 @@ private struct LocalAudioVisualizer: View {
                         y: max(0.05, CGFloat(audioProcessor.bands[index])), anchor: .center)
             }
         }
+        .padding(.vertical, 8)
         .padding(.leading, 0)
         .padding(.trailing, 16)
     }

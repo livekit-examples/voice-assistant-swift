@@ -26,7 +26,7 @@ struct StatusView: View {
                 .animation(
                     .easeInOut(duration: 1)
                         .repeatForever(autoreverses: true)
-                        .speed(agentState == .thinking ? 2 : 1),
+                        .speed(agentState == .thinking ? 5 : 1),
                     value: agentState)
         } else {
             Rectangle().fill(.clear)
