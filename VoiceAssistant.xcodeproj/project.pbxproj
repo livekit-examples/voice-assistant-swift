@@ -7,7 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		B577A9292D163CBB00B59A0B /* LiveKitKrispNoiseFilter in Frameworks */ = {isa = PBXBuildFile; productRef = B577A9282D163CBB00B59A0B /* LiveKitKrispNoiseFilter */; };
+		B577A9292D163CBB00B59A0B /* LiveKitKrispNoiseFilter in Frameworks */ = {isa = PBXBuildFile; platformFilters = (ios, macos, ); productRef = B577A9282D163CBB00B59A0B /* LiveKitKrispNoiseFilter */; };
 		B5E1B90F2D14E9EC00A38CB6 /* LiveKitComponents in Frameworks */ = {isa = PBXBuildFile; productRef = B5E1B90E2D14E9EC00A38CB6 /* LiveKitComponents */; };
 		B5E1B9122D14E9F500A38CB6 /* LiveKit in Frameworks */ = {isa = PBXBuildFile; productRef = B5E1B9112D14E9F500A38CB6 /* LiveKit */; };
 /* End PBXBuildFile section */
