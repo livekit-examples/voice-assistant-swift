@@ -7,6 +7,7 @@
 	<key>UIBackgroundModes</key>
 	<array>
 		<string>Audio</string>
+		<string>audio</string>
 	</array>
 </dict>
 </plist>

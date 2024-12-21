@@ -15,6 +15,7 @@ struct ContentView: View {
         VStack(spacing: 24) {
             StatusView()
                 .frame(height: 256)
+                .frame(maxWidth: 512)
 
             ControlBar()
         }

@@ -144,6 +144,7 @@ private struct ConnectButton: View {
             Text("Start a Conversation")
                 .textCase(.uppercase)
         }
+        .buttonStyle(.plain)
         .frame(height: 44)
         .padding(.horizontal, 16)
         .background(
@@ -168,6 +169,7 @@ private struct DisconnectButton: View {
             .labelStyle(.iconOnly)
             .frame(width: 44, height: 44)
         }
+        .buttonStyle(.plain)
         .frame(width: 44, height: 44)
         .background(
             .red.opacity(0.9)
@@ -185,6 +187,7 @@ private struct TransitionButton: View {
             Text(isConnecting ? "Connecting…" : "Disconnecting…")
                 .textCase(.uppercase)
         }
+        .buttonStyle(.plain)
         .frame(height: 44)
         .padding(.horizontal, 16)
         .background(
