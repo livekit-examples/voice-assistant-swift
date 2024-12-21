@@ -1,38 +1,49 @@
+
 import LiveKit
 import LiveKitComponents
 import SwiftUI
 
+/// The ControlBar component handles connection, disconnection, and audio controls
+/// You can customize this component to fit your app's needs
 struct ControlBar: View {
+
+    // We injected these into the environment in VoiceAssistantApp.swift and ContentView.swift
     @EnvironmentObject private var tokenService: TokenService
     @EnvironmentObject private var room: Room
+    
+    // Private internal state
     @State private var isConnecting: Bool = false
     @State private var isDisconnecting: Bool = false
+
+    // Namespace for view transitions
     @Namespace private var animation
 
-    private enum ButtonType {
-        case connect, disconnect, transition
+    
+    // These are the overall configurations for this component, based on current app state
+    private enum Configuration {
+        case disconnected, connected, transitioning
     }
 
-    private var buttonType: ButtonType {
+    private var currentConfiguration: Configuration {
         if isConnecting || isDisconnecting {
-            .transition
+            return .transitioning
         } else if room.connectionState == .disconnected {
-            .connect
+            return .disconnected
         } else {
-            .disconnect
+            return .connected
         }
     }
-
 
     var body: some View {
         HStack(spacing: 16) {
             Spacer()
 
-            switch buttonType {
-            case .connect:
+            switch currentConfiguration {
+            case .disconnected:
                 ConnectButton(connectAction: connect)
                     .matchedGeometryEffect(id: "main-button", in: animation, properties: .position)
-            case .disconnect:
+            case .connected:
+                // When connected, show audio controls and disconnect button in segmented button-like group
                 HStack(spacing: 2) {
                     Button(action: {
                         Task {
@@ -48,17 +59,18 @@ struct ControlBar: View {
                                 ? "mic" : "mic.slash")
                         }
                         .labelStyle(.iconOnly)
+                        .frame(width: 44, height: 44)
+                        .contentShape(Rectangle())
                     }
                     .buttonStyle(.plain)
-                    .frame(width: 44, height: 44)
 
                     LocalAudioVisualizer(track: room.localParticipant.firstAudioTrack)
                         .frame(height: 44)
-                        .id(room.localParticipant.firstAudioTrack?.id ?? "no-track")  // ensure the component re-renders if the track changes
+                        .id(room.localParticipant.firstAudioTrack?.id ?? "no-track")  // Force the component to re-render when the track changes
 
 #if os(macOS)
-                    // You can only override the audio input device within an application on macOS
-                    // On iOS/visionOS the user controls this from control center
+                    // Only on macOS, show the audio device selector
+                    // iOS/visionOS users need to use their control center to change the audio input device
                     AudioDeviceSelector()
 #else
                     // Add extra padding to the visualizer if there's no third button
@@ -70,27 +82,36 @@ struct ControlBar: View {
 
                 DisconnectButton(disconnectAction: disconnect)
                     .matchedGeometryEffect(id: "main-button", in: animation, properties: .position)
-            case .transition:
+            case .transitioning:
                 TransitionButton(isConnecting: isConnecting)
                     .matchedGeometryEffect(id: "main-button", in: animation, properties: .position)
             }
 
             Spacer()
         }
-        .animation(.spring(duration: 0.3), value: buttonType)
+        .animation(.spring(duration: 0.3), value: currentConfiguration)
     }
-
+    
+    /// Fetches a token and connects to the LiveKit room
+    /// This assumes the agent is running and is configured to automatically join new rooms
     private func connect() {
         Task {
             isConnecting = true
+
+            // Generate a random room name to ensure a new room is created
+            // In a production app, you may want a more reliable process for ensuring agent dispatch
             let roomName = "room-\(Int.random(in: 1000 ... 9999))"
+
+            // For this demo, we'll use a random participant name as well. you may want to use user IDs in a production app
             let participantName = "user-\(Int.random(in: 1000 ... 9999))"
 
             do {
+                // Fetch connection details from token service
                 if let connectionDetails = try await tokenService.fetchConnectionDetails(
                     roomName: roomName,
                     participantName: participantName
                 ) {
+                    // Connect to the room and enable the microphone
                     try await room.connect(
                         url: connectionDetails.serverUrl, token: connectionDetails.participantToken)
                     try await room.localParticipant.setMicrophone(enabled: true)
@@ -105,6 +126,7 @@ struct ControlBar: View {
         }
     }
 
+    /// Disconnects from the current LiveKit room
     private func disconnect() {
         Task {
             isDisconnecting = true
@@ -114,6 +136,7 @@ struct ControlBar: View {
     }
 }
 
+/// Displays real-time audio levels for the local participant
 private struct LocalAudioVisualizer: View {
     var track: AudioTrack?
 
@@ -145,6 +168,7 @@ private struct LocalAudioVisualizer: View {
     }
 }
 
+/// Button shown when disconnected to start a new conversation
 private struct ConnectButton: View {
     var connectAction: () -> Void
 
@@ -152,10 +176,11 @@ private struct ConnectButton: View {
         Button(action: connectAction) {
             Text("Start a Conversation")
                 .textCase(.uppercase)
+                .frame(height: 44)
+                .padding(.horizontal, 16)
+                .contentShape(Rectangle())
         }
         .buttonStyle(.plain)
-        .frame(height: 44)
-        .padding(.horizontal, 16)
         .background(
             .primary.opacity(0.1)
         )
@@ -164,6 +189,7 @@ private struct ConnectButton: View {
     }
 }
 
+/// Button shown when connected to end the conversation
 private struct DisconnectButton: View {
     var disconnectAction: () -> Void
 
@@ -177,9 +203,9 @@ private struct DisconnectButton: View {
             }
             .labelStyle(.iconOnly)
             .frame(width: 44, height: 44)
+            .contentShape(Rectangle())
         }
         .buttonStyle(.plain)
-        .frame(width: 44, height: 44)
         .background(
             .red.opacity(0.9)
         )
@@ -188,6 +214,7 @@ private struct DisconnectButton: View {
     }
 }
 
+/// (fake) button shown during connection state transitions
 private struct TransitionButton: View {
     var isConnecting: Bool
 
@@ -208,7 +235,7 @@ private struct TransitionButton: View {
     }
 }
 
-
+/// Dropdown menu for selecting audio input device on macOS
 private struct AudioDeviceSelector: View {
     @State private var audioDevices: [AudioDevice] = []
     @State private var selectedDevice: AudioDevice = AudioManager.shared.defaultInputDevice
@@ -231,12 +258,16 @@ private struct AudioDeviceSelector: View {
         } label: {
             Image(systemName: "chevron.down")
                 .fontWeight(.bold)
+                .frame(width: 44, height: 44)
+                .contentShape(Rectangle())
         }
         .buttonStyle(.plain)
-        .frame(width: 44, height: 44)
         .onAppear {
             updateDevices()
 
+            // Listen for audio device changes
+            // Note that this listener is global so can only override it from one spot
+            // In a more complex app, you may need a different approach
             AudioManager.shared.onDeviceUpdate = { manager in
                 Task { @MainActor in
                     updateDevices()
