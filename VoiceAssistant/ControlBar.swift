@@ -7,18 +7,31 @@ struct ControlBar: View {
     @EnvironmentObject private var room: Room
     @State private var isConnecting: Bool = false
     @State private var isDisconnecting: Bool = false
+    @Namespace private var animation
+
+    private enum ButtonType {
+        case connect, disconnect, transition
+    }
+
+    private var buttonType: ButtonType {
+        if isConnecting || isDisconnecting {
+            .transition
+        } else if room.connectionState == .disconnected {
+            .connect
+        } else {
+            .disconnect
+        }
+    }
 
     var body: some View {
         HStack(spacing: 16) {
             Spacer()
 
-            if isConnecting || isDisconnecting {
-                TransitionButton(isConnecting: isConnecting)
-                    .id("main-button")
-            } else if room.connectionState == .disconnected {
+            switch buttonType {
+            case .connect:
                 ConnectButton(connectAction: connect)
-                    .id("main-button")
-            } else {
+                    .matchedGeometryEffect(id: "main-button", in: animation, properties: .position)
+            case .disconnect:
                 HStack(spacing: 2) {
                     Button(action: {
                         Task {
@@ -44,13 +57,17 @@ struct ControlBar: View {
                 }
                 .background(.primary.opacity(0.1))
                 .cornerRadius(8)
-
+                
                 DisconnectButton(disconnectAction: disconnect)
-                    .id("main-button")
+                    .matchedGeometryEffect(id: "main-button", in: animation, properties: .position)
+            case .transition:
+                TransitionButton(isConnecting: isConnecting)
+                    .matchedGeometryEffect(id: "main-button", in: animation, properties: .position)
             }
 
             Spacer()
         }
+        .animation(.spring(duration: 0.3), value: buttonType)
     }
 
     private func connect() {
@@ -80,7 +97,9 @@ struct ControlBar: View {
 
     private func disconnect() {
         Task {
+            isDisconnecting = true
             await room.disconnect()
+            isDisconnecting = false
         }
     }
 }
