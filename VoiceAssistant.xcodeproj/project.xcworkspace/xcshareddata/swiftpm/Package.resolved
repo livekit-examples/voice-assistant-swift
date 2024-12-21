@@ -1,0 +1,60 @@
+{
+  "originHash" : "8567979f1f576ef7a6e0252ad078b8bc1753d668f70713e477cbb9851d5e3060",
+  "pins" : [
+    {
+      "identity" : "client-sdk-swift",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/livekit/client-sdk-swift.git",
+      "state" : {
+        "revision" : "9c5242f0217f59f5f30fd122e7ac509dcf446201",
+        "version" : "2.0.19"
+      }
+    },
+    {
+      "identity" : "components-swift",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/livekit/components-swift",
+      "state" : {
+        "revision" : "f640b51cf38687b77e598df035ce93720d04365a",
+        "version" : "0.1.1"
+      }
+    },
+    {
+      "identity" : "swift-krisp-noise-filter",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/livekit/swift-krisp-noise-filter",
+      "state" : {
+        "revision" : "1b1f534a915afd994dc4e722677197c7056237cf",
+        "version" : "0.0.7"
+      }
+    },
+    {
+      "identity" : "swift-log",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/apple/swift-log.git",
+      "state" : {
+        "revision" : "96a2f8a0fa41e9e09af4585e2724c4e825410b91",
+        "version" : "1.6.2"
+      }
+    },
+    {
+      "identity" : "swift-protobuf",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/apple/swift-protobuf.git",
+      "state" : {
+        "revision" : "ebc7251dd5b37f627c93698e4374084d98409633",
+        "version" : "1.28.2"
+      }
+    },
+    {
+      "identity" : "webrtc-xcframework",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/livekit/webrtc-xcframework.git",
+      "state" : {
+        "revision" : "e43fe60fddd27e2d88ba0568ac2a2a15591b3063",
+        "version" : "125.6422.11"
+      }
+    }
+  ],
+  "version" : 3
+}

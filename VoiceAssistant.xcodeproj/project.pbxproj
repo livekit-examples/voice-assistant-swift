@@ -6,13 +6,35 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		B577A9292D163CBB00B59A0B /* LiveKitKrispNoiseFilter in Frameworks */ = {isa = PBXBuildFile; platformFilters = (ios, macos, ); productRef = B577A9282D163CBB00B59A0B /* LiveKitKrispNoiseFilter */; };
+		B5E1B90F2D14E9EC00A38CB6 /* LiveKitComponents in Frameworks */ = {isa = PBXBuildFile; productRef = B5E1B90E2D14E9EC00A38CB6 /* LiveKitComponents */; };
+		B5E1B9122D14E9F500A38CB6 /* LiveKit in Frameworks */ = {isa = PBXBuildFile; productRef = B5E1B9112D14E9F500A38CB6 /* LiveKit */; };
+/* End PBXBuildFile section */
+
 /* Begin PBXFileReference section */
 		B5B5E3B22D124AE00099C9BE /* VoiceAssistant.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = VoiceAssistant.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
+/* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
+		B577A91F2D15FDB800B59A0B /* Exceptions for "VoiceAssistant" folder in "VoiceAssistant" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				.env.example.xcconfig,
+				.env.xcconfig,
+				Info.plist,
+				VoiceAssistant.xcconfig,
+			);
+			target = B5B5E3B12D124AE00099C9BE /* VoiceAssistant */;
+		};
+/* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
+
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		B5B5E3B42D124AE00099C9BE /* VoiceAssistant */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				B577A91F2D15FDB800B59A0B /* Exceptions for "VoiceAssistant" folder in "VoiceAssistant" target */,
+			);
 			path = VoiceAssistant;
 			sourceTree = "<group>";
 		};
@@ -23,6 +45,9 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B577A9292D163CBB00B59A0B /* LiveKitKrispNoiseFilter in Frameworks */,
+				B5E1B90F2D14E9EC00A38CB6 /* LiveKitComponents in Frameworks */,
+				B5E1B9122D14E9F500A38CB6 /* LiveKit in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -65,6 +90,9 @@
 			);
 			name = VoiceAssistant;
 			packageProductDependencies = (
+				B5E1B90E2D14E9EC00A38CB6 /* LiveKitComponents */,
+				B5E1B9112D14E9F500A38CB6 /* LiveKit */,
+				B577A9282D163CBB00B59A0B /* LiveKitKrispNoiseFilter */,
 			);
 			productName = VoiceAssistant;
 			productReference = B5B5E3B22D124AE00099C9BE /* VoiceAssistant.app */;
@@ -94,6 +122,11 @@
 			);
 			mainGroup = B5B5E3A92D124AE00099C9BE;
 			minimizedProjectReferenceProxies = 1;
+			packageReferences = (
+				B5E1B90D2D14E9EC00A38CB6 /* XCRemoteSwiftPackageReference "components-swift" */,
+				B5E1B9102D14E9F500A38CB6 /* XCRemoteSwiftPackageReference "client-sdk-swift" */,
+				B577A9272D163CBB00B59A0B /* XCRemoteSwiftPackageReference "swift-krisp-noise-filter" */,
+			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = B5B5E3B32D124AE00099C9BE /* Products */;
 			projectDirPath = "";
@@ -253,6 +286,10 @@
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = VoiceAssistant/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = "";
+				INFOPLIST_KEY_LSApplicationCategoryType = "";
+				INFOPLIST_KEY_NSMicrophoneUsageDescription = "VoiceAssistant uses your microphone";
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphoneos*]" = YES;
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphonesimulator*]" = YES;
 				"INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents[sdk=iphoneos*]" = YES;
@@ -292,6 +329,10 @@
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = VoiceAssistant/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = "";
+				INFOPLIST_KEY_LSApplicationCategoryType = "";
+				INFOPLIST_KEY_NSMicrophoneUsageDescription = "VoiceAssistant uses your microphone";
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphoneos*]" = YES;
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphonesimulator*]" = YES;
 				"INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents[sdk=iphoneos*]" = YES;
@@ -339,6 +380,51 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		B577A9272D163CBB00B59A0B /* XCRemoteSwiftPackageReference "swift-krisp-noise-filter" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/livekit/swift-krisp-noise-filter";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 0.0.7;
+			};
+		};
+		B5E1B90D2D14E9EC00A38CB6 /* XCRemoteSwiftPackageReference "components-swift" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/livekit/components-swift";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 0.1.1;
+			};
+		};
+		B5E1B9102D14E9F500A38CB6 /* XCRemoteSwiftPackageReference "client-sdk-swift" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/livekit/client-sdk-swift";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 2.0.19;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		B577A9282D163CBB00B59A0B /* LiveKitKrispNoiseFilter */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = B577A9272D163CBB00B59A0B /* XCRemoteSwiftPackageReference "swift-krisp-noise-filter" */;
+			productName = LiveKitKrispNoiseFilter;
+		};
+		B5E1B90E2D14E9EC00A38CB6 /* LiveKitComponents */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = B5E1B90D2D14E9EC00A38CB6 /* XCRemoteSwiftPackageReference "components-swift" */;
+			productName = LiveKitComponents;
+		};
+		B5E1B9112D14E9F500A38CB6 /* LiveKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = B5E1B9102D14E9F500A38CB6 /* XCRemoteSwiftPackageReference "client-sdk-swift" */;
+			productName = LiveKit;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = B5B5E3AA2D124AE00099C9BE /* Project object */;
 }
