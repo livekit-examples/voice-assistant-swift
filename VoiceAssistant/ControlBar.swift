@@ -10,7 +10,7 @@ struct ControlBar: View {
     // We injected these into the environment in VoiceAssistantApp.swift and ContentView.swift
     @EnvironmentObject private var tokenService: TokenService
     @EnvironmentObject private var room: Room
-    
+
     // Private internal state
     @State private var isConnecting: Bool = false
     @State private var isDisconnecting: Bool = false
@@ -18,7 +18,7 @@ struct ControlBar: View {
     // Namespace for view transitions
     @Namespace private var animation
 
-    
+
     // These are the overall configurations for this component, based on current app state
     private enum Configuration {
         case disconnected, connected, transitioning
@@ -67,14 +67,15 @@ struct ControlBar: View {
                     LocalAudioVisualizer(track: room.localParticipant.firstAudioTrack)
                         .frame(height: 44)
                         .id(room.localParticipant.firstAudioTrack?.id ?? "no-track")  // Force the component to re-render when the track changes
+#if !os(macOS)
+                    // Add extra padding to the visualizer if there's no third button
+                        .padding(.trailing, 8)
+#endif
 
 #if os(macOS)
                     // Only on macOS, show the audio device selector
                     // iOS/visionOS users need to use their control center to change the audio input device
                     AudioDeviceSelector()
-#else
-                    // Add extra padding to the visualizer if there's no third button
-                        .padding(.trailing, 8)
 #endif
                 }
                 .background(.primary.opacity(0.1))
@@ -91,7 +92,7 @@ struct ControlBar: View {
         }
         .animation(.spring(duration: 0.3), value: currentConfiguration)
     }
-    
+
     /// Fetches a token and connects to the LiveKit room
     /// This assumes the agent is running and is configured to automatically join new rooms
     private func connect() {
