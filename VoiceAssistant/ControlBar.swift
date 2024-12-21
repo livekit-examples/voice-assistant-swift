@@ -55,6 +55,15 @@ struct ControlBar: View {
                     LocalAudioVisualizer(track: room.localParticipant.firstAudioTrack)
                         .frame(height: 44)
                         .id(room.localParticipant.firstAudioTrack?.id ?? "no-track")  // ensure the component re-renders if the track changes
+
+#if os(macOS)
+                    // You can only override the audio input device within an application on macOS
+                    // On iOS/visionOS the user controls this from control center
+                    AudioDeviceSelector()
+#else
+                    // Add extra padding to the visualizer if there's no third button
+                        .padding(.trailing, 8)
+#endif
                 }
                 .background(.primary.opacity(0.1))
                 .cornerRadius(8)
@@ -132,7 +141,7 @@ private struct LocalAudioVisualizer: View {
         }
         .padding(.vertical, 8)
         .padding(.leading, 0)
-        .padding(.trailing, 16)
+        .padding(.trailing, 8)
     }
 }
 
@@ -196,5 +205,50 @@ private struct TransitionButton: View {
         .foregroundStyle(.secondary)
         .cornerRadius(8)
         .disabled(true)
+    }
+}
+
+
+private struct AudioDeviceSelector: View {
+    @State private var audioDevices: [AudioDevice] = []
+    @State private var selectedDevice: AudioDevice = AudioManager.shared.defaultInputDevice
+
+    var body: some View {
+        Menu {
+            ForEach(audioDevices, id: \.deviceId) { device in
+                Button(action: {
+                    selectedDevice = device
+                    AudioManager.shared.inputDevice = device
+                }) {
+                    HStack {
+                        Text(device.name)
+                        if device.deviceId == selectedDevice.deviceId {
+                            Image(systemName: "checkmark")
+                        }
+                    }
+                }
+            }
+        } label: {
+            Image(systemName: "chevron.down")
+                .fontWeight(.bold)
+        }
+        .buttonStyle(.plain)
+        .frame(width: 44, height: 44)
+        .onAppear {
+            updateDevices()
+
+            AudioManager.shared.onDeviceUpdate = { manager in
+                Task { @MainActor in
+                    updateDevices()
+                }
+            }
+        }.onDisappear {
+            AudioManager.shared.onDeviceUpdate = nil
+        }
+    }
+
+    private func updateDevices() {
+        audioDevices = AudioManager.shared.inputDevices
+        selectedDevice = AudioManager.shared.inputDevice
     }
 }
