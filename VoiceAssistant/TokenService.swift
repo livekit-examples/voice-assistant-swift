@@ -32,8 +32,8 @@ class TokenService: ObservableObject {
         return try await fetchConnectionDetailsFromSandbox(roomName: roomName, participantName: participantName)
     }
 
-    private let hardcodedServerUrl: String? = "ws://localhost:7880"
-    private let hardcodedToken: String? = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3MzQ4NDE3NTAsImlzcyI6ImRldmtleSIsIm5hbWUiOiIxMjMiLCJuYmYiOjE3MzQ3NTUzNTAsInN1YiI6IjEyMyIsInZpZGVvIjp7InJvb20iOiJhYmMiLCJyb29tSm9pbiI6dHJ1ZX19.q2Olrc-Hwxs2lzDNqsTPMcTH7IXuwMN2rfMnJNeSt8w"
+    private let hardcodedServerUrl: String? = nil
+    private let hardcodedToken: String? = nil
 
     private let sandboxId: String? = {
         if let value = Bundle.main.object(forInfoDictionaryKey: "LiveKitSandboxId") as? String {
