@@ -2,6 +2,7 @@
 import LiveKit
 import LiveKitComponents
 import SwiftUI
+import Combine
 
 /// The ControlBar component handles connection, disconnection, and audio controls
 /// You can customize this component to fit your app's needs
@@ -18,6 +19,8 @@ struct ControlBar: View {
     // Namespace for view transitions
     @Namespace private var animation
 
+    @State private var cancelSink: AnyCancellable?
+    @State private var agentState: AgentState = .initializing
 
     // These are the overall configurations for this component, based on current app state
     private enum Configuration {
@@ -91,8 +94,24 @@ struct ControlBar: View {
             Spacer()
         }
         .animation(.spring(duration: 0.3), value: currentConfiguration)
-    }
+        .onAppear {
+            cancelSink = room.objectWillChange.sink { _ in
+                let newAgentState = room.remoteParticipants.first?.value.agentState
+                guard let newAgentState else { return }
+                Task { @MainActor in
+                    let oldAgentState = self.agentState
+                    guard newAgentState != oldAgentState else { return }
 
+                    // Unmute mic when agent starts listening
+                    if newAgentState == .listening {
+                        try await room.localParticipant.setMicrophone(enabled: true)
+                    }
+                    
+                    self.agentState = newAgentState
+                }
+            }
+        }
+    }
     /// Fetches a token and connects to the LiveKit room
     /// This assumes the agent is running and is configured to automatically join new rooms
     private func connect() {
@@ -115,7 +134,8 @@ struct ControlBar: View {
                     // Connect to the room and enable the microphone
                     try await room.connect(
                         url: connectionDetails.serverUrl, token: connectionDetails.participantToken)
-                    try await room.localParticipant.setMicrophone(enabled: true)
+                    // Don't enable mic asap.
+                    // try await room.localParticipant.setMicrophone(enabled: true)
                 } else {
                     print("Failed to fetch connection details")
                 }
@@ -133,6 +153,9 @@ struct ControlBar: View {
             isDisconnecting = true
             await room.disconnect()
             isDisconnecting = false
+
+            // Prepare recording for next session
+            AudioManager.shared.prepareRecording()
         }
     }
 }
