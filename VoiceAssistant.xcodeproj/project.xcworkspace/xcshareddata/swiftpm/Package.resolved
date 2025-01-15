@@ -4,10 +4,10 @@
     {
       "identity" : "client-sdk-swift",
       "kind" : "remoteSourceControl",
-      "location" : "https://github.com/livekit/client-sdk-swift.git",
+      "location" : "https://github.com/livekit/client-sdk-swift",
       "state" : {
-        "revision" : "9c5242f0217f59f5f30fd122e7ac509dcf446201",
-        "version" : "2.0.19"
+        "branch" : "hiroshi/adm-audioengine2",
+        "revision" : "4b84621d2ff4f41b63badf2fe17201eb575dfe64"
       }
     },
     {
@@ -42,8 +42,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/livekit/webrtc-xcframework.git",
       "state" : {
-        "revision" : "e43fe60fddd27e2d88ba0568ac2a2a15591b3063",
-        "version" : "125.6422.11"
+        "revision" : "95e2365aa1623c3fe14ad7eaf18a8a0cb5e46c23",
+        "version" : "125.6422.12-exp.4"
       }
     }
   ],

@@ -7,7 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		B577A98A2D16796000B59A0B /* LiveKitKrispNoiseFilter in Frameworks */ = {isa = PBXBuildFile; platformFilters = (ios, macos, ); productRef = B577A9892D16796000B59A0B /* LiveKitKrispNoiseFilter */; };
 		B5E1B90F2D14E9EC00A38CB6 /* LiveKitComponents in Frameworks */ = {isa = PBXBuildFile; productRef = B5E1B90E2D14E9EC00A38CB6 /* LiveKitComponents */; };
 		B5E1B9122D14E9F500A38CB6 /* LiveKit in Frameworks */ = {isa = PBXBuildFile; productRef = B5E1B9112D14E9F500A38CB6 /* LiveKit */; };
 /* End PBXBuildFile section */
@@ -20,8 +19,6 @@
 		B577A91F2D15FDB800B59A0B /* Exceptions for "VoiceAssistant" folder in "VoiceAssistant" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
-				.env.example.xcconfig,
-				.env.xcconfig,
 				Info.plist,
 				VoiceAssistant.xcconfig,
 			);
@@ -45,7 +42,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				B577A98A2D16796000B59A0B /* LiveKitKrispNoiseFilter in Frameworks */,
 				B5E1B90F2D14E9EC00A38CB6 /* LiveKitComponents in Frameworks */,
 				B5E1B9122D14E9F500A38CB6 /* LiveKit in Frameworks */,
 			);
@@ -92,7 +88,6 @@
 			packageProductDependencies = (
 				B5E1B90E2D14E9EC00A38CB6 /* LiveKitComponents */,
 				B5E1B9112D14E9F500A38CB6 /* LiveKit */,
-				B577A9892D16796000B59A0B /* LiveKitKrispNoiseFilter */,
 			);
 			productName = VoiceAssistant;
 			productReference = B5B5E3B22D124AE00099C9BE /* VoiceAssistant.app */;
@@ -125,7 +120,6 @@
 			packageReferences = (
 				B5E1B90D2D14E9EC00A38CB6 /* XCRemoteSwiftPackageReference "components-swift" */,
 				B5E1B9102D14E9F500A38CB6 /* XCRemoteSwiftPackageReference "client-sdk-swift" */,
-				B577A9882D16796000B59A0B /* XCLocalSwiftPackageReference "../../livekit/swift-krisp-noise-filter" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = B5B5E3B32D124AE00099C9BE /* Products */;
@@ -381,13 +375,6 @@
 		};
 /* End XCConfigurationList section */
 
-/* Begin XCLocalSwiftPackageReference section */
-		B577A9882D16796000B59A0B /* XCLocalSwiftPackageReference "../../livekit/swift-krisp-noise-filter" */ = {
-			isa = XCLocalSwiftPackageReference;
-			relativePath = "../../livekit/swift-krisp-noise-filter";
-		};
-/* End XCLocalSwiftPackageReference section */
-
 /* Begin XCRemoteSwiftPackageReference section */
 		B5E1B90D2D14E9EC00A38CB6 /* XCRemoteSwiftPackageReference "components-swift" */ = {
 			isa = XCRemoteSwiftPackageReference;
@@ -401,17 +388,13 @@
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/livekit/client-sdk-swift";
 			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 2.0.19;
+				branch = "hiroshi/adm-audioengine2";
+				kind = branch;
 			};
 		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
-		B577A9892D16796000B59A0B /* LiveKitKrispNoiseFilter */ = {
-			isa = XCSwiftPackageProductDependency;
-			productName = LiveKitKrispNoiseFilter;
-		};
 		B5E1B90E2D14E9EC00A38CB6 /* LiveKitComponents */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = B5E1B90D2D14E9EC00A38CB6 /* XCRemoteSwiftPackageReference "components-swift" */;
