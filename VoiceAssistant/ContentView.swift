@@ -17,9 +17,7 @@ struct ContentView: View {
         .padding()
         .environmentObject(room)
         .onAppear {
-            AudioManager.shared.prepareRecording()
-            
-            AudioManager.shared.onMutedSpeechActivityEvent = { _, event in
+            AudioManager.shared.onMutedSpeechActivity = { _, event in
                 DispatchQueue.main.async {
                     isUserMutedTalking = event == .started
                 }

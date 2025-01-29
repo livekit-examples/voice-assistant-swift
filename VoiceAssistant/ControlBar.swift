@@ -153,9 +153,6 @@ struct ControlBar: View {
             isDisconnecting = true
             await room.disconnect()
             isDisconnecting = false
-
-            // Prepare recording for next session
-            AudioManager.shared.prepareRecording()
         }
     }
 }

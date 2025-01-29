@@ -27,6 +27,11 @@
 /* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
+		68AB06302D42885900C61299 /* VoiceAssistantTests */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = VoiceAssistantTests;
+			sourceTree = "<group>";
+		};
 		B5B5E3B42D124AE00099C9BE /* VoiceAssistant */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			exceptions = (
@@ -54,6 +59,7 @@
 			isa = PBXGroup;
 			children = (
 				B5B5E3B42D124AE00099C9BE /* VoiceAssistant */,
+				68AB06302D42885900C61299 /* VoiceAssistantTests */,
 				B5B5E3B32D124AE00099C9BE /* Products */,
 			);
 			sourceTree = "<group>";
@@ -302,6 +308,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = auto;
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx xros xrsimulator";
+				SUPPORTS_MACCATALYST = YES;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2,7";
@@ -345,6 +352,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = auto;
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx xros xrsimulator";
+				SUPPORTS_MACCATALYST = YES;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2,7";
