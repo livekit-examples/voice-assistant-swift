@@ -1,6 +1,4 @@
-<a href="https://livekit.io/">
-  <img src="./.github/assets/app-icon.png" alt="Voice Assistant App Icon" width="100" height="100">
-</a>
+<img src="./.github/assets/app-icon.png" alt="Voice Assistant App Icon" width="100" height="100">
 
 # Swift Voice Assistant
 
