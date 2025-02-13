@@ -4,7 +4,7 @@
 
 This is a starter template for [LiveKit Agents](https://docs.livekit.io/agents/overview/) that provides a simple voice interface using the [LiveKit Swift SDK](https://github.com/livekit/client-sdk-swift).
 
-This template is comaptible with iOS, iPadOS, macOS, and visionOS and is free for you to modify however you like.
+This template is comaptible with iOS, iPadOS, macOS, and visionOS and is free for you to use or modify as you see fit.
 
 <img src="./.github/assets/screenshot.png" alt="Voice Assistant Screenshot" height="500">
 
