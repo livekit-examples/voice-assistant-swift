@@ -22,7 +22,7 @@ Then, run the following command to automatically clone this template and connect
 lk app create --template voice-assistant-swift --sandbox <token_server_sandbox_id>
 ```
 
-You'll also need an agent to speak with. Try our sample voice assistant agent for [Python](https://github.com/livekit-examples/voice-pipeline-agent-python), [Node.js](https://github.com/livekit-examples/voice-pipeline-agent-node), or [create your one from scratch](https://docs.livekit.io/agents/quickstart/).
+You'll also need an agent to speak with. Try our sample voice assistant agent for [Python](https://github.com/livekit-examples/voice-pipeline-agent-python), [Node.js](https://github.com/livekit-examples/voice-pipeline-agent-node), or [create your own from scratch](https://docs.livekit.io/agents/quickstart/).
 
 ### Manual setup
 
