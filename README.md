@@ -22,11 +22,8 @@ lk app create --template voice-assistant-swift --sandbox <token_server_sandbox_i
 
 You'll also need an agent to speak with. Try our sample voice assistant agent for [Python](https://github.com/livekit-examples/voice-pipeline-agent-python), [Node.js](https://github.com/livekit-examples/voice-pipeline-agent-node), or [create your own from scratch](https://docs.livekit.io/agents/quickstart/).
 
-### Manual setup
-
-To setup without the LiveKit CLI, clone the repository and then either create a `VoiceAssistant/.env.xcconfig` with a `LIVEKIT_SANDBOX_ID` (if using a [Sandbox Token Server](https://cloud.livekit.io/projects/p_/sandbox/templates/token-server)), or open `TokenService.swift` and add your [manually generated](#token-generation) URL and token.
-
-Then follow the same instructions above to set up your agent.
+> [!NOTE]
+> To setup without the LiveKit CLI, clone the repository and then either create a `VoiceAssistant/.env.xcconfig` with a `LIVEKIT_SANDBOX_ID` (if using a [Sandbox Token Server](https://cloud.livekit.io/projects/p_/sandbox/templates/token-server)), or open `TokenService.swift` and add your [manually generated](#token-generation) URL and token.
 
 ## Token generation
 
