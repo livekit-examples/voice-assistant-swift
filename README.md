@@ -20,6 +20,8 @@ Then, run the following command to automatically clone this template and connect
 lk app create --template voice-assistant-swift --sandbox <token_server_sandbox_id>
 ```
 
+Built and run the app from Xcode by opening `VoiceAssistant.xcodeproj`. You may need to adjust your app signing settings to run the app on your device.
+
 You'll also need an agent to speak with. Try our sample voice assistant agent for [Python](https://github.com/livekit-examples/voice-pipeline-agent-python), [Node.js](https://github.com/livekit-examples/voice-pipeline-agent-node), or [create your own from scratch](https://docs.livekit.io/agents/quickstart/).
 
 > [!NOTE]
