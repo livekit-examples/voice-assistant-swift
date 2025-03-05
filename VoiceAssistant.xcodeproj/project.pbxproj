@@ -292,6 +292,7 @@
 				INFOPLIST_FILE = VoiceAssistant/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = "";
 				INFOPLIST_KEY_LSApplicationCategoryType = "";
+				INFOPLIST_KEY_NSCameraUsageDescription = "VoiceAssistant uses your camera";
 				INFOPLIST_KEY_NSMicrophoneUsageDescription = "VoiceAssistant uses your microphone";
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphoneos*]" = YES;
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphonesimulator*]" = YES;
@@ -335,6 +336,7 @@
 				INFOPLIST_FILE = VoiceAssistant/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = "";
 				INFOPLIST_KEY_LSApplicationCategoryType = "";
+				INFOPLIST_KEY_NSCameraUsageDescription = "VoiceAssistant uses your camera";
 				INFOPLIST_KEY_NSMicrophoneUsageDescription = "VoiceAssistant uses your microphone";
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphoneos*]" = YES;
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphonesimulator*]" = YES;
