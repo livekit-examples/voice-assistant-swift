@@ -12,7 +12,7 @@ This template is comaptible with iOS, iPadOS, macOS, and visionOS and is free fo
 
 The easiest way to get this app running is with the [Sandbox for LiveKit Cloud](https://cloud.livekit.io/projects/p_/sandbox) and the [LiveKit CLI](https://docs.livekit.io/home/cli/cli-setup/).
 
-First, create a new [Sandbox Token Server](https://cloud.livekit.io/projects/p_mytc7vpzfkt/sandbox/templates/token-server) for your LiveKit Cloud project.
+First, create a new [Sandbox Token Server](https://cloud.livekit.io/projects/p_/sandbox/templates/token-server) for your LiveKit Cloud project.
 
 Then, run the following command to automatically clone this template and connect it to LiveKit Cloud.
 

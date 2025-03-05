@@ -6,7 +6,6 @@
 	<string>$(LIVEKIT_SANDBOX_ID)</string>
 	<key>UIBackgroundModes</key>
 	<array>
-		<string>Audio</string>
 		<string>audio</string>
 	</array>
 </dict>
