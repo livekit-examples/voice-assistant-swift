@@ -27,10 +27,7 @@ struct StatusView: View {
     }
 
     var body: some View {
-        if let audioTrack = agentParticipant?.firstAudioTrack {
-            AgentBarAudioVisualizer(audioTrack: audioTrack, agentState: agentState, barColor: .primary, barCount: 5)
-        } else {
-            AgentBarAudioVisualizer(audioTrack: nil, agentState: agentState, barColor: .primary, barCount: 5)
-        }
+        AgentBarAudioVisualizer(audioTrack: agentParticipant?.firstAudioTrack, agentState: agentState, barColor: .primary, barCount: 5)
+            .id(agentParticipant?.firstAudioTrack?.id)
     }
 }
