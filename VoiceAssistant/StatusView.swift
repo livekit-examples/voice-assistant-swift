@@ -22,22 +22,12 @@ struct StatusView: View {
     }
 
     // Reads the agent state property which is updated automatically
-    private var agentState: AgentState? {
+    private var agentState: AgentState {
         agentParticipant?.agentState ?? .initializing
     }
 
     var body: some View {
-        if let track = agentParticipant?.firstAudioTrack {
-            BarAudioVisualizer(audioTrack: track, barColor: .primary, barCount: 5)
-                .opacity(agentState == .speaking ? 1 : 0.3)
-                .animation(
-                    .easeInOut(duration: 1)
-                        .repeatForever(autoreverses: true)
-                        .speed(agentState == .thinking ? 5 : 1),
-                    value: agentState)
-        } else {
-            // Placeholder for when agent audio isn't available yet, so the app geometry doesn't change
-            Rectangle().fill(.clear)
-        }
+        AgentBarAudioVisualizer(audioTrack: agentParticipant?.firstAudioTrack, agentState: agentState, barColor: .primary, barCount: 5)
+            .id(agentParticipant?.firstAudioTrack?.id)
     }
 }
