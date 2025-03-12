@@ -6,7 +6,6 @@ import SwiftUI
 /// The ControlBar component handles connection, disconnection, and audio controls
 /// You can customize this component to fit your app's needs
 struct ControlBar: View {
-
     // We injected these into the environment in VoiceAssistantApp.swift and ContentView.swift
     @EnvironmentObject private var tokenService: TokenService
     @EnvironmentObject private var room: Room
@@ -18,7 +17,6 @@ struct ControlBar: View {
     // Namespace for view transitions
     @Namespace private var animation
 
-
     // These are the overall configurations for this component, based on current app state
     private enum Configuration {
         case disconnected, connected, transitioning
@@ -26,11 +24,11 @@ struct ControlBar: View {
 
     private var currentConfiguration: Configuration {
         if isConnecting || isDisconnecting {
-            return .transitioning
+            .transitioning
         } else if room.connectionState == .disconnected {
-            return .disconnected
+            .disconnected
         } else {
-            return .connected
+            .connected
         }
     }
 
@@ -56,7 +54,7 @@ struct ControlBar: View {
                         } icon: {
                             Image(
                                 systemName: room.localParticipant.isMicrophoneEnabled()
-                                ? "mic" : "mic.slash")
+                                    ? "mic" : "mic.slash")
                         }
                         .labelStyle(.iconOnly)
                         .frame(width: 44, height: 44)
@@ -66,17 +64,17 @@ struct ControlBar: View {
 
                     LocalAudioVisualizer(track: room.localParticipant.firstAudioTrack)
                         .frame(height: 44)
-                        .id(room.localParticipant.firstAudioTrack?.id ?? "no-track")  // Force the component to re-render when the track changes
-#if !os(macOS)
-                    // Add extra padding to the visualizer if there's no third button
+                        .id(room.localParticipant.firstAudioTrack?.id ?? "no-track") // Force the component to re-render when the track changes
+                    #if !os(macOS)
+                        // Add extra padding to the visualizer if there's no third button
                         .padding(.trailing, 8)
-#endif
+                    #endif
 
-#if os(macOS)
+                    #if os(macOS)
                     // Only on macOS, show the audio device selector
                     // iOS/visionOS users need to use their control center to change the audio input device
                     AudioDeviceSelector()
-#endif
+                    #endif
                 }
                 .background(.primary.opacity(0.1))
                 .cornerRadius(8)
@@ -114,7 +112,8 @@ struct ControlBar: View {
                 ) {
                     // Connect to the room and enable the microphone
                     try await room.connect(
-                        url: connectionDetails.serverUrl, token: connectionDetails.participantToken)
+                        url: connectionDetails.serverUrl, token: connectionDetails.participantToken
+                    )
                     try await room.localParticipant.setMicrophone(enabled: true)
                 } else {
                     print("Failed to fetch connection details")
@@ -149,18 +148,20 @@ private struct LocalAudioVisualizer: View {
             wrappedValue: AudioProcessor(
                 track: track,
                 bandCount: 9,
-                isCentered: false))
+                isCentered: false
+            ))
     }
 
     public var body: some View {
         HStack(spacing: 3) {
-            ForEach(0..<9, id: \.self) { index in
+            ForEach(0 ..< 9, id: \.self) { index in
                 Rectangle()
                     .fill(.primary)
                     .frame(width: 2)
                     .frame(maxHeight: .infinity)
                     .scaleEffect(
-                        y: max(0.05, CGFloat(audioProcessor.bands[index])), anchor: .center)
+                        y: max(0.05, CGFloat(audioProcessor.bands[index])), anchor: .center
+                    )
             }
         }
         .padding(.vertical, 8)
@@ -269,7 +270,7 @@ private struct AudioDeviceSelector: View {
             // Listen for audio device changes
             // Note that this listener is global so can only override it from one spot
             // In a more complex app, you may need a different approach
-            AudioManager.shared.onDeviceUpdate = { manager in
+            AudioManager.shared.onDeviceUpdate = { _ in
                 Task { @MainActor in
                     updateDevices()
                 }
