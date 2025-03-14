@@ -10,7 +10,7 @@
 		B577A98A2D16796000B59A0B /* LiveKitKrispNoiseFilter in Frameworks */ = {isa = PBXBuildFile; platformFilters = (ios, macos, ); productRef = B577A9892D16796000B59A0B /* LiveKitKrispNoiseFilter */; };
 		B5E1B90F2D14E9EC00A38CB6 /* LiveKitComponents in Frameworks */ = {isa = PBXBuildFile; productRef = B5E1B90E2D14E9EC00A38CB6 /* LiveKitComponents */; };
 		B5E1B9122D14E9F500A38CB6 /* LiveKit in Frameworks */ = {isa = PBXBuildFile; productRef = B5E1B9112D14E9F500A38CB6 /* LiveKit */; };
-		B5E46D202D496CD200ACC2E6 /* LiveKitKrispNoiseFilter in Frameworks */ = {isa = PBXBuildFile; productRef = B5E46D1F2D496CD200ACC2E6 /* LiveKitKrispNoiseFilter */; };
+		B5E46D202D496CD200ACC2E6 /* LiveKitKrispNoiseFilter in Frameworks */ = {isa = PBXBuildFile; platformFilters = (ios, macos, ); productRef = B5E46D1F2D496CD200ACC2E6 /* LiveKitKrispNoiseFilter */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
