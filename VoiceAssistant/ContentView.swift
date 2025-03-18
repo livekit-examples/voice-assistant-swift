@@ -39,6 +39,29 @@ struct ContentView: View {
     }
 }
 
+extension AudioDuckingLevel: @retroactive Identifiable {
+    public var id: Int {
+        rawValue
+    }
+}
+
+extension AudioDuckingLevel: @retroactive CustomStringConvertible {
+    public var description: String {
+        switch self {
+        case .default:
+            return "Default"
+        case .min:
+            return "Min"
+        case .mid:
+            return "Mid"
+        case .max:
+            return "Max"
+        @unknown default:
+            return "Unknown"
+        }
+    }
+}
+
 struct DebugBar: View {
     enum MusicPlayerState {
         case stopped
@@ -51,6 +74,14 @@ struct DebugBar: View {
     @State var isVoiceProcessingEnabled: Bool = true
     @State var isVoiceProcessingBypassed: Bool = false
     @State var isRecordingAlwaysPrepared: Bool = false
+
+    let duckingLevels: [AudioDuckingLevel] = [
+        .default,
+        .min,
+        .mid,
+        .max,
+    ]
+    @State var otherAudioDuckingLevel: AudioDuckingLevel = .default
 
     @State private var player: AVAudioPlayer?
     @State private var localMusicFile: URL?
@@ -76,6 +107,17 @@ struct DebugBar: View {
         }.onChange(of: isVoiceProcessingBypassed) { _, _ in
             print("Setting voice processing bypassed: \(isVoiceProcessingBypassed)")
             AudioManager.shared.isVoiceProcessingBypassed = isVoiceProcessingBypassed
+        }
+
+        Picker("Audio Ducking Level", selection: $otherAudioDuckingLevel) {
+            ForEach(duckingLevels, id: \.self) { option in
+                Text(String(describing: option))
+                    .tag(option)
+            }
+        }
+        .onChange(of: otherAudioDuckingLevel) { _, newValue in
+            print("Setting other audio ducking level: \(newValue)")
+            AudioManager.shared.duckingLevel = newValue
         }
 
         // Prepare recording switch
@@ -109,6 +151,12 @@ struct DebugBar: View {
                         let player = try AVAudioPlayer(contentsOf: localMusicFile)
                         player.volume = 1.0
                         player.play()
+
+                        // Low volume workaround
+                        // https://developer.apple.com/forums/thread/721535
+                        try AVAudioSession.sharedInstance().overrideOutputAudioPort(.speaker)
+                        try AVAudioSession.sharedInstance().overrideOutputAudioPort(.none)
+
                         musicPlayerState = .playing
                         self.player = player
                     } catch {
