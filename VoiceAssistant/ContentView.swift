@@ -5,7 +5,8 @@ import LiveKitKrispNoiseFilter
 #endif
 
 struct ContentView: View {
-    @StateObject private var room = Room()
+    @StateObject private var room: Room
+    @State private var chatViewModel: ChatViewModel
 
     // Krisp is available only on iOS and macOS right now
     // Krisp is also a feature of LiveKit Cloud, so if you're using open-source / self-hosted you should remove this
@@ -17,6 +18,9 @@ struct ContentView: View {
         #if os(iOS) || os(macOS)
         AudioManager.shared.capturePostProcessingDelegate = krispProcessor
         #endif
+        let room = Room()
+        _room = StateObject(wrappedValue: room)
+        _chatViewModel = State(initialValue: ChatViewModel(messageProviders: TranscriptionMessageProvider(room: room)))
     }
 
     var body: some View {
@@ -26,6 +30,9 @@ struct ContentView: View {
                 .frame(maxWidth: 512)
 
             ControlBar()
+            ChatView()
+                .environment(chatViewModel)
+                .frame(maxWidth: .infinity, maxHeight: .infinity)
         }
         .padding()
         .environmentObject(room)
