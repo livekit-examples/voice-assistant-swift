@@ -1,4 +1,5 @@
 import SwiftUI
+import MarkdownUI
 
 struct ChatView: View {
     @Environment(ChatViewModel.self) var viewModel
@@ -11,33 +12,31 @@ struct ChatView: View {
                     switch message.content {
                     case .agentTranscript(let text):
                         HStack {
-                            Text(text)
-                                .foregroundColor(.blue)
-                                .multilineTextAlignment(.leading)
-                                .fixedSize(horizontal: false, vertical: true)
-                               
+//                            Text(text)
+//                                .foregroundColor(.blue)
+//                                .multilineTextAlignment(.leading)
+//                                .fixedSize(horizontal: false, vertical: true)
+                            Markdown(text)
                             Spacer()
                         }
 //                        .transition(.push(from: .leading))
                     case .userTranscript(let text):
                         HStack {
                             Spacer()
-                            Text(text)
-                                .foregroundColor(.green)
-                                .multilineTextAlignment(.trailing)
-                                .fixedSize(horizontal: false, vertical: true)
+                            Markdown(text)
                         }
 //                        .transition(.push(from: .trailing))
                     }
                 }
-                .fixedSize(horizontal: false, vertical: true)
-                .animation(.smooth, value: viewModel.messages)
-                .onChange(of: viewModel.messages.count) {
-                    scrolled = viewModel.messages.last?.id
+                .scrollTargetLayout()
+                .padding(.vertical, 12)
+                .onChange(of: viewModel.messages) {
+                    withAnimation(.easeOut) {
+                        scrolled = viewModel.messages.last?.id
+                    }
                 }
             }
-            .scrollTargetLayout()
         }
-        .scrollPosition(id: $scrolled)
+        .scrollPosition(id: $scrolled, anchor: .bottom)
     }
 }

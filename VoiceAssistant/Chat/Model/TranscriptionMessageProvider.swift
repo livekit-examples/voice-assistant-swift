@@ -32,11 +32,11 @@ actor TranscriptionMessageProvider: MessageProvider {
 
                 continuation.yield(message)
                 
-                if let isFinal = reader.info.attributes[finalAttribute], isFinal == "true" {
-                    await setPartial(nil, id: reader.info.id)
-                } else {
+//                if let isFinal = reader.info.attributes[finalAttribute], isFinal == "true" {
+//                    await setPartial(nil, id: reader.info.id)
+//                } else {
                     await setPartial(updated, id: reader.info.id)
-                }
+//                }
                 for key in await partialMessages.keys where key != reader.info.id {
                     await setPartial(nil, id: key)
                 }
