@@ -41,5 +41,6 @@ struct ContentView: View {
             room.add(delegate: krispProcessor)
             #endif
         }
+        .ignoresSafeArea()
     }
 }

@@ -13,18 +13,24 @@ struct ChatView: View {
                         HStack {
                             Text(text)
                                 .foregroundColor(.blue)
+                                .multilineTextAlignment(.leading)
+                                .fixedSize(horizontal: false, vertical: true)
+                               
                             Spacer()
                         }
-                        .transition(.push(from: .leading))
+//                        .transition(.push(from: .leading))
                     case .userTranscript(let text):
                         HStack {
                             Spacer()
                             Text(text)
                                 .foregroundColor(.green)
+                                .multilineTextAlignment(.trailing)
+                                .fixedSize(horizontal: false, vertical: true)
                         }
-                        .transition(.push(from: .trailing))
+//                        .transition(.push(from: .trailing))
                     }
                 }
+                .fixedSize(horizontal: false, vertical: true)
                 .animation(.smooth, value: viewModel.messages)
                 .onChange(of: viewModel.messages.count) {
                     scrolled = viewModel.messages.last?.id
