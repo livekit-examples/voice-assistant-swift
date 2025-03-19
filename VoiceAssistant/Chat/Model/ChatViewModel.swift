@@ -2,6 +2,7 @@ import Foundation
 import IdentifiedCollections
 import Observation
 
+@MainActor
 @Observable
 final class ChatViewModel {
     private(set) var messages: IdentifiedArrayOf<Message> = []

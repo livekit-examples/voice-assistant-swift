@@ -12,30 +12,31 @@ struct ChatView: View {
                     switch message.content {
                     case .agentTranscript(let text):
                         HStack {
-//                            Text(text)
-//                                .foregroundColor(.blue)
-//                                .multilineTextAlignment(.leading)
-//                                .fixedSize(horizontal: false, vertical: true)
                             Markdown(text)
+                                .markdownTextStyle {
+                                    if message.id == viewModel.messages.ids.last {
+                                        ForegroundColor(.purple)
+                                    }
+                                }
                             Spacer()
                         }
-//                        .transition(.push(from: .leading))
+                        .padding(.vertical, 12)
                     case .userTranscript(let text):
                         HStack {
                             Spacer()
                             Markdown(text)
                         }
-//                        .transition(.push(from: .trailing))
+                        .padding(.vertical, 12)
+                    }
+                }
+                .onChange(of: viewModel.messages.elements.last?.content) {
+                    withAnimation(.bouncy) {
+                        scrolled = viewModel.messages.ids.last
                     }
                 }
                 .scrollTargetLayout()
-                .padding(.vertical, 12)
-                .onChange(of: viewModel.messages) {
-                    withAnimation(.easeOut) {
-                        scrolled = viewModel.messages.last?.id
-                    }
-                }
             }
+
         }
         .scrollPosition(id: $scrolled, anchor: .bottom)
     }
