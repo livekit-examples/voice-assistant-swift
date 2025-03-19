@@ -5,17 +5,23 @@ import Observation
 @Observable
 final class ChatViewModel {
     private(set) var messages: IdentifiedArrayOf<Message> = []
+    private(set) var error: Error?
     
     @ObservationIgnored
     private var messageObservers: [Task<Void, Never>] = []
 
     init(messageProviders: any MessageProvider...) {
         for messageProvider in messageProviders {
-            messageObservers.append(Task {
-                for await message in await messageProvider.createMessageStream() {
-                    messages.updateOrAppend(message)
+            let observer =  Task {
+                do {
+                    for await message in try await messageProvider.createMessageStream() {
+                        self.messages.updateOrAppend(message)
+                    }
+                } catch {
+                    self.error = error
                 }
-            })
+            }
+            messageObservers.append(observer)
         }
     }
     

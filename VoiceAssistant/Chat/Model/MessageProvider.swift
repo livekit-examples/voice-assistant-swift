@@ -8,5 +8,5 @@
 import Foundation
 
 protocol MessageProvider {
-    func createMessageStream() async -> AsyncStream<Message>
+    func createMessageStream() async throws -> AsyncStream<Message>
 }

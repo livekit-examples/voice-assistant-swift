@@ -16,10 +16,10 @@ actor TranscriptionMessageProvider: MessageProvider {
         self.room = room
     }
 
-    func createMessageStream() async -> AsyncStream<Message> {
+    func createMessageStream() async throws -> AsyncStream<Message> {
         let (stream, continuation) = AsyncStream.makeStream(of: Message.self)
         
-        try? await room.registerTextStreamHandler(for: chatTopic) { [weak self] reader, participantIdentity in
+        try await room.registerTextStreamHandler(for: chatTopic) { [weak self] reader, participantIdentity in
             guard let self else { return }
             for try await message in reader where !message.isEmpty {
                 let partial = await partialMessages[reader.info.id, default: ""]
