@@ -8,6 +8,7 @@
 import AVFoundation
 import SwiftUI
 
+#if os(iOS)
 class AudioSessionObserver: NSObject, ObservableObject {
     @Published var currentCategory: AVAudioSession.Category = .playback
     @Published var currentMode: AVAudioSession.Mode = .default
@@ -300,3 +301,4 @@ struct AudioSessionMonitorView: View {
         }
     }
 }
+#endif

@@ -87,7 +87,9 @@ struct DebugBar: View {
     @State private var localMusicFile: URL?
 
     var body: some View {
+        #if os(iOS)
         AudioSessionMonitorView()
+        #endif
 
         Toggle(isOn: $isVoiceProcessingEnabled) {
             Text("Voice processing enabled")
@@ -152,10 +154,12 @@ struct DebugBar: View {
                         player.volume = 1.0
                         player.play()
 
+                        #if os(iOS)
                         // Low volume workaround
                         // https://developer.apple.com/forums/thread/721535
                         try AVAudioSession.sharedInstance().overrideOutputAudioPort(.speaker)
                         try AVAudioSession.sharedInstance().overrideOutputAudioPort(.none)
+                        #endif
 
                         musicPlayerState = .playing
                         self.player = player
