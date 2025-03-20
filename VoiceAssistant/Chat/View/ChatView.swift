@@ -15,7 +15,7 @@ struct ChatView: View {
         }
         .clipped()
         .defaultScrollAnchor(.bottom)
-        .scrollPosition(id: $scrolled, anchor: .bottom)
+        .scrollPosition(id: $scrolled)
         .scrollIndicators(.hidden)
         .animation(.default, value: viewModel.messages.count)
         .onChange(of: viewModel.messages.last) {

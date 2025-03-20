@@ -2,6 +2,7 @@ import Foundation
 import IdentifiedCollections
 import LiveKit
 import Observation
+import AsyncAlgorithms
 
 @MainActor
 @Observable
@@ -21,7 +22,9 @@ final class ChatViewModel {
         for messageProvider in messageProviders {
             let observer = Task {
                 do {
-                    for await message in try await messageProvider.createMessageStream() {
+                    for await message in try await messageProvider
+                        .createMessageStream()
+                        ._throttle(for: .milliseconds(100)) {
                         self.messages.updateOrAppend(message)
                     }
                 } catch {
