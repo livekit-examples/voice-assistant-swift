@@ -24,15 +24,18 @@ struct ContentView: View {
     }
 
     var body: some View {
-        VStack(spacing: 24) {
+        ZStack {
             StatusView()
                 .frame(height: 256)
                 .frame(maxWidth: 512)
-
-            ControlBar()
-            ChatView()
-                .environment(chatViewModel)
-                .frame(maxWidth: .infinity, maxHeight: .infinity)
+                .blur(radius: 12)
+                .opacity(0.15)
+            VStack {
+                ChatView()
+                    .environment(chatViewModel)
+                    .frame(maxWidth: .infinity, maxHeight: .infinity)
+                ControlBar()
+            }
         }
         .padding()
         .environmentObject(room)
@@ -41,6 +44,5 @@ struct ContentView: View {
             room.add(delegate: krispProcessor)
             #endif
         }
-        .ignoresSafeArea()
     }
 }
