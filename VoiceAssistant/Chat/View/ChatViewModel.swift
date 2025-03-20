@@ -1,6 +1,6 @@
 import Foundation
 import IdentifiedCollections
-import LiveKit
+@preconcurrency import LiveKit
 import Observation
 import AsyncAlgorithms
 

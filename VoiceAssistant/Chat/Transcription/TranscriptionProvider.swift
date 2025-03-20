@@ -1,5 +1,5 @@
 import Foundation
-import LiveKit
+@preconcurrency import LiveKit
 import MarkdownUI
 
 /// An actor that converts raw text streams from the LiveKit `Room` into `Message` objects.

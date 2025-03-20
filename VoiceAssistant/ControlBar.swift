@@ -1,5 +1,5 @@
 
-import LiveKit
+@preconcurrency import LiveKit
 import LiveKitComponents
 import SwiftUI
 

@@ -1,4 +1,4 @@
-import LiveKit
+@preconcurrency import LiveKit
 import SwiftUI
 #if os(iOS) || os(macOS)
 import LiveKitKrispNoiseFilter
