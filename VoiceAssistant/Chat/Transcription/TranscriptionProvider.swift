@@ -1,7 +1,7 @@
 import Foundation
 import LiveKit
 
-actor TranscriptionMessageProvider: MessageProvider {
+actor TranscriptionProvider: MessageProvider {
     private typealias PartialID = String
     private typealias PartialContent = String
 
@@ -23,7 +23,6 @@ actor TranscriptionMessageProvider: MessageProvider {
             guard let self else { return }
             for try await message in reader where !message.isEmpty {
                 let partial = await partialMessages[reader.info.id, default: ""]
-                guard message != partial else { continue }
                 let updated = partial + message
                 let message = await Message(
                     id: reader.info.id,
@@ -44,9 +43,9 @@ actor TranscriptionMessageProvider: MessageProvider {
             }
         }
 
-        continuation.onTermination = { [weak room] _ in
+        continuation.onTermination = { _ in
             Task {
-                await room?.unregisterTextStreamHandler(for: self.chatTopic)
+                await self.room.unregisterTextStreamHandler(for: self.chatTopic)
             }
         }
 

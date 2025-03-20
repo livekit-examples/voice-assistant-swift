@@ -17,7 +17,6 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		ACBC17742D8AD064007EE71F /* client-sdk-swift */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = "client-sdk-swift"; path = "../client-sdk-swift"; sourceTree = SOURCE_ROOT; };
 		B5B5E3B22D124AE00099C9BE /* VoiceAssistant.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = VoiceAssistant.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -68,7 +67,6 @@
 			children = (
 				B5B5E3B42D124AE00099C9BE /* VoiceAssistant */,
 				B5B5E3B32D124AE00099C9BE /* Products */,
-				ACBC17742D8AD064007EE71F /* client-sdk-swift */,
 			);
 			sourceTree = "<group>";
 		};
