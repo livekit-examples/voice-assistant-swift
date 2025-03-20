@@ -9,8 +9,11 @@ import MarkdownUI
 /// The ID of the message is the ID of the text stream, which is stable and unique across the lifetime of the message.
 /// This ID can be used directly for `Identifiable` conformance.
 actor TranscriptionProvider: MessageProvider {
-    private typealias PartialID = String
-    private typealias PartialContent = String
+    private typealias PartialMessageID = String
+    private struct PartialMessage {
+        let content: String
+        let originalTimestamp: Date
+    }
 
     /// A predefined topic for the chat messages.
     private let chatTopic = "lk.chat"
@@ -19,7 +22,7 @@ actor TranscriptionProvider: MessageProvider {
 
     private let room: Room
 
-    private lazy var partialMessages: [PartialID: PartialContent] = [:]
+    private lazy var partialMessages: [PartialMessageID: PartialMessage] = [:]
 
     init(room: Room) {
         self.room = room
@@ -46,26 +49,39 @@ actor TranscriptionProvider: MessageProvider {
     }
     
     /// Aggregates the incoming text into a message, storing the partial content in the `partialMessages` dictionary.
-    /// - Note: When the message is finalized, or a new message is started, the dictionary is cleared to limit memory usage.
+    /// - Note: When the message is finalized, or a new message is started, the dictionary is purged to limit memory usage.
     private func processIncoming(message: String, reader: TextStreamReader, participantIdentity: Participant.Identity) -> Message {
-        let partial = partialMessages[reader.info.id, default: ""]
-        let updated = partial + message
-        let message = Message(
-            id: reader.info.id,
-            timestamp: reader.info.timestamp,
-            content: participantIdentity == room.localParticipant.identity ? .userTranscript(updated) : .agentTranscript(MarkdownContent(updated))
+        let partialID = reader.info.id
+        let timestamp: Date
+        let updatedContent: String
+        
+        if let existingInfo = partialMessages[partialID] {
+            // Use the existing content and the original timestamp
+            updatedContent = existingInfo.content + message
+            timestamp = existingInfo.originalTimestamp
+        } else {
+            // This is a new message, use the current timestamp
+            updatedContent = message
+            timestamp = reader.info.timestamp
+        }
+        
+        let newOrUpdatedMessage = Message(
+            id: partialID,
+            timestamp: timestamp,
+            content: participantIdentity == room.localParticipant.identity ? .userTranscript(updatedContent) : .agentTranscript(MarkdownContent(updatedContent))
         )
 
-        let partialID = reader.info.id
         if let isFinal = reader.info.attributes[finalAttribute], isFinal == "true" {
             partialMessages[partialID] = nil
         } else {
-            partialMessages[partialID] = updated
+            partialMessages[partialID] = PartialMessage(content: updatedContent, originalTimestamp: timestamp)
         }
+        
+        // Clear other partial messages when a new one starts
         for key in partialMessages.keys where key != partialID {
             partialMessages[key] = nil
         }
         
-        return message
+        return newOrUpdatedMessage
     }
 }
