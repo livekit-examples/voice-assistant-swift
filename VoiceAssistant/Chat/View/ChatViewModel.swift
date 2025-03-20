@@ -4,6 +4,9 @@ import LiveKit
 import Observation
 import AsyncAlgorithms
 
+/// A class that aggregates messages from multiple message providers
+/// and exposes a single entry point for the UI to observe the message feed.
+/// - Note: It may handle future interactions with the chat e.g. text input, etc.
 @MainActor
 @Observable
 final class ChatViewModel {

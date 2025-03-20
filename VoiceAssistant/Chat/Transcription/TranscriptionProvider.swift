@@ -2,11 +2,19 @@ import Foundation
 import LiveKit
 import MarkdownUI
 
+/// An actor that converts raw text streams from the LiveKit `Room` into `Message` objects.
+///
+/// New text stream is emitted for each message, and the stream is closed when the message is finalized.
+/// Each message is delivered in chunks, that are accumulated and published into the message stream.
+/// The ID of the message is the ID of the text stream, which is stable and unique across the lifetime of the message.
+/// This ID can be used directly for `Identifiable` conformance.
 actor TranscriptionProvider: MessageProvider {
     private typealias PartialID = String
     private typealias PartialContent = String
 
+    /// A predefined topic for the chat messages.
     private let chatTopic = "lk.chat"
+    /// The attribute that indicates if the message is finalized.
     private let finalAttribute = "lk.transcription_final"
 
     private let room: Room
@@ -17,6 +25,7 @@ actor TranscriptionProvider: MessageProvider {
         self.room = room
     }
 
+    /// Creates a new message stream for the chat topic.
     func createMessageStream() async throws -> AsyncStream<Message> {
         let (stream, continuation) = AsyncStream.makeStream(of: Message.self)
 
@@ -36,6 +45,8 @@ actor TranscriptionProvider: MessageProvider {
         return stream
     }
     
+    /// Aggregates the incoming text into a message, storing the partial content in the `partialMessages` dictionary.
+    /// - Note: When the message is finalized, or a new message is started, the dictionary is cleared to limit memory usage.
     private func processIncoming(message: String, reader: TextStreamReader, participantIdentity: Participant.Identity) -> Message {
         let partial = partialMessages[reader.info.id, default: ""]
         let updated = partial + message
