@@ -1,4 +1,5 @@
 import Foundation
+import MarkdownUI
 
 struct Message: Identifiable, Equatable {
     let id: String
@@ -7,6 +8,6 @@ struct Message: Identifiable, Equatable {
 }
 
 enum MessageContent: Equatable {
-    case agentTranscript(String)
+    case agentTranscript(MarkdownContent)
     case userTranscript(String)
 }

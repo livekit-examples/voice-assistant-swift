@@ -32,10 +32,10 @@ struct ChatView: View {
             switch message.content {
             case let .userTranscript(text):
                 userTranscript(text)
-            case let .agentTranscript(text) where message.id == viewModel.messages.ids.last:
-                agentLastTranscript(text)
-            case let .agentTranscript(text):
-                agentTranscript(text)
+            case let .agentTranscript(markdown) where message.id == viewModel.messages.ids.last:
+                agentLastTranscript(markdown)
+            case let .agentTranscript(markdown):
+                agentTranscript(markdown)
             }
         }
         .transition(.blurReplace)
@@ -55,18 +55,18 @@ struct ChatView: View {
     }
 
     @ViewBuilder
-    private func agentTranscript(_ text: String) -> some View {
+    private func agentTranscript(_ markdown: MarkdownContent) -> some View {
         HStack {
-            Markdown(text)
+            Markdown(markdown)
                 .opacity(0.75)
             Spacer(minLength: 16)
         }
     }
 
     @ViewBuilder
-    private func agentLastTranscript(_ text: String) -> some View {
+    private func agentLastTranscript(_ markdown: MarkdownContent) -> some View {
         HStack {
-            Markdown(text)
+            Markdown(markdown)
                 .markdownTextStyle {
                     FontSize(20)
                     FontWeight(.medium)

@@ -1,5 +1,6 @@
 import Foundation
 import LiveKit
+import MarkdownUI
 
 actor TranscriptionProvider: MessageProvider {
     private typealias PartialID = String
@@ -41,7 +42,7 @@ actor TranscriptionProvider: MessageProvider {
         let message = Message(
             id: reader.info.id,
             timestamp: reader.info.timestamp,
-            content: participantIdentity == room.localParticipant.identity ? .userTranscript(updated) : .agentTranscript(updated)
+            content: participantIdentity == room.localParticipant.identity ? .userTranscript(updated) : .agentTranscript(MarkdownContent(updated))
         )
 
         let partialID = reader.info.id
