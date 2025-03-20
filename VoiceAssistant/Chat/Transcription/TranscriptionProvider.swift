@@ -22,24 +22,7 @@ actor TranscriptionProvider: MessageProvider {
         try await room.registerTextStreamHandler(for: chatTopic) { [weak self] reader, participantIdentity in
             guard let self else { return }
             for try await message in reader where !message.isEmpty {
-                let partial = await partialMessages[reader.info.id, default: ""]
-                let updated = partial + message
-                let message = await Message(
-                    id: reader.info.id,
-                    timestamp: reader.info.timestamp,
-                    content: participantIdentity == room.localParticipant.identity ? .userTranscript(updated) : .agentTranscript(updated)
-                )
-
-                continuation.yield(message)
-
-                if let isFinal = reader.info.attributes[finalAttribute], isFinal == "true" {
-                    await setPartial(nil, id: reader.info.id)
-                } else {
-                    await setPartial(updated, id: reader.info.id)
-                }
-                for key in await partialMessages.keys where key != reader.info.id {
-                    await setPartial(nil, id: key)
-                }
+                continuation.yield(await processIncoming(message: message, reader: reader, participantIdentity: participantIdentity))
             }
         }
 
@@ -51,8 +34,26 @@ actor TranscriptionProvider: MessageProvider {
 
         return stream
     }
+    
+    private func processIncoming(message: String, reader: TextStreamReader, participantIdentity: Participant.Identity) -> Message {
+        let partial = partialMessages[reader.info.id, default: ""]
+        let updated = partial + message
+        let message = Message(
+            id: reader.info.id,
+            timestamp: reader.info.timestamp,
+            content: participantIdentity == room.localParticipant.identity ? .userTranscript(updated) : .agentTranscript(updated)
+        )
 
-    private func setPartial(_ content: PartialContent?, id: PartialID) {
-        partialMessages[id] = content
+        let partialID = reader.info.id
+        if let isFinal = reader.info.attributes[finalAttribute], isFinal == "true" {
+            partialMessages[partialID] = nil
+        } else {
+            partialMessages[partialID] = updated
+        }
+        for key in partialMessages.keys where key != partialID {
+            partialMessages[key] = nil
+        }
+        
+        return message
     }
 }
