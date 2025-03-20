@@ -20,7 +20,7 @@ struct ContentView: View {
         #endif
         let room = Room()
         _room = StateObject(wrappedValue: room)
-        _chatViewModel = State(initialValue: ChatViewModel(messageProviders: TranscriptionMessageProvider(room: room)))
+        _chatViewModel = State(initialValue: ChatViewModel(room: room, messageProviders: TranscriptionMessageProvider(room: room)))
     }
 
     var body: some View {

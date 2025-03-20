@@ -2,67 +2,76 @@ import MarkdownUI
 import SwiftUI
 
 struct ChatView: View {
-    @Environment(ChatViewModel.self) var viewModel
-    @State var scrolled: Message.ID?
+    @Environment(ChatViewModel.self) private var viewModel
+    @State private var scrolled: Message.ID?
 
     var body: some View {
         ScrollView {
             LazyVStack(spacing: 16) {
-                ForEach(viewModel.messages, content: messageView)
+                ForEach(viewModel.messages, content: message)
+                    .scrollTargetLayout()
             }
-            .scrollTargetLayout()
+            Spacer(minLength: 16)
         }
-        .scrollPosition(id: $scrolled)
+        .clipped()
+        .defaultScrollAnchor(.bottom)
+        .scrollPosition(id: $scrolled, anchor: .bottom)
         .scrollIndicators(.hidden)
-        .animation(.smooth, value: viewModel.messages.count)
-        .onChange(of: viewModel.messages.elements.last) {
-            scrolled = viewModel.messages.elements.last?.id
-    }
-    }
-
-    @ViewBuilder
-    private func messageView(message: Message) -> some View {
-        switch message.content {
-        case let .userTranscript(text):
-            userTranscript(text: text)
-        case let .agentTranscript(text) where message.id == viewModel.messages.ids.last:
-            agentLastTranscript(text: text)
-        case let .agentTranscript(text):
-            agentTranscript(text: text)
+        .animation(.default, value: viewModel.messages.count)
+        .onChange(of: viewModel.messages.last) {
+            scrolled = viewModel.messages.ids.last
+        }
+        .alert("Error while connecting to Chat", isPresented: .constant(viewModel.error != nil)) {
+            Button("OK", role: .cancel) {}
         }
     }
 
     @ViewBuilder
-    private func userTranscript(text: String) -> some View {
+    private func message(_ message: Message) -> some View {
+        Group {
+            switch message.content {
+            case let .userTranscript(text):
+                userTranscript(text)
+            case let .agentTranscript(text) where message.id == viewModel.messages.ids.last:
+                agentLastTranscript(text)
+            case let .agentTranscript(text):
+                agentTranscript(text)
+            }
+        }
+        .transition(.blurReplace)
+    }
+
+    @ViewBuilder
+    private func userTranscript(_ text: String) -> some View {
         HStack {
-            Spacer()
-            Text(text)
+            Spacer(minLength: 16)
+            Text(text.trimmingCharacters(in: .whitespacesAndNewlines))
                 .padding()
                 .background(
-                    RoundedRectangle(cornerRadius: 16)
+                    RoundedRectangle(cornerRadius: 8)
                         .fill(.background.secondary)
                 )
-                .shadow(color: .black.opacity(0.1), radius: 5, x: 5, y: 5)
-                .padding(.horizontal)
         }
     }
 
     @ViewBuilder
-    private func agentTranscript(text: String) -> some View {
+    private func agentTranscript(_ text: String) -> some View {
         HStack {
             Markdown(text)
-            Spacer()
+                .opacity(0.75)
+            Spacer(minLength: 16)
         }
     }
 
     @ViewBuilder
-    private func agentLastTranscript(text: String) -> some View {
+    private func agentLastTranscript(_ text: String) -> some View {
         HStack {
             Markdown(text)
                 .markdownTextStyle {
-                    FontSize(28)
+                    FontSize(20)
+                    FontWeight(.medium)
                 }
-            Spacer()
+            Spacer(minLength: 16)
         }
     }
 }

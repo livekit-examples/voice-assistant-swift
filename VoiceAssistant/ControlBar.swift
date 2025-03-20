@@ -76,7 +76,7 @@ struct ControlBar: View {
                     AudioDeviceSelector()
                     #endif
                 }
-                .background(.primary.opacity(0.1))
+                .background(.background.secondary)
                 .cornerRadius(8)
 
                 DisconnectButton(disconnectAction: disconnect)
@@ -183,9 +183,7 @@ private struct ConnectButton: View {
                 .contentShape(Rectangle())
         }
         .buttonStyle(.plain)
-        .background(
-            .primary.opacity(0.1)
-        )
+        .background(.background.secondary)
         .foregroundStyle(.primary)
         .cornerRadius(8)
     }
@@ -228,9 +226,7 @@ private struct TransitionButton: View {
         .buttonStyle(.plain)
         .frame(height: 44)
         .padding(.horizontal, 16)
-        .background(
-            .primary.opacity(0.1)
-        )
+        .background(.background.secondary)
         .foregroundStyle(.secondary)
         .cornerRadius(8)
         .disabled(true)
