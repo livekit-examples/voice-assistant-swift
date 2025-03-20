@@ -438,7 +438,7 @@
 			repositoryURL = "https://github.com/livekit/client-sdk-swift";
 			requirement = {
 				kind = upToNextMajorVersion;
-				minimumVersion = 2.0.19;
+				minimumVersion = 2.3.1;
 			};
 		};
 		B5E46D1E2D496CD200ACC2E6 /* XCRemoteSwiftPackageReference "swift-krisp-noise-filter" */ = {
