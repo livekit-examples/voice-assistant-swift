@@ -3,7 +3,7 @@ import SwiftUI
 
 struct ChatView: View {
     @Environment(ChatViewModel.self) private var viewModel
-    @State private var scrolled: Message.ID?
+    @State private var scrollTo: Message.ID?
 
     var body: some View {
         ScrollView {
@@ -15,11 +15,11 @@ struct ChatView: View {
         }
         .clipped()
         .defaultScrollAnchor(.bottom)
-        .scrollPosition(id: $scrolled)
+        .scrollPosition(id: $scrollTo)
         .scrollIndicators(.hidden)
         .animation(.easeOut, value: viewModel.messages.count)
         .onChange(of: viewModel.messages.last) {
-            scrolled = viewModel.messages.ids.last
+            scrollTo = viewModel.messages.ids.last
         }
         .alert("Error while connecting to Chat", isPresented: .constant(viewModel.error != nil)) {
             Button("OK", role: .cancel) {}
