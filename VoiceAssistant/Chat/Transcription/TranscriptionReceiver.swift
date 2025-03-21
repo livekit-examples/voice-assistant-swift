@@ -1,6 +1,5 @@
 import Foundation
 @preconcurrency import LiveKit
-import MarkdownUI
 
 /// An actor that converts raw text streams from the LiveKit `Room` into `Message` objects.
 ///
@@ -68,9 +67,10 @@ actor TranscriptionReceiver: MessageReceiver {
         let newOrUpdatedMessage = Message(
             id: partialID,
             timestamp: timestamp,
-            content: participantIdentity == room.localParticipant.identity ? .userTranscript(updatedContent) : .agentTranscript(MarkdownContent(updatedContent))
+            content: participantIdentity == room.localParticipant.identity ? .userTranscript(updatedContent) : .agentTranscript(updatedContent)
         )
 
+        // Clear reader's own partial messages if it's final
         if let isFinal = reader.info.attributes[finalAttribute], isFinal == "true" {
             partialMessages[partialID] = nil
         } else {

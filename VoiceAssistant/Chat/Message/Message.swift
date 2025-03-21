@@ -1,5 +1,6 @@
 import Foundation
-@preconcurrency import MarkdownUI
+
+typealias MarkdownConvertible = String
 
 struct Message: Identifiable, Equatable, Sendable {
     let id: String
@@ -8,6 +9,6 @@ struct Message: Identifiable, Equatable, Sendable {
 }
 
 enum MessageContent: Equatable, Sendable {
-    case agentTranscript(MarkdownContent)
+    case agentTranscript(MarkdownConvertible)
     case userTranscript(String)
 }

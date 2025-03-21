@@ -1,5 +1,5 @@
 import Foundation
-import IdentifiedCollections
+import Collections
 @preconcurrency import LiveKit
 import Observation
 import AsyncAlgorithms
@@ -10,7 +10,7 @@ import AsyncAlgorithms
 @MainActor
 @Observable
 final class ChatViewModel {
-    private(set) var messages: IdentifiedArrayOf<Message> = []
+    private(set) var messages: OrderedDictionary<Message.ID, Message> = [:]
     private(set) var error: Error?
 
     @ObservationIgnored
@@ -28,7 +28,7 @@ final class ChatViewModel {
                     for await message in try await messageReceiver
                         .createMessageStream()
                         ._throttle(for: .milliseconds(100)) {
-                        self.messages.updateOrAppend(message)
+                        self.messages.updateValue(message, forKey: message.id)
                     }
                 } catch {
                     self.error = error

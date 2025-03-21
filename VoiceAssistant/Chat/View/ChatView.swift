@@ -8,7 +8,7 @@ struct ChatView: View {
     var body: some View {
         ScrollView {
             LazyVStack(spacing: 16) {
-                ForEach(viewModel.messages, content: message)
+                ForEach(viewModel.messages.values, content: message)
                     .scrollTargetLayout()
             }
             Spacer(minLength: 16)
@@ -18,8 +18,8 @@ struct ChatView: View {
         .scrollPosition(id: $scrollTo)
         .scrollIndicators(.hidden)
         .animation(.easeOut, value: viewModel.messages.count)
-        .onChange(of: viewModel.messages.last) {
-            scrollTo = viewModel.messages.ids.last
+        .onChange(of: viewModel.messages.values.last) {
+            scrollTo = viewModel.messages.keys.last
         }
         .alert("Error while connecting to Chat", isPresented: .constant(viewModel.error != nil)) {
             Button("OK", role: .cancel) {}
@@ -32,7 +32,7 @@ struct ChatView: View {
             switch message.content {
             case let .userTranscript(text):
                 userTranscript(text)
-            case let .agentTranscript(markdown) where message.id == viewModel.messages.ids.last:
+            case let .agentTranscript(markdown) where message.id == viewModel.messages.keys.last:
                 agentLastTranscript(markdown)
             case let .agentTranscript(markdown):
                 agentTranscript(markdown)
@@ -55,7 +55,7 @@ struct ChatView: View {
     }
 
     @ViewBuilder
-    private func agentTranscript(_ markdown: MarkdownContent) -> some View {
+    private func agentTranscript(_ markdown: MarkdownConvertible) -> some View {
         HStack {
             Markdown(markdown)
                 .opacity(0.75)
@@ -64,7 +64,7 @@ struct ChatView: View {
     }
 
     @ViewBuilder
-    private func agentLastTranscript(_ markdown: MarkdownContent) -> some View {
+    private func agentLastTranscript(_ markdown: MarkdownConvertible) -> some View {
         HStack {
             Markdown(markdown)
                 .markdownTextStyle {
