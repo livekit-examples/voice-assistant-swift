@@ -5,10 +5,10 @@ typealias MarkdownConvertible = String
 struct Message: Identifiable, Equatable, Sendable {
     let id: String
     let timestamp: Date
-    let content: MessageContent
-}
+    let content: Content
 
-enum MessageContent: Equatable, Sendable {
-    case agentTranscript(MarkdownConvertible)
-    case userTranscript(String)
+    enum Content: Equatable, Sendable {
+        case agentTranscript(MarkdownConvertible)
+        case userTranscript(String)
+    }
 }
