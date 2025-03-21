@@ -7,6 +7,23 @@ import Foundation
 /// Each message is delivered in chunks, that are accumulated and published into the message stream.
 /// The ID of the message is the ID of the text stream, which is stable and unique across the lifetime of the message.
 /// This ID can be used directly for `Identifiable` conformance.
+///
+/// Example text stream:
+/// ```
+/// { id: "1", content: "Hello" }
+/// { id: "1", content: " world" }
+/// { id: "1", content: "!" }
+/// { id: "2", content: "Hello" }
+/// { id: "2", content: " Apple" }
+/// { id: "2", content: "!" }
+/// ```
+///
+/// Example output:
+/// ```
+/// Message(id: "1", timestamp: 2025-01-01 12:00:00 +0000, content: .agentTranscript("Hello world!"))
+/// Message(id: "2", timestamp: 2025-01-01 12:00:10 +0000, content: .agentTranscript("Hello Apple!"))
+/// ```
+///
 actor TranscriptionReceiver: MessageReceiver {
     private typealias PartialMessageID = String
     private struct PartialMessage {
@@ -34,7 +51,7 @@ actor TranscriptionReceiver: MessageReceiver {
         try await room.registerTextStreamHandler(for: chatTopic) { [weak self] reader, participantIdentity in
             guard let self else { return }
             for try await message in reader where !message.isEmpty {
-                continuation.yield(await processIncoming(message: message, reader: reader, participantIdentity: participantIdentity))
+                await continuation.yield(processIncoming(message: message, reader: reader, participantIdentity: participantIdentity))
             }
         }
 
@@ -46,14 +63,14 @@ actor TranscriptionReceiver: MessageReceiver {
 
         return stream
     }
-    
+
     /// Aggregates the incoming text into a message, storing the partial content in the `partialMessages` dictionary.
     /// - Note: When the message is finalized, or a new message is started, the dictionary is purged to limit memory usage.
     private func processIncoming(message: String, reader: TextStreamReader, participantIdentity: Participant.Identity) -> Message {
         let partialID = reader.info.id
         let timestamp: Date
         let updatedContent: String
-        
+
         if let existingInfo = partialMessages[partialID] {
             // Use the existing content and the original timestamp
             updatedContent = existingInfo.content + message
@@ -63,7 +80,7 @@ actor TranscriptionReceiver: MessageReceiver {
             updatedContent = message
             timestamp = reader.info.timestamp
         }
-        
+
         let newOrUpdatedMessage = Message(
             id: partialID,
             timestamp: timestamp,
@@ -76,12 +93,12 @@ actor TranscriptionReceiver: MessageReceiver {
         } else {
             partialMessages[partialID] = PartialMessage(content: updatedContent, originalTimestamp: timestamp)
         }
-        
+
         // Clear other partial messages when a new one starts
         for key in partialMessages.keys where key != partialID {
             partialMessages[key] = nil
         }
-        
+
         return newOrUpdatedMessage
     }
 }

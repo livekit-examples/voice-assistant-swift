@@ -1,8 +1,8 @@
-import Foundation
+import AsyncAlgorithms
 import Collections
+import Foundation
 @preconcurrency import LiveKit
 import Observation
-import AsyncAlgorithms
 
 /// A class that aggregates messages from multiple message providers
 /// and exposes a single entry point for the UI to observe the message feed.
@@ -27,7 +27,8 @@ final class ChatViewModel {
                 do {
                     for await message in try await messageReceiver
                         .createMessageStream()
-                        ._throttle(for: .milliseconds(100)) {
+                        ._throttle(for: .milliseconds(100))
+                    {
                         self.messages.updateValue(message, forKey: message.id)
                     }
                 } catch {
