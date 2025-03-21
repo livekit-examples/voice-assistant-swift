@@ -28,11 +28,8 @@ struct StatusView: View {
 
     var body: some View {
         if let participant = agentParticipant {
-            AgentBarAudioVisualizer(audioTrack: participant.firstAudioTrack, agentState: agentState, barColor: .primary, barCount: 5)
+            AgentBarAudioVisualizer(audioTrack: participant.firstAudioTrack, agentState: agentState, barColor: .primary, barCount: 9)
                 .id(participant.firstAudioTrack?.id)
-        } else {
-            // Placeholder for when agent audio isn't available yet, so the app geometry doesn't change
-            Rectangle().fill(.clear)
         }
     }
 }
