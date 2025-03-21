@@ -18,14 +18,14 @@ final class ChatViewModel {
     @ObservationIgnored
     private var messageObservers: [Task<Void, Never>] = []
 
-    init(room: Room, messageProviders: any MessageProvider...) {
+    init(room: Room, messageReceivers: any MessageReceiver...) {
         self.room = room
         room.add(delegate: self)
 
-        for messageProvider in messageProviders {
+        for messageReceiver in messageReceivers {
             let observer = Task {
                 do {
-                    for await message in try await messageProvider
+                    for await message in try await messageReceiver
                         .createMessageStream()
                         ._throttle(for: .milliseconds(100)) {
                         self.messages.updateOrAppend(message)

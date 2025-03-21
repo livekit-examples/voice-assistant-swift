@@ -8,7 +8,7 @@ import MarkdownUI
 /// Each message is delivered in chunks, that are accumulated and published into the message stream.
 /// The ID of the message is the ID of the text stream, which is stable and unique across the lifetime of the message.
 /// This ID can be used directly for `Identifiable` conformance.
-actor TranscriptionProvider: MessageProvider {
+actor TranscriptionReceiver: MessageReceiver {
     private typealias PartialMessageID = String
     private struct PartialMessage {
         let content: String
