@@ -24,17 +24,24 @@ struct ContentView: View {
     }
 
     var body: some View {
-        ZStack {
-            StatusView()
-                .frame(height: 256)
-                .frame(maxWidth: 512)
-                .blur(radius: 12)
-                .opacity(0.15)
-            VStack {
-                ChatView()
-                    .environment(chatViewModel)
-                    .frame(maxWidth: .infinity, maxHeight: .infinity)
+        Group {
+            if room.connectionState == .disconnected {
                 ControlBar()
+            } else {
+                VStack {
+                    ChatView()
+                        .environment(chatViewModel)
+                    HStack(alignment: .center) {
+                        StatusView()
+                            .frame(width: 48)
+                        Spacer()
+                            .frame(maxWidth: .infinity)
+                        ControlBar()
+                            .layoutPriority(1)
+                    }
+                    .frame(height: 64)
+                }
+                .overlay(content: tooltip)
             }
         }
         .padding()
@@ -43,6 +50,15 @@ struct ContentView: View {
             #if os(iOS) || os(macOS)
             room.add(delegate: krispProcessor)
             #endif
+        }
+    }
+    
+    @ViewBuilder
+    private func tooltip() -> some View {
+        if room.agentState == .listening, chatViewModel.messages.isEmpty {
+            Text("Start talking")
+                .font(.system(size: 18))
+                .opacity(0.3)
         }
     }
 }

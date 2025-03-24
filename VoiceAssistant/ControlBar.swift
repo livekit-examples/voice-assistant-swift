@@ -1,4 +1,3 @@
-
 @preconcurrency import LiveKit
 import LiveKitComponents
 import SwiftUI
@@ -34,8 +33,6 @@ struct ControlBar: View {
 
     var body: some View {
         HStack(spacing: 16) {
-            Spacer()
-
             switch currentConfiguration {
             case .disconnected:
                 ConnectButton(connectAction: connect)
@@ -85,18 +82,17 @@ struct ControlBar: View {
                 TransitionButton(isConnecting: isConnecting)
                     .matchedGeometryEffect(id: "main-button", in: animation, properties: .position)
             }
-
-            Spacer()
         }
         .animation(.spring(duration: 0.3), value: currentConfiguration)
+        .sensoryFeedback(.impact, trigger: isConnecting)
+        .sensoryFeedback(.impact, trigger: isDisconnecting)
     }
 
     /// Fetches a token and connects to the LiveKit room
     /// This assumes the agent is running and is configured to automatically join new rooms
     private func connect() {
+        isConnecting = true
         Task {
-            isConnecting = true
-
             // Generate a random room name to ensure a new room is created
             // In a production app, you may want a more reliable process for ensuring agent dispatch
             let roomName = "room-\(Int.random(in: 1000 ... 9999))"
@@ -128,8 +124,8 @@ struct ControlBar: View {
 
     /// Disconnects from the current LiveKit room
     private func disconnect() {
+        isDisconnecting = true
         Task {
-            isDisconnecting = true
             await room.disconnect()
             isDisconnecting = false
         }
@@ -176,8 +172,7 @@ private struct ConnectButton: View {
 
     var body: some View {
         Button(action: connectAction) {
-            Text("Start a Conversation")
-                .textCase(.uppercase)
+            Text("Start a conversation")
                 .frame(height: 44)
                 .padding(.horizontal, 16)
                 .contentShape(Rectangle())
@@ -185,6 +180,7 @@ private struct ConnectButton: View {
         .buttonStyle(.plain)
         .background(.background.secondary)
         .foregroundStyle(.primary)
+        .colorInvert()
         .cornerRadius(8)
     }
 }
@@ -221,7 +217,6 @@ private struct TransitionButton: View {
     var body: some View {
         Button(action: {}) {
             Text(isConnecting ? "Connecting…" : "Disconnecting…")
-                .textCase(.uppercase)
         }
         .buttonStyle(.plain)
         .frame(height: 44)
