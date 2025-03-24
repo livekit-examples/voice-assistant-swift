@@ -3,24 +3,32 @@ import SwiftUI
 
 struct ChatView: View {
     @Environment(ChatViewModel.self) private var viewModel
-    @State private var scrollTo: Message.ID?
+    @State private var scrolledToLast = true
+    private let last = "last"
 
     var body: some View {
-        ScrollView {
-            LazyVStack(spacing: 16) {
-                ForEach(viewModel.messages.values, content: message)
-                    .scrollTargetLayout()
+        ScrollViewReader { proxy in
+            List {
+                Group {
+                    ForEach(viewModel.messages.values, content: message)
+                    Spacer(minLength: 16)
+                        .id(last)
+                        .onAppear { scrolledToLast = true }
+                        .onDisappear { scrolledToLast = false }
+                }
+                .listRowBackground(EmptyView())
+                .listRowSeparator(.hidden)
+                .onChange(of: viewModel.messages.values.last) {
+                    guard scrolledToLast else { return }
+                    withAnimation {
+                        proxy.scrollTo(last, anchor: .bottom)
+                    }
+                }
             }
-            Spacer(minLength: 16)
+            .listStyle(.plain)
+            .scrollIndicators(.hidden)
         }
-        .clipped()
-        .defaultScrollAnchor(.bottom)
-        .scrollPosition(id: $scrollTo)
-        .scrollIndicators(.hidden)
-        .animation(.easeOut, value: viewModel.messages.count)
-        .onChange(of: viewModel.messages.values.last) {
-            scrollTo = viewModel.messages.keys.last
-        }
+        .animation(.default, value: viewModel.messages.count)
         .alert("Error while connecting to Chat", isPresented: .constant(viewModel.error != nil)) {
             Button("OK", role: .cancel) {}
         }
