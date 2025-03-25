@@ -2,6 +2,8 @@ import Foundation
 @preconcurrency import LiveKit
 
 /// An actor that converts raw text streams from the LiveKit `Room` into `Message` objects.
+/// - Note: Streams are supported by `livekit-agents` >= 1.0.0.
+/// - SeeAlso: ``TranscriptionDelegateReceiver``
 ///
 /// New text stream is emitted for each message, and the stream is closed when the message is finalized.
 /// Each message is delivered in chunks, that are accumulated and published into the message stream.
@@ -24,7 +26,7 @@ import Foundation
 /// Message(id: "2", timestamp: 2025-01-01 12:00:10 +0000, content: .agentTranscript("Hello Apple!"))
 /// ```
 ///
-actor TranscriptionReceiver: MessageReceiver {
+actor TranscriptionStreamReceiver: MessageReceiver {
     private typealias PartialMessageID = String
     private struct PartialMessage {
         let content: String
