@@ -12,7 +12,8 @@ import LiveKit
 /// { id: "1", content: "Hello" }
 /// { id: "1", content: "Hello world!" }
 /// ```
-actor TranscriptionDelegateReceiver: MessageReceiver {
+@available(*, deprecated, message: "Use 'TranscriptionStreamReceiver' if supported by the agent")
+actor TranscriptionDelegateReceiver: MessageReceiver, RoomDelegate {
     private let room: Room
     private var continuation: AsyncStream<Message>.Continuation?
 
@@ -31,9 +32,7 @@ actor TranscriptionDelegateReceiver: MessageReceiver {
         self.continuation = continuation
         return stream
     }
-}
 
-extension TranscriptionDelegateReceiver: RoomDelegate {
     nonisolated func room(_: Room, participant: Participant, trackPublication _: TrackPublication, didReceiveTranscriptionSegments segments: [TranscriptionSegment]) {
         segments
             .filter { !$0.text.isEmpty }
