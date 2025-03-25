@@ -3,6 +3,8 @@ import SwiftUI
 
 struct ChatView: View {
     @Environment(ChatViewModel.self) private var viewModel
+    @Environment(\.colorScheme) private var colorScheme
+    
     @State private var scrolledToLast = true
     private let last = "last"
 
@@ -39,25 +41,28 @@ struct ChatView: View {
         Group {
             switch message.content {
             case let .userTranscript(text):
-                userTranscript(text)
+                userTranscript(text, dark: colorScheme == .dark)
             case let .agentTranscript(markdown) where message.id == viewModel.messages.keys.last:
-                agentLastTranscript(markdown)
-            case let .agentTranscript(markdown):
                 agentTranscript(markdown)
+            case let .agentTranscript(markdown):
+                agentTranscript(markdown).opacity(0.8)
             }
         }
         .transition(.blurReplace)
     }
 
     @ViewBuilder
-    private func userTranscript(_ text: String) -> some View {
+    private func userTranscript(_ text: String, dark: Bool) -> some View {
         HStack {
             Spacer(minLength: 16)
             Text(text.trimmingCharacters(in: .whitespacesAndNewlines))
-                .padding()
+                .font(.system(size: 15))
+                .padding(.horizontal, 16)
+                .padding(.vertical, 8)
                 .background(
-                    RoundedRectangle(cornerRadius: 8)
+                    RoundedRectangle(cornerRadius: 16)
                         .fill(.background.secondary)
+                        .stroke(.separator.secondary, lineWidth: dark ? 1 : 0)
                 )
         }
     }
@@ -66,18 +71,25 @@ struct ChatView: View {
     private func agentTranscript(_ markdown: MarkdownConvertible) -> some View {
         HStack {
             Markdown(markdown)
-                .opacity(0.75)
-            Spacer(minLength: 16)
-        }
-    }
-
-    @ViewBuilder
-    private func agentLastTranscript(_ markdown: MarkdownConvertible) -> some View {
-        HStack {
-            Markdown(markdown)
                 .markdownTextStyle {
                     FontSize(20)
-                    FontWeight(.medium)
+                }
+                .markdownTextStyle(\.code) {
+                    FontSize(20)
+                    FontFamilyVariant(.monospaced)
+                }
+                .markdownBlockStyle(\.codeBlock) { configuration in
+                    configuration
+                        .label
+                        .padding()
+                        .markdownTextStyle {
+                        FontSize(14)
+                        FontFamilyVariant(.monospaced)
+                        }
+                        .background(
+                            RoundedRectangle(cornerRadius: 8)
+                                .stroke(.background.secondary)
+                        )
                 }
             Spacer(minLength: 16)
         }

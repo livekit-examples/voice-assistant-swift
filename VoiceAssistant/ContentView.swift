@@ -33,7 +33,7 @@ struct ContentView: View {
                         .environment(chatViewModel)
                     HStack(alignment: .center) {
                         StatusView()
-                            .frame(width: 48)
+                            .frame(width: 58)
                         Spacer()
                             .frame(maxWidth: .infinity)
                         ControlBar()
@@ -57,7 +57,7 @@ struct ContentView: View {
     private func tooltip() -> some View {
         if room.agentState == .listening, chatViewModel.messages.isEmpty {
             Text("Start talking")
-                .font(.system(size: 18))
+                .font(.system(size: 20))
                 .opacity(0.3)
         }
     }
