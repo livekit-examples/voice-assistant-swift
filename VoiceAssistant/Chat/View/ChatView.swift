@@ -21,8 +21,7 @@ struct ChatView: View {
                 .listRowBackground(EmptyView())
                 .listRowSeparator(.hidden)
                 .onChange(of: viewModel.messages.values.last) {
-                    guard scrolledToLast else { return }
-                    withAnimation {
+                    if scrolledToLast {
                         proxy.scrollTo(last, anchor: .bottom)
                     }
                 }
