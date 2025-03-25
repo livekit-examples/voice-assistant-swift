@@ -8,7 +8,7 @@ struct ControlBar: View {
     // We injected these into the environment in VoiceAssistantApp.swift and ContentView.swift
     @EnvironmentObject private var tokenService: TokenService
     @EnvironmentObject private var room: Room
-    
+
     @Environment(\.colorScheme) private var colorScheme
 
     // Private internal state
@@ -193,7 +193,7 @@ private struct ConnectButton: View {
 /// Button shown when connected to end the conversation
 private struct DisconnectButton: View {
     @Environment(\.colorScheme) private var colorScheme
-    
+
     var disconnectAction: () -> Void
 
     var body: some View {

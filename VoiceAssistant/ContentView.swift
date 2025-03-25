@@ -52,7 +52,7 @@ struct ContentView: View {
             #endif
         }
     }
-    
+
     @ViewBuilder
     private func tooltip() -> some View {
         if room.agentState == .listening, chatViewModel.messages.isEmpty {

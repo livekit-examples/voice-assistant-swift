@@ -4,7 +4,7 @@ import SwiftUI
 struct ChatView: View {
     @Environment(ChatViewModel.self) private var viewModel
     @Environment(\.colorScheme) private var colorScheme
-    
+
     @State private var scrolledToLast = true
     private let last = "last"
 
@@ -83,8 +83,8 @@ struct ChatView: View {
                         .label
                         .padding()
                         .markdownTextStyle {
-                        FontSize(14)
-                        FontFamilyVariant(.monospaced)
+                            FontSize(14)
+                            FontFamilyVariant(.monospaced)
                         }
                         .background(
                             RoundedRectangle(cornerRadius: 8)
