@@ -5,12 +5,15 @@ import Foundation
 /// - Note: Streams are supported by `livekit-agents` >= 1.0.0.
 /// - SeeAlso: ``TranscriptionDelegateReceiver``
 ///
-/// New text stream is emitted for each message, and the stream is closed when the message is finalized.
-/// Each message is delivered in chunks, that are accumulated and published into the message stream.
+/// For agent messages, new text stream is emitted for each message, and the stream is closed when the message is finalized.
+/// Each agent message is delivered in chunks, that are accumulated and published into the message stream.
+///
+/// For user messages, the full transcription is sent each time, but may be updated until finalized.
+///
 /// The ID of the message is the ID of the text stream, which is stable and unique across the lifetime of the message.
 /// This ID can be used directly for `Identifiable` conformance.
 ///
-/// Example text stream:
+/// Example text stream for agent messages:
 /// ```
 /// { id: "1", content: "Hello" }
 /// { id: "1", content: " world" }
@@ -20,14 +23,28 @@ import Foundation
 /// { id: "2", content: "!" }
 /// ```
 ///
+/// Example text stream for user messages:
+/// ```
+/// { id: "3", content: "Hello world" }
+/// { id: "3", content: "Hello world!" }
+/// { id: "4", content: "Hello Apple" }
+/// { id: "4", content: "Hello Apple!" }
+/// ```
+///
 /// Example output:
 /// ```
 /// Message(id: "1", timestamp: 2025-01-01 12:00:00 +0000, content: .agentTranscript("Hello world!"))
 /// Message(id: "2", timestamp: 2025-01-01 12:00:10 +0000, content: .agentTranscript("Hello Apple!"))
+/// Message(id: "3", timestamp: 2025-01-01 12:00:20 +0000, content: .userTranscript("Hello world!"))
+/// Message(id: "4", timestamp: 2025-01-01 12:00:30 +0000, content: .userTranscript("Hello Apple!"))
 /// ```
 ///
 actor TranscriptionStreamReceiver: MessageReceiver {
-    private typealias PartialMessageID = String
+    private struct PartialMessageID: Hashable {
+        let streamID: String
+        let participantID: Participant.Identity
+    }
+
     private struct PartialMessage {
         let content: String
         let originalTimestamp: Date
@@ -69,13 +86,13 @@ actor TranscriptionStreamReceiver: MessageReceiver {
     /// Aggregates the incoming text into a message, storing the partial content in the `partialMessages` dictionary.
     /// - Note: When the message is finalized, or a new message is started, the dictionary is purged to limit memory usage.
     private func processIncoming(message: String, reader: TextStreamReader, participantIdentity: Participant.Identity) -> Message {
-        let partialID = reader.info.id
+        let partialID = PartialMessageID(streamID: reader.info.id, participantID: participantIdentity)
         let timestamp: Date
         let updatedContent: String
 
         if let existingInfo = partialMessages[partialID] {
             // Use the existing content and the original timestamp
-            updatedContent = existingInfo.content + message
+            updatedContent = shouldOverwriteMessages(from: participantIdentity) ? message : existingInfo.content + message
             timestamp = existingInfo.originalTimestamp
         } else {
             // This is a new message, use the current timestamp
@@ -84,23 +101,34 @@ actor TranscriptionStreamReceiver: MessageReceiver {
         }
 
         let newOrUpdatedMessage = Message(
-            id: partialID,
+            id: partialID.streamID,
             timestamp: timestamp,
             content: participantIdentity == room.localParticipant.identity ? .userTranscript(updatedContent) : .agentTranscript(updatedContent)
         )
+        
+        #warning("Remove")
+        print(message, reader.info.id, reader.info.attributes)
 
-        // Clear reader's own partial messages if it's final
+        // Clear reader's current partial messages if it's final
         if let isFinal = reader.info.attributes[finalAttribute], isFinal == "true" {
             partialMessages[partialID] = nil
         } else {
             partialMessages[partialID] = PartialMessage(content: updatedContent, originalTimestamp: timestamp)
         }
 
-        // Clear other partial messages when a new one starts
-        for key in partialMessages.keys where key != partialID {
+        // Clear reader's old partial messages when a new turn starts
+        for key in partialMessages.keys where key != partialID && key.participantID == participantIdentity {
             partialMessages[key] = nil
         }
+        
+        assert(partialMessages.count <= 2, "There should be max 1 partial message entry per participant.")
 
         return newOrUpdatedMessage
+    }
+    
+    /// Determines if the incoming message should override the existing partial message.
+    /// - Note: This applies to local user messages as they are sent in full.
+    private func shouldOverwriteMessages(from participantIdentity: Participant.Identity) -> Bool {
+        participantIdentity == room.localParticipant.identity
     }
 }
