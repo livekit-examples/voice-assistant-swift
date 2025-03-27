@@ -68,7 +68,6 @@ struct ChatView: View {
         HStack {
             Text(text.trimmingCharacters(in: .whitespacesAndNewlines))
                 .font(.system(size: 20))
-                .padding(.horizontal, 16)
                 .padding(.vertical, 8)
             Spacer(minLength: 16)
         }
