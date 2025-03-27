@@ -34,7 +34,7 @@ actor TranscriptionStreamReceiver: MessageReceiver {
     }
 
     /// A predefined topic for the chat messages.
-    private let chatTopic = "lk.chat"
+    private let transcriptionTopic = "lk.transcription"
     /// The attribute that indicates if the message is finalized.
     private let finalAttribute = "lk.transcription_final"
 
@@ -50,7 +50,7 @@ actor TranscriptionStreamReceiver: MessageReceiver {
     func createMessageStream() async throws -> AsyncStream<Message> {
         let (stream, continuation) = AsyncStream.makeStream(of: Message.self)
 
-        try await room.registerTextStreamHandler(for: chatTopic) { [weak self] reader, participantIdentity in
+        try await room.registerTextStreamHandler(for: transcriptionTopic) { [weak self] reader, participantIdentity in
             guard let self else { return }
             for try await message in reader where !message.isEmpty {
                 await continuation.yield(processIncoming(message: message, reader: reader, participantIdentity: participantIdentity))
@@ -59,7 +59,7 @@ actor TranscriptionStreamReceiver: MessageReceiver {
 
         continuation.onTermination = { _ in
             Task {
-                await self.room.unregisterTextStreamHandler(for: self.chatTopic)
+                await self.room.unregisterTextStreamHandler(for: self.transcriptionTopic)
             }
         }
 
