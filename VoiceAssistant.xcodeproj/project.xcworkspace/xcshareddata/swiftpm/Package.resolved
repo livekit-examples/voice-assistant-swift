@@ -1,5 +1,5 @@
 {
-  "originHash" : "1a9b9a35c3d33bd479e46a5e77542c80c3c4eb1fc6815d88190855b5977c89f0",
+  "originHash" : "427c44f75b04feb1c4e9a9f495419b817da0c8b3930e9f2d6d5e7539c8d3ca40",
   "pins" : [
     {
       "identity" : "client-sdk-swift",
@@ -20,30 +20,12 @@
       }
     },
     {
-      "identity" : "networkimage",
-      "kind" : "remoteSourceControl",
-      "location" : "https://github.com/gonzalezreal/NetworkImage",
-      "state" : {
-        "revision" : "2849f5323265386e200484b0d0f896e73c3411b9",
-        "version" : "6.0.1"
-      }
-    },
-    {
       "identity" : "swift-async-algorithms",
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/apple/swift-async-algorithms.git",
       "state" : {
         "revision" : "4c3ea81f81f0a25d0470188459c6d4bf20cf2f97",
         "version" : "1.0.3"
-      }
-    },
-    {
-      "identity" : "swift-cmark",
-      "kind" : "remoteSourceControl",
-      "location" : "https://github.com/swiftlang/swift-cmark",
-      "state" : {
-        "revision" : "3ccff77b2dc5b96b77db3da0d68d28068593fa53",
-        "version" : "0.5.0"
       }
     },
     {
@@ -71,15 +53,6 @@
       "state" : {
         "revision" : "3d8596ed08bd13520157f0355e35caed215ffbfa",
         "version" : "1.6.3"
-      }
-    },
-    {
-      "identity" : "swift-markdown-ui",
-      "kind" : "remoteSourceControl",
-      "location" : "https://github.com/gonzalezreal/swift-markdown-ui",
-      "state" : {
-        "revision" : "5f613358148239d0292c0cef674a3c2314737f9e",
-        "version" : "2.4.1"
       }
     },
     {

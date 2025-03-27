@@ -1,4 +1,3 @@
-import MarkdownUI
 import SwiftUI
 
 struct ChatView: View {
@@ -41,10 +40,8 @@ struct ChatView: View {
             switch message.content {
             case let .userTranscript(text):
                 userTranscript(text, dark: colorScheme == .dark)
-            case let .agentTranscript(markdown) where message.id == viewModel.messages.keys.last:
-                agentTranscript(markdown)
-            case let .agentTranscript(markdown):
-                agentTranscript(markdown).opacity(0.8)
+            case let .agentTranscript(text):
+                agentTranscript(text).opacity(message.id == viewModel.messages.keys.last ? 1 : 0.8)
             }
         }
         .transition(.blurReplace)
@@ -67,29 +64,12 @@ struct ChatView: View {
     }
 
     @ViewBuilder
-    private func agentTranscript(_ markdown: MarkdownConvertible) -> some View {
+    private func agentTranscript(_ text: String) -> some View {
         HStack {
-            Markdown(markdown)
-                .markdownTextStyle {
-                    FontSize(20)
-                }
-                .markdownTextStyle(\.code) {
-                    FontSize(20)
-                    FontFamilyVariant(.monospaced)
-                }
-                .markdownBlockStyle(\.codeBlock) { configuration in
-                    configuration
-                        .label
-                        .padding()
-                        .markdownTextStyle {
-                            FontSize(14)
-                            FontFamilyVariant(.monospaced)
-                        }
-                        .background(
-                            RoundedRectangle(cornerRadius: 8)
-                                .stroke(.background.secondary)
-                        )
-                }
+            Text(text.trimmingCharacters(in: .whitespacesAndNewlines))
+                .font(.system(size: 20))
+                .padding(.horizontal, 16)
+                .padding(.vertical, 8)
             Spacer(minLength: 16)
         }
     }
