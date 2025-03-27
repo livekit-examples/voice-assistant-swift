@@ -28,7 +28,7 @@ struct ChatView: View {
             .listStyle(.plain)
             .scrollIndicators(.hidden)
         }
-        .animation(.default, value: viewModel.messages.count)
+        .animation(.default, value: viewModel.messages)
         .alert("Error while connecting to Chat", isPresented: .constant(viewModel.error != nil)) {
             Button("OK", role: .cancel) {}
         }
