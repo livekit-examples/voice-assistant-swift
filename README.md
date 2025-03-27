@@ -31,6 +31,13 @@ You'll also need an agent to speak with. Try our sample voice assistant agent fo
 
 In a production environment, you will be responsible for developing a solution to [generate tokens for your users])(https://docs.livekit.io/home/server/generating-tokens/) which is integrated with your authentication solution. You should disable your sandbox token server and modify `TokenService.swift` to use your own token server.
 
+## Chat transcription
+
+The app uses LiveKit [text stream](https://docs.livekit.io/agents/v1/build/text/) functionality to deliver transcription events from the agent. It requires some client-side processing to aggregate the partial results into messages. `TranscriptionStreamReceiver` is responsible for this aggregation. It buffers stream chunks and publishes complete messages when the transcription is finished. Messages have unique IDs and timestamps to help with ordering and display in the UI.
+
+> [!NOTE]
+> Text streams are fully supported in LiveKit Agents v1, for v0.x, you'll need to use legacy [transcription events](https://docs.livekit.io/agents/v1/build/text/#transcription-events) as shown in `TranscriptionDelegateReceiver.swift`.
+
 ## Contributing
 
 This template is open source and we welcome contributions! Please open a PR or issue through GitHub, and don't forget to join us in the [LiveKit Community Slack](https://livekit.io/join-slack)!
