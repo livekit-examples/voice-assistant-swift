@@ -23,13 +23,14 @@ final class ChatViewModel {
         room.add(delegate: self)
 
         for messageReceiver in messageReceivers {
-            let observer = Task {
+            let observer = Task { [weak self] in
+                guard let self else { return }
                 do {
                     for await message in try await messageReceiver
                         .createMessageStream()
                         ._throttle(for: .milliseconds(100))
                     {
-                        self.messages.updateValue(message, forKey: message.id)
+                        messages.updateValue(message, forKey: message.id)
                     }
                 } catch {
                     self.error = error
