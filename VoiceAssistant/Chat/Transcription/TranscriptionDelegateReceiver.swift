@@ -2,7 +2,6 @@ import Foundation
 @preconcurrency import LiveKit
 
 /// An actor that receives transcription messages from the room and yields them as messages.
-/// - SeeAlso: ``TranscriptionStreamReceiver``
 ///
 /// Room delegate methods are called multiple times for each message, with a stable message ID
 /// that can be direcly used for diffing.
@@ -12,7 +11,6 @@ import Foundation
 /// { id: "1", content: "Hello" }
 /// { id: "1", content: "Hello world!" }
 /// ```
-@available(*, deprecated, message: "Use 'TranscriptionStreamReceiver' if supported by the agent")
 actor TranscriptionDelegateReceiver: MessageReceiver, RoomDelegate {
     private let room: Room
     private var continuation: AsyncStream<Message>.Continuation?
