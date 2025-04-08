@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		ACBC177A2D8C34B5007EE71F /* AsyncAlgorithms in Frameworks */ = {isa = PBXBuildFile; productRef = ACBC17792D8C34B5007EE71F /* AsyncAlgorithms */; };
+		ACFBA1DB2D8D5CBE0021202B /* Collections in Frameworks */ = {isa = PBXBuildFile; productRef = ACFBA1DA2D8D5CBE0021202B /* Collections */; };
 		B577A98A2D16796000B59A0B /* LiveKitKrispNoiseFilter in Frameworks */ = {isa = PBXBuildFile; platformFilters = (ios, macos, ); productRef = B577A9892D16796000B59A0B /* LiveKitKrispNoiseFilter */; };
 		B5E1B90F2D14E9EC00A38CB6 /* LiveKitComponents in Frameworks */ = {isa = PBXBuildFile; productRef = B5E1B90E2D14E9EC00A38CB6 /* LiveKitComponents */; };
 		B5E1B9122D14E9F500A38CB6 /* LiveKit in Frameworks */ = {isa = PBXBuildFile; productRef = B5E1B9112D14E9F500A38CB6 /* LiveKit */; };
@@ -46,10 +48,12 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				ACFBA1DB2D8D5CBE0021202B /* Collections in Frameworks */,
 				B5E46D202D496CD200ACC2E6 /* LiveKitKrispNoiseFilter in Frameworks */,
 				B577A98A2D16796000B59A0B /* LiveKitKrispNoiseFilter in Frameworks */,
 				B5E1B90F2D14E9EC00A38CB6 /* LiveKitComponents in Frameworks */,
 				B5E1B9122D14E9F500A38CB6 /* LiveKit in Frameworks */,
+				ACBC177A2D8C34B5007EE71F /* AsyncAlgorithms in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -96,6 +100,8 @@
 				B5E1B9112D14E9F500A38CB6 /* LiveKit */,
 				B577A9892D16796000B59A0B /* LiveKitKrispNoiseFilter */,
 				B5E46D1F2D496CD200ACC2E6 /* LiveKitKrispNoiseFilter */,
+				ACBC17792D8C34B5007EE71F /* AsyncAlgorithms */,
+				ACFBA1DA2D8D5CBE0021202B /* Collections */,
 			);
 			productName = VoiceAssistant;
 			productReference = B5B5E3B22D124AE00099C9BE /* VoiceAssistant.app */;
@@ -129,6 +135,8 @@
 				B5E1B90D2D14E9EC00A38CB6 /* XCRemoteSwiftPackageReference "components-swift" */,
 				B5E1B9102D14E9F500A38CB6 /* XCRemoteSwiftPackageReference "client-sdk-swift" */,
 				B5E46D1E2D496CD200ACC2E6 /* XCRemoteSwiftPackageReference "swift-krisp-noise-filter" */,
+				ACBC17782D8C34B5007EE71F /* XCRemoteSwiftPackageReference "swift-async-algorithms" */,
+				ACFBA1D92D8D5CBE0021202B /* XCRemoteSwiftPackageReference "swift-collections" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = B5B5E3B32D124AE00099C9BE /* Products */;
@@ -219,6 +227,7 @@
 				ONLY_ACTIVE_ARCH = YES;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 6.0;
 			};
 			name = Debug;
 		};
@@ -272,6 +281,7 @@
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_VERSION = 6.0;
 			};
 			name = Release;
 		};
@@ -313,7 +323,6 @@
 				SDKROOT = auto;
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx xros xrsimulator";
 				SWIFT_EMIT_LOC_STRINGS = YES;
-				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2,7";
 				XROS_DEPLOYMENT_TARGET = 2.2;
 			};
@@ -357,7 +366,6 @@
 				SDKROOT = auto;
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx xros xrsimulator";
 				SWIFT_EMIT_LOC_STRINGS = YES;
-				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2,7";
 				XROS_DEPLOYMENT_TARGET = 2.2;
 			};
@@ -387,6 +395,22 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
+		ACBC17782D8C34B5007EE71F /* XCRemoteSwiftPackageReference "swift-async-algorithms" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/apple/swift-async-algorithms.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.0.3;
+			};
+		};
+		ACFBA1D92D8D5CBE0021202B /* XCRemoteSwiftPackageReference "swift-collections" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/apple/swift-collections";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.1.4;
+			};
+		};
 		B5E1B90D2D14E9EC00A38CB6 /* XCRemoteSwiftPackageReference "components-swift" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/livekit/components-swift";
@@ -400,7 +424,7 @@
 			repositoryURL = "https://github.com/livekit/client-sdk-swift";
 			requirement = {
 				kind = upToNextMajorVersion;
-				minimumVersion = 2.0.19;
+				minimumVersion = 2.3.1;
 			};
 		};
 		B5E46D1E2D496CD200ACC2E6 /* XCRemoteSwiftPackageReference "swift-krisp-noise-filter" */ = {
@@ -414,6 +438,16 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		ACBC17792D8C34B5007EE71F /* AsyncAlgorithms */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = ACBC17782D8C34B5007EE71F /* XCRemoteSwiftPackageReference "swift-async-algorithms" */;
+			productName = AsyncAlgorithms;
+		};
+		ACFBA1DA2D8D5CBE0021202B /* Collections */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = ACFBA1D92D8D5CBE0021202B /* XCRemoteSwiftPackageReference "swift-collections" */;
+			productName = Collections;
+		};
 		B577A9892D16796000B59A0B /* LiveKitKrispNoiseFilter */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = LiveKitKrispNoiseFilter;

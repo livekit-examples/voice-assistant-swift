@@ -1,5 +1,4 @@
-
-import LiveKit
+@preconcurrency import LiveKit
 import LiveKitComponents
 import SwiftUI
 
@@ -9,6 +8,8 @@ struct ControlBar: View {
     // We injected these into the environment in VoiceAssistantApp.swift and ContentView.swift
     @EnvironmentObject private var tokenService: TokenService
     @EnvironmentObject private var room: Room
+
+    @Environment(\.colorScheme) private var colorScheme
 
     // Private internal state
     @State private var isConnecting: Bool = false
@@ -34,8 +35,6 @@ struct ControlBar: View {
 
     var body: some View {
         HStack(spacing: 16) {
-            Spacer()
-
             switch currentConfiguration {
             case .disconnected:
                 ConnectButton(connectAction: connect)
@@ -57,13 +56,13 @@ struct ControlBar: View {
                                     ? "mic" : "mic.slash")
                         }
                         .labelStyle(.iconOnly)
-                        .frame(width: 44, height: 44)
+                        .frame(width: 48, height: 40)
                         .contentShape(Rectangle())
                     }
                     .buttonStyle(.plain)
 
                     LocalAudioVisualizer(track: room.localParticipant.firstAudioTrack)
-                        .frame(height: 44)
+                        .frame(height: 40)
                         .id(room.localParticipant.firstAudioTrack?.id ?? "no-track") // Force the component to re-render when the track changes
                     #if !os(macOS)
                         // Add extra padding to the visualizer if there's no third button
@@ -76,8 +75,11 @@ struct ControlBar: View {
                     AudioDeviceSelector()
                     #endif
                 }
-                .background(.primary.opacity(0.1))
-                .cornerRadius(8)
+                .background(
+                    RoundedRectangle(cornerRadius: 8)
+                        .fill(.background.secondary)
+                        .stroke(.separator.secondary, lineWidth: colorScheme == .dark ? 1 : 0)
+                )
 
                 DisconnectButton(disconnectAction: disconnect)
                     .matchedGeometryEffect(id: "main-button", in: animation, properties: .position)
@@ -85,18 +87,17 @@ struct ControlBar: View {
                 TransitionButton(isConnecting: isConnecting)
                     .matchedGeometryEffect(id: "main-button", in: animation, properties: .position)
             }
-
-            Spacer()
         }
         .animation(.spring(duration: 0.3), value: currentConfiguration)
+        .sensoryFeedback(.impact, trigger: isConnecting)
+        .sensoryFeedback(.impact, trigger: isDisconnecting)
     }
 
     /// Fetches a token and connects to the LiveKit room
     /// This assumes the agent is running and is configured to automatically join new rooms
     private func connect() {
+        isConnecting = true
         Task {
-            isConnecting = true
-
             // Generate a random room name to ensure a new room is created
             // In a production app, you may want a more reliable process for ensuring agent dispatch
             let roomName = "room-\(Int.random(in: 1000 ... 9999))"
@@ -128,8 +129,8 @@ struct ControlBar: View {
 
     /// Disconnects from the current LiveKit room
     private func disconnect() {
+        isDisconnecting = true
         Task {
-            isDisconnecting = true
             await room.disconnect()
             isDisconnecting = false
         }
@@ -155,7 +156,7 @@ private struct LocalAudioVisualizer: View {
     public var body: some View {
         HStack(spacing: 3) {
             ForEach(0 ..< 9, id: \.self) { index in
-                Rectangle()
+                RoundedRectangle(cornerRadius: 1)
                     .fill(.primary)
                     .frame(width: 2)
                     .frame(maxHeight: .infinity)
@@ -176,23 +177,23 @@ private struct ConnectButton: View {
 
     var body: some View {
         Button(action: connectAction) {
-            Text("Start a Conversation")
-                .textCase(.uppercase)
-                .frame(height: 44)
+            Text("Start a conversation")
+                .frame(height: 40)
                 .padding(.horizontal, 16)
                 .contentShape(Rectangle())
         }
         .buttonStyle(.plain)
-        .background(
-            .primary.opacity(0.1)
-        )
+        .background(.background.secondary)
         .foregroundStyle(.primary)
+        .colorInvert()
         .cornerRadius(8)
     }
 }
 
 /// Button shown when connected to end the conversation
 private struct DisconnectButton: View {
+    @Environment(\.colorScheme) private var colorScheme
+
     var disconnectAction: () -> Void
 
     var body: some View {
@@ -204,15 +205,16 @@ private struct DisconnectButton: View {
                     .fontWeight(.bold)
             }
             .labelStyle(.iconOnly)
-            .frame(width: 44, height: 44)
+            .frame(width: 48, height: 40)
             .contentShape(Rectangle())
         }
         .buttonStyle(.plain)
         .background(
-            .red.opacity(0.9)
+            RoundedRectangle(cornerRadius: 8)
+                .fill(colorScheme == .dark ? Color.customDarkRed : Color.customLightRed)
+                .stroke(Color.customRed, lineWidth: colorScheme == .dark ? 1 : 0)
         )
-        .foregroundStyle(.white)
-        .cornerRadius(8)
+        .foregroundStyle(colorScheme == .dark ? Color.customLightRed : .white)
     }
 }
 
@@ -223,14 +225,11 @@ private struct TransitionButton: View {
     var body: some View {
         Button(action: {}) {
             Text(isConnecting ? "Connecting…" : "Disconnecting…")
-                .textCase(.uppercase)
         }
         .buttonStyle(.plain)
-        .frame(height: 44)
+        .frame(height: 40)
         .padding(.horizontal, 16)
-        .background(
-            .primary.opacity(0.1)
-        )
+        .background(.background.secondary)
         .foregroundStyle(.secondary)
         .cornerRadius(8)
         .disabled(true)
@@ -260,7 +259,7 @@ private struct AudioDeviceSelector: View {
         } label: {
             Image(systemName: "chevron.down")
                 .fontWeight(.bold)
-                .frame(width: 44, height: 44)
+                .frame(width: 48, height: 40)
                 .contentShape(Rectangle())
         }
         .buttonStyle(.plain)
@@ -284,4 +283,10 @@ private struct AudioDeviceSelector: View {
         audioDevices = AudioManager.shared.inputDevices
         selectedDevice = AudioManager.shared.inputDevice
     }
+}
+
+extension Color {
+    static let customDarkRed = Color(red: 0.192, green: 0.063, blue: 0.047)
+    static let customRed = Color(red: 0.42, green: 0.133, blue: 0.102)
+    static let customLightRed = Color(red: 1, green: 0.388, blue: 0.322)
 }
