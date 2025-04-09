@@ -28,22 +28,10 @@ struct ContentView: View {
             if room.connectionState == .disconnected {
                 ControlBar()
             } else {
-                VStack {
-                    AvatarView()
-                        .frame(height: 256)
-                        .transition(.move(edge: .top))
-                    ChatView()
-                        .environment(chatViewModel)
-                        .overlay(content: tooltip)
-                    HStack(alignment: .center) {
-                        StatusView()
-                            .frame(width: 58)
-                        Spacer()
-                            .frame(maxWidth: .infinity)
-                        ControlBar()
-                            .layoutPriority(1)
-                    }
-                    .frame(height: 64)
+                VStack(spacing: 16) {
+                    avatar()
+                    chat()
+                    toolbar()
                 }
             }
         }
@@ -55,7 +43,33 @@ struct ContentView: View {
             #endif
         }
     }
-
+    
+    @ViewBuilder
+    private func chat() -> some View {
+        ChatView()
+            .environment(chatViewModel)
+            .overlay(content: tooltip)
+    }
+    
+    @ViewBuilder
+    private func avatar() -> some View {
+        AvatarView()
+            .frame(maxWidth: 256, maxHeight: 256)
+    }
+    
+    @ViewBuilder
+    private func toolbar() -> some View {
+        HStack(alignment: .center) {
+            StatusView()
+                .frame(width: 58)
+            Spacer()
+                .frame(maxWidth: .infinity)
+            ControlBar()
+                .layoutPriority(1)
+        }
+        .frame(height: 64)
+    }
+    
     @ViewBuilder
     private func tooltip() -> some View {
         if room.agentState == .listening, chatViewModel.messages.isEmpty {
