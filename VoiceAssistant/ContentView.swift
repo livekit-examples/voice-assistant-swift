@@ -43,20 +43,20 @@ struct ContentView: View {
             #endif
         }
     }
-    
+
     @ViewBuilder
     private func chat() -> some View {
         ChatView()
             .environment(chatViewModel)
             .overlay(content: tooltip)
     }
-    
+
     @ViewBuilder
     private func avatar() -> some View {
         AvatarView()
             .frame(maxWidth: 256, maxHeight: 256)
     }
-    
+
     @ViewBuilder
     private func toolbar() -> some View {
         HStack(alignment: .center) {
@@ -69,7 +69,7 @@ struct ContentView: View {
         }
         .frame(height: 64)
     }
-    
+
     @ViewBuilder
     private func tooltip() -> some View {
         if room.agentState == .listening, chatViewModel.messages.isEmpty {
