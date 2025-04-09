@@ -29,8 +29,12 @@ struct ContentView: View {
                 ControlBar()
             } else {
                 VStack {
+                    AvatarView()
+                        .frame(height: 256)
+                        .transition(.move(edge: .top))
                     ChatView()
                         .environment(chatViewModel)
+                        .overlay(content: tooltip)
                     HStack(alignment: .center) {
                         StatusView()
                             .frame(width: 58)
@@ -41,7 +45,6 @@ struct ContentView: View {
                     }
                     .frame(height: 64)
                 }
-                .overlay(content: tooltip)
             }
         }
         .padding()
