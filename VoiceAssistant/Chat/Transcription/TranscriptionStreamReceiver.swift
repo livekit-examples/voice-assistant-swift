@@ -47,7 +47,7 @@ actor TranscriptionStreamReceiver: MessageReceiver {
 
     private struct PartialMessage {
         var content: String
-        let originalTimestamp: Date
+        let timestamp: Date
         var streamID: String
         
         mutating func appendContent(_ newContent: String) {
@@ -105,8 +105,9 @@ actor TranscriptionStreamReceiver: MessageReceiver {
         let partialID = PartialMessageID(segmentID: segmentID, participantID: participantID)
     
         let currentStreamID = reader.info.id
+        
         let timestamp: Date
-        var updatedContent: String
+        let updatedContent: String
         
         if var existingMessage = partialMessages[partialID] {
             // Update existing message
@@ -118,14 +119,15 @@ actor TranscriptionStreamReceiver: MessageReceiver {
                 existingMessage.replaceContent(message, streamID: currentStreamID)
             }
             updatedContent = existingMessage.content
-            timestamp = existingMessage.originalTimestamp
+            timestamp = existingMessage.timestamp
             partialMessages[partialID] = existingMessage
         } else {
+            // This is a new message
             updatedContent = message
             timestamp = reader.info.timestamp
             partialMessages[partialID] = PartialMessage(
-                content: message,
-                originalTimestamp: reader.info.timestamp,
+                content: updatedContent,
+                timestamp: timestamp,
                 streamID: currentStreamID
             )
             cleanupPreviousTurn(participantIdentity, exceptSegmentID: segmentID)
@@ -137,7 +139,7 @@ actor TranscriptionStreamReceiver: MessageReceiver {
         }
         
         let newOrUpdatedMessage = Message(
-            id: partialID.segmentID,
+            id: segmentID,
             timestamp: timestamp,
             content: participantIdentity == room.localParticipant.identity ? .userTranscript(updatedContent) : .agentTranscript(updatedContent)
         )
