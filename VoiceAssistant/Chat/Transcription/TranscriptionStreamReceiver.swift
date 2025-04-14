@@ -46,8 +46,18 @@ actor TranscriptionStreamReceiver: MessageReceiver {
     }
 
     private struct PartialMessage {
-        let content: String
+        var content: String
         let originalTimestamp: Date
+        var streamID: String
+        
+        mutating func appendContent(_ newContent: String) {
+            content += newContent
+        }
+        
+        mutating func replaceContent(_ newContent: String, streamID: String) {
+            self.content = newContent
+            self.streamID = streamID
+        }
     }
 
     private let transcriptionTopic = "lk.transcription"
@@ -71,7 +81,7 @@ actor TranscriptionStreamReceiver: MessageReceiver {
         try await room.registerTextStreamHandler(for: transcriptionTopic) { [weak self] reader, participantIdentity in
             guard let self else { return }
             for try await message in reader where !message.isEmpty {
-                await continuation.yield(processIncoming(message: message, reader: reader, participantIdentity: participantIdentity))
+                await continuation.yield(processIncoming(partialMessage: message, reader: reader, participantIdentity: participantIdentity))
             }
         }
 
@@ -87,28 +97,44 @@ actor TranscriptionStreamReceiver: MessageReceiver {
 
     /// Aggregates the incoming text into a message, storing the partial content in the `partialMessages` dictionary.
     /// - Note: When the message is finalized, or a new message is started, the dictionary is purged to limit memory usage.
-    private func processIncoming(message: String, reader: TextStreamReader, participantIdentity: Participant.Identity) -> Message {
-        let partialID = PartialMessageID(segmentID: reader.info.attributes[TranscriptionAttributes.segment.rawValue] ?? reader.info.id,
-                                         participantID: participantIdentity)
+    private func processIncoming(partialMessage message: String, reader: TextStreamReader, participantIdentity: Participant.Identity) -> Message {
+        print(message, reader.info.id, reader.info.attributes)
+        
+        let segmentID = reader.info.attributes[TranscriptionAttributes.segment.rawValue] ?? reader.info.id
+        let participantID = participantIdentity
+        let partialID = PartialMessageID(segmentID: segmentID, participantID: participantID)
+    
+        let currentStreamID = reader.info.id
         let timestamp: Date
-        let updatedContent: String
-
-        if let existingInfo = partialMessages[partialID] {
-            // Use the existing content and the original timestamp
-            updatedContent = shouldOverwriteMessages(from: participantIdentity) ? message : existingInfo.content + message
-            timestamp = existingInfo.originalTimestamp
+        var updatedContent: String
+        
+        if var existingMessage = partialMessages[partialID] {
+            // Update existing message
+            if existingMessage.streamID == currentStreamID {
+                // Same stream, append content
+                existingMessage.appendContent(message)
+            } else {
+                // Different stream for same segment, replace content
+                existingMessage.replaceContent(message, streamID: currentStreamID)
+            }
+            updatedContent = existingMessage.content
+            timestamp = existingMessage.originalTimestamp
+            partialMessages[partialID] = existingMessage
         } else {
-            // This is a new message, use the current timestamp
             updatedContent = message
             timestamp = reader.info.timestamp
+            partialMessages[partialID] = PartialMessage(
+                content: message,
+                originalTimestamp: reader.info.timestamp,
+                streamID: currentStreamID
+            )
+            cleanupPreviousTurn(participantIdentity, exceptSegmentID: segmentID)
         }
 
-        // Update or clear partial messages based on final status
         let isFinal = reader.info.attributes[TranscriptionAttributes.final.rawValue] == "true"
-        partialMessages[partialID] = isFinal ? nil : PartialMessage(content: updatedContent, originalTimestamp: timestamp)
-        
-        // Clean up old messages from the same participant
-        partialMessages = partialMessages.filter { $0.key == partialID || $0.key.participantID != participantIdentity }
+        if isFinal {
+            partialMessages[partialID] = nil
+        }
         
         let newOrUpdatedMessage = Message(
             id: partialID.segmentID,
@@ -119,9 +145,13 @@ actor TranscriptionStreamReceiver: MessageReceiver {
         return newOrUpdatedMessage
     }
     
-    /// Determines if the incoming message should override the existing partial message.
-    /// - Note: This applies to local user messages as they are sent in full.
-    private func shouldOverwriteMessages(from participantIdentity: Participant.Identity) -> Bool {
-        participantIdentity == room.localParticipant.identity
+    private func cleanupPreviousTurn(_ participantID: Participant.Identity, exceptSegmentID: String) {
+        let keysToRemove = partialMessages.keys.filter {
+            $0.participantID == participantID && $0.segmentID != exceptSegmentID 
+        }
+        
+        for key in keysToRemove {
+            partialMessages[key] = nil
+        }
     }
 }
