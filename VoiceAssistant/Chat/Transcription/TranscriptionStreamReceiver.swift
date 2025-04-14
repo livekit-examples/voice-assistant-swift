@@ -10,25 +10,25 @@ import Foundation
 ///
 /// For user messages, the full transcription is sent each time, but may be updated until finalized.
 ///
-/// The ID of the message is the ID of the text stream, which is stable and unique across the lifetime of the message.
+/// The ID of the segment is stable and unique across the lifetime of the message.
 /// This ID can be used directly for `Identifiable` conformance.
 ///
 /// Example text stream for agent messages:
 /// ```
-/// { id: "1", content: "Hello" }
-/// { id: "1", content: " world" }
-/// { id: "1", content: "!" }
-/// { id: "2", content: "Hello" }
-/// { id: "2", content: " Apple" }
-/// { id: "2", content: "!" }
+/// { segment_id: "1", content: "Hello" }
+/// { segment_id: "1", content: " world" }
+/// { segment_id: "1", content: "!" }
+/// { segment_id: "2", content: "Hello" }
+/// { segment_id: "2", content: " Apple" }
+/// { segment_id: "2", content: "!" }
 /// ```
 ///
 /// Example text stream for user messages:
 /// ```
-/// { id: "3", content: "Hello world" }
-/// { id: "3", content: "Hello world!" }
-/// { id: "4", content: "Hello Apple" }
-/// { id: "4", content: "Hello Apple!" }
+/// { segment_id: "3", content: "Hello" }
+/// { segment_id: "3", content: "Hello world!" }
+/// { segment_id: "4", content: "Hello" }
+/// { segment_id: "4", content: "Hello Apple!" }
 /// ```
 ///
 /// Example output:
@@ -41,7 +41,7 @@ import Foundation
 ///
 actor TranscriptionStreamReceiver: MessageReceiver {
     private struct PartialMessageID: Hashable {
-        let streamID: String
+        let segmentID: String
         let participantID: Participant.Identity
     }
 
@@ -50,10 +50,11 @@ actor TranscriptionStreamReceiver: MessageReceiver {
         let originalTimestamp: Date
     }
 
-    /// A predefined topic for the chat messages.
     private let transcriptionTopic = "lk.transcription"
-    /// The attribute that indicates if the message is finalized.
-    private let finalAttribute = "lk.transcription_final"
+    private enum TranscriptionAttributes: String {
+         case final = "lk.transcription_final"
+         case segment = "segment_id"
+    }
 
     private let room: Room
 
@@ -74,8 +75,9 @@ actor TranscriptionStreamReceiver: MessageReceiver {
             }
         }
 
-        continuation.onTermination = { _ in
+        continuation.onTermination = { [weak self] _ in
             Task {
+                guard let self else { return }
                 await self.room.unregisterTextStreamHandler(for: self.transcriptionTopic)
             }
         }
@@ -86,7 +88,8 @@ actor TranscriptionStreamReceiver: MessageReceiver {
     /// Aggregates the incoming text into a message, storing the partial content in the `partialMessages` dictionary.
     /// - Note: When the message is finalized, or a new message is started, the dictionary is purged to limit memory usage.
     private func processIncoming(message: String, reader: TextStreamReader, participantIdentity: Participant.Identity) -> Message {
-        let partialID = PartialMessageID(streamID: reader.info.id, participantID: participantIdentity)
+        let partialID = PartialMessageID(segmentID: reader.info.attributes[TranscriptionAttributes.segment.rawValue] ?? reader.info.id,
+                                         participantID: participantIdentity)
         let timestamp: Date
         let updatedContent: String
 
@@ -100,28 +103,18 @@ actor TranscriptionStreamReceiver: MessageReceiver {
             timestamp = reader.info.timestamp
         }
 
+        // Update or clear partial messages based on final status
+        let isFinal = reader.info.attributes[TranscriptionAttributes.final.rawValue] == "true"
+        partialMessages[partialID] = isFinal ? nil : PartialMessage(content: updatedContent, originalTimestamp: timestamp)
+        
+        // Clean up old messages from the same participant
+        partialMessages = partialMessages.filter { $0.key == partialID || $0.key.participantID != participantIdentity }
+        
         let newOrUpdatedMessage = Message(
-            id: partialID.streamID,
+            id: partialID.segmentID,
             timestamp: timestamp,
             content: participantIdentity == room.localParticipant.identity ? .userTranscript(updatedContent) : .agentTranscript(updatedContent)
         )
-        
-        #warning("Remove")
-        print(message, reader.info.id, reader.info.attributes)
-
-        // Clear reader's current partial messages if it's final
-        if let isFinal = reader.info.attributes[finalAttribute], isFinal == "true" {
-            partialMessages[partialID] = nil
-        } else {
-            partialMessages[partialID] = PartialMessage(content: updatedContent, originalTimestamp: timestamp)
-        }
-
-        // Clear reader's old partial messages when a new turn starts
-        for key in partialMessages.keys where key != partialID && key.participantID == participantIdentity {
-            partialMessages[key] = nil
-        }
-        
-        assert(partialMessages.count <= 2, "There should be max 1 partial message entry per participant.")
 
         return newOrUpdatedMessage
     }
