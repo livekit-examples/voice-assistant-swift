@@ -112,10 +112,14 @@ struct ControlBar: View {
                     participantName: participantName
                 ) {
                     // Connect to the room and enable the microphone
-                    try await room.connect(
-                        url: connectionDetails.serverUrl, token: connectionDetails.participantToken
+                    async let asyncConnect: () = room.connect(
+                        url: connectionDetails.serverUrl,
+                        token: connectionDetails.participantToken
                     )
-                    try await room.localParticipant.setMicrophone(enabled: true)
+                    async let asyncEnableMic = room.localParticipant.setMicrophone(enabled: true)
+                    
+                    // Concurrent
+                    try await (_, _) = (asyncConnect, asyncEnableMic)
                 } else {
                     print("Failed to fetch connection details")
                 }
