@@ -63,7 +63,7 @@ actor TranscriptionStreamReceiver: MessageReceiver {
     private let transcriptionTopic = "lk.transcription"
     private enum TranscriptionAttributes: String {
          case final = "lk.transcription_final"
-         case segment = "segment_id"
+         case segment = "lk.segment_id"
     }
 
     private let room: Room
