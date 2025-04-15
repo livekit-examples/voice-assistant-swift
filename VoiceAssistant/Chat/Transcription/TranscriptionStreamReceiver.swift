@@ -49,21 +49,21 @@ actor TranscriptionStreamReceiver: MessageReceiver {
         var content: String
         let timestamp: Date
         var streamID: String
-        
+
         mutating func appendContent(_ newContent: String) {
             content += newContent
         }
-        
+
         mutating func replaceContent(_ newContent: String, streamID: String) {
-            self.content = newContent
+            content = newContent
             self.streamID = streamID
         }
     }
 
     private let transcriptionTopic = "lk.transcription"
     private enum TranscriptionAttributes: String {
-         case final = "lk.transcription_final"
-         case segment = "lk.segment_id"
+        case final = "lk.transcription_final"
+        case segment = "lk.segment_id"
     }
 
     private let room: Room
@@ -97,16 +97,16 @@ actor TranscriptionStreamReceiver: MessageReceiver {
 
     /// Aggregates the incoming text into a message, storing the partial content in the `partialMessages` dictionary.
     /// - Note: When the message is finalized, or a new message is started, the dictionary is purged to limit memory usage.
-    private func processIncoming(partialMessage message: String, reader: TextStreamReader, participantIdentity: Participant.Identity) -> Message {        
+    private func processIncoming(partialMessage message: String, reader: TextStreamReader, participantIdentity: Participant.Identity) -> Message {
         let segmentID = reader.info.attributes[TranscriptionAttributes.segment.rawValue] ?? reader.info.id
         let participantID = participantIdentity
         let partialID = PartialMessageID(segmentID: segmentID, participantID: participantID)
-    
+
         let currentStreamID = reader.info.id
-        
+
         let timestamp: Date
         let updatedContent: String
-        
+
         if var existingMessage = partialMessages[partialID] {
             // Update existing message
             if existingMessage.streamID == currentStreamID {
@@ -135,7 +135,7 @@ actor TranscriptionStreamReceiver: MessageReceiver {
         if isFinal {
             partialMessages[partialID] = nil
         }
-        
+
         let newOrUpdatedMessage = Message(
             id: segmentID,
             timestamp: timestamp,
@@ -144,12 +144,12 @@ actor TranscriptionStreamReceiver: MessageReceiver {
 
         return newOrUpdatedMessage
     }
-    
+
     private func cleanupPreviousTurn(_ participantID: Participant.Identity, exceptSegmentID: String) {
         let keysToRemove = partialMessages.keys.filter {
-            $0.participantID == participantID && $0.segmentID != exceptSegmentID 
+            $0.participantID == participantID && $0.segmentID != exceptSegmentID
         }
-        
+
         for key in keysToRemove {
             partialMessages[key] = nil
         }
