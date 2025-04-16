@@ -113,13 +113,13 @@ struct ControlBar: View {
                 ) {
                     // Connect to the room and enable the microphone
                     try await room.connect(
-                        url: connectionDetails.serverUrl, token: connectionDetails.participantToken
+                        url: connectionDetails.serverUrl, token: connectionDetails.participantToken,
+                        connectOptions: ConnectOptions(enableMicrophone: true)
                     )
-                    try await room.localParticipant.setMicrophone(enabled: true)
+                    isConnecting = false
                 } else {
                     print("Failed to fetch connection details")
                 }
-                isConnecting = false
             } catch {
                 print("Connection error: \(error)")
                 isConnecting = false
