@@ -28,20 +28,11 @@ struct ContentView: View {
             if room.connectionState == .disconnected {
                 ControlBar()
             } else {
-                VStack {
-                    ChatView()
-                        .environment(chatViewModel)
-                    HStack(alignment: .center) {
-                        StatusView()
-                            .frame(width: 58)
-                        Spacer()
-                            .frame(maxWidth: .infinity)
-                        ControlBar()
-                            .layoutPriority(1)
-                    }
-                    .frame(height: 64)
+                VStack(spacing: 16) {
+                    agent()
+                    chat()
+                    toolbar()
                 }
-                .overlay(content: tooltip)
             }
         }
         .padding()
@@ -51,6 +42,25 @@ struct ContentView: View {
             room.add(delegate: krispProcessor)
             #endif
         }
+    }
+
+    @ViewBuilder
+    private func chat() -> some View {
+        ChatView()
+            .environment(chatViewModel)
+            .overlay(content: tooltip)
+    }
+
+    @ViewBuilder
+    private func agent() -> some View {
+        AgentView()
+            .frame(maxWidth: 256, maxHeight: 256)
+    }
+
+    @ViewBuilder
+    private func toolbar() -> some View {
+        ControlBar()
+            .frame(height: 64)
     }
 
     @ViewBuilder
