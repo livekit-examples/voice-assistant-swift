@@ -29,7 +29,7 @@ struct ContentView: View {
                 ControlBar()
             } else {
                 VStack(spacing: 16) {
-                    avatar()
+                    agent()
                     chat()
                     toolbar()
                 }
@@ -52,22 +52,15 @@ struct ContentView: View {
     }
 
     @ViewBuilder
-    private func avatar() -> some View {
-        AvatarView()
+    private func agent() -> some View {
+        AgentView()
             .frame(maxWidth: 256, maxHeight: 256)
     }
 
     @ViewBuilder
     private func toolbar() -> some View {
-        HStack(alignment: .center) {
-            StatusView()
-                .frame(width: 58)
-            Spacer()
-                .frame(maxWidth: .infinity)
-            ControlBar()
-                .layoutPriority(1)
-        }
-        .frame(height: 64)
+        ControlBar()
+            .frame(height: 64)
     }
 
     @ViewBuilder
