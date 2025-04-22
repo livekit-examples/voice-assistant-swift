@@ -12,7 +12,6 @@
 		B577A98A2D16796000B59A0B /* LiveKitKrispNoiseFilter in Frameworks */ = {isa = PBXBuildFile; platformFilters = (ios, macos, ); productRef = B577A9892D16796000B59A0B /* LiveKitKrispNoiseFilter */; };
 		B5E1B90F2D14E9EC00A38CB6 /* LiveKitComponents in Frameworks */ = {isa = PBXBuildFile; productRef = B5E1B90E2D14E9EC00A38CB6 /* LiveKitComponents */; };
 		B5E1B9122D14E9F500A38CB6 /* LiveKit in Frameworks */ = {isa = PBXBuildFile; productRef = B5E1B9112D14E9F500A38CB6 /* LiveKit */; };
-		B5E46D202D496CD200ACC2E6 /* LiveKitKrispNoiseFilter in Frameworks */ = {isa = PBXBuildFile; platformFilters = (ios, macos, ); productRef = B5E46D1F2D496CD200ACC2E6 /* LiveKitKrispNoiseFilter */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -49,7 +48,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				ACFBA1DB2D8D5CBE0021202B /* Collections in Frameworks */,
-				B5E46D202D496CD200ACC2E6 /* LiveKitKrispNoiseFilter in Frameworks */,
 				B577A98A2D16796000B59A0B /* LiveKitKrispNoiseFilter in Frameworks */,
 				B5E1B90F2D14E9EC00A38CB6 /* LiveKitComponents in Frameworks */,
 				B5E1B9122D14E9F500A38CB6 /* LiveKit in Frameworks */,
@@ -99,7 +97,6 @@
 				B5E1B90E2D14E9EC00A38CB6 /* LiveKitComponents */,
 				B5E1B9112D14E9F500A38CB6 /* LiveKit */,
 				B577A9892D16796000B59A0B /* LiveKitKrispNoiseFilter */,
-				B5E46D1F2D496CD200ACC2E6 /* LiveKitKrispNoiseFilter */,
 				ACBC17792D8C34B5007EE71F /* AsyncAlgorithms */,
 				ACFBA1DA2D8D5CBE0021202B /* Collections */,
 			);
@@ -134,7 +131,6 @@
 			packageReferences = (
 				B5E1B90D2D14E9EC00A38CB6 /* XCRemoteSwiftPackageReference "components-swift" */,
 				B5E1B9102D14E9F500A38CB6 /* XCRemoteSwiftPackageReference "client-sdk-swift" */,
-				B5E46D1E2D496CD200ACC2E6 /* XCRemoteSwiftPackageReference "swift-krisp-noise-filter" */,
 				ACBC17782D8C34B5007EE71F /* XCRemoteSwiftPackageReference "swift-async-algorithms" */,
 				ACFBA1D92D8D5CBE0021202B /* XCRemoteSwiftPackageReference "swift-collections" */,
 			);
@@ -427,14 +423,6 @@
 				minimumVersion = 2.3.1;
 			};
 		};
-		B5E46D1E2D496CD200ACC2E6 /* XCRemoteSwiftPackageReference "swift-krisp-noise-filter" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/livekit/swift-krisp-noise-filter";
-			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 0.0.7;
-			};
-		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -461,11 +449,6 @@
 			isa = XCSwiftPackageProductDependency;
 			package = B5E1B9102D14E9F500A38CB6 /* XCRemoteSwiftPackageReference "client-sdk-swift" */;
 			productName = LiveKit;
-		};
-		B5E46D1F2D496CD200ACC2E6 /* LiveKitKrispNoiseFilter */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = B5E46D1E2D496CD200ACC2E6 /* XCRemoteSwiftPackageReference "swift-krisp-noise-filter" */;
-			productName = LiveKitKrispNoiseFilter;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};
