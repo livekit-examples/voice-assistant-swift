@@ -59,6 +59,7 @@ struct ContentView: View {
                 .environmentObject(participant as Participant)
         } else {
             Rectangle()
+                .fill(.clear)
                 .frame(maxWidth: 256, maxHeight: 256)
         }
 
