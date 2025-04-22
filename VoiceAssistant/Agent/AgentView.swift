@@ -3,25 +3,18 @@ import LiveKitComponents
 import SwiftUI
 
 struct AgentView: View {
-    @EnvironmentObject private var room: Room
+    @EnvironmentObject private var participant: Participant
 
     var body: some View {
         ZStack {
-            if let agent = room.agentParticipant {
-                let micTrack = agent.firstAudioTrack
-                let cameraTrack = agent.firstCameraVideoTrack
-                
-                if let cameraTrack, !cameraTrack.isMuted {
-                    SwiftUIVideoView(cameraTrack)
-                        .overlay(alignment: .topTrailing) {
-                            AgentBarAudioVisualizer(audioTrack: micTrack, agentState: room.agentState, barColor: .primary, barCount: 5)
-                                .frame(width: 100, height: 50)
-                                .padding()
-                        }
-                } else {
-                    AgentBarAudioVisualizer(audioTrack: micTrack, agentState: room.agentState, barColor: .primary, barCount: 5)
-                }
+            let cameraTrack = participant.firstCameraVideoTrack
+            let micTrack = participant.firstAudioTrack
+
+            if let cameraTrack, !cameraTrack.isMuted {
+                SwiftUIVideoView(cameraTrack)
+            } else {
+                AgentBarAudioVisualizer(audioTrack: micTrack, agentState: participant.agentState, barColor: .primary, barCount: 5)
             }
-        }
+        }.id(participant.firstCameraVideoTrack?.sid)
     }
 }

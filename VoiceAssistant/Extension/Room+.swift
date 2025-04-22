@@ -14,9 +14,4 @@ extension Room {
 
         return nil
     }
-
-    // Reads the agent state property which is updated automatically
-    var agentState: AgentState {
-        agentParticipant?.agentState ?? .initializing
-    }
 }

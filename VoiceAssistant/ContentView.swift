@@ -53,8 +53,15 @@ struct ContentView: View {
 
     @ViewBuilder
     private func agent() -> some View {
-        AgentView()
-            .frame(maxWidth: 256, maxHeight: 256)
+        if let participant = room.agentParticipant {
+            AgentView()
+                .frame(maxWidth: 256, maxHeight: 256)
+                .environmentObject(participant as Participant)
+        } else {
+            Rectangle()
+                .frame(maxWidth: 256, maxHeight: 256)
+        }
+
     }
 
     @ViewBuilder
@@ -65,7 +72,7 @@ struct ContentView: View {
 
     @ViewBuilder
     private func tooltip() -> some View {
-        if room.agentState == .listening, chatViewModel.messages.isEmpty {
+        if room.agentParticipant?.agentState == .listening, chatViewModel.messages.isEmpty {
             Text("Start talking")
                 .font(.system(size: 20))
                 .opacity(0.3)
