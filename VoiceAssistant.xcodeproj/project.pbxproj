@@ -9,7 +9,6 @@
 /* Begin PBXBuildFile section */
 		ACBC177A2D8C34B5007EE71F /* AsyncAlgorithms in Frameworks */ = {isa = PBXBuildFile; productRef = ACBC17792D8C34B5007EE71F /* AsyncAlgorithms */; };
 		ACFBA1DB2D8D5CBE0021202B /* Collections in Frameworks */ = {isa = PBXBuildFile; productRef = ACFBA1DA2D8D5CBE0021202B /* Collections */; };
-		B577A98A2D16796000B59A0B /* LiveKitKrispNoiseFilter in Frameworks */ = {isa = PBXBuildFile; platformFilters = (ios, macos, ); productRef = B577A9892D16796000B59A0B /* LiveKitKrispNoiseFilter */; };
 		B5E1B90F2D14E9EC00A38CB6 /* LiveKitComponents in Frameworks */ = {isa = PBXBuildFile; productRef = B5E1B90E2D14E9EC00A38CB6 /* LiveKitComponents */; };
 		B5E1B9122D14E9F500A38CB6 /* LiveKit in Frameworks */ = {isa = PBXBuildFile; productRef = B5E1B9112D14E9F500A38CB6 /* LiveKit */; };
 /* End PBXBuildFile section */
@@ -48,7 +47,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				ACFBA1DB2D8D5CBE0021202B /* Collections in Frameworks */,
-				B577A98A2D16796000B59A0B /* LiveKitKrispNoiseFilter in Frameworks */,
 				B5E1B90F2D14E9EC00A38CB6 /* LiveKitComponents in Frameworks */,
 				B5E1B9122D14E9F500A38CB6 /* LiveKit in Frameworks */,
 				ACBC177A2D8C34B5007EE71F /* AsyncAlgorithms in Frameworks */,
