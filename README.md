@@ -2,9 +2,9 @@
 
 # Swift Voice Assistant
 
-This is a starter template for [LiveKit Agents](https://docs.livekit.io/agents/overview/) that provides a simple voice interface using the [LiveKit Swift SDK](https://github.com/livekit/client-sdk-swift).
+This is a starter template for [LiveKit Agents](https://docs.livekit.io/agents/overview/) that provides a simple voice interface using the [LiveKit Swift SDK](https://github.com/livekit/client-sdk-swift). It supports [voice](https://docs.livekit.io/agents/start/voice-ai), [transcriptions](https://docs.livekit.io/agents/build/text/), and [virtual avatars](https://docs.livekit.io/agents/integrations/avatar/).
 
-This template is comaptible with iOS, iPadOS, macOS, and visionOS and is free for you to use or modify as you see fit.
+This template is compatible with iOS, iPadOS, macOS, and visionOS and is free for you to use or modify as you see fit.
 
 <img src="./.github/assets/screenshot.png" alt="Voice Assistant Screenshot" height="500">
 
@@ -22,7 +22,7 @@ lk app create --template voice-assistant-swift --sandbox <token_server_sandbox_i
 
 Built and run the app from Xcode by opening `VoiceAssistant.xcodeproj`. You may need to adjust your app signing settings to run the app on your device.
 
-You'll also need an agent to speak with. Try our sample voice assistant agent for [Python](https://github.com/livekit-examples/voice-pipeline-agent-python), [Node.js](https://github.com/livekit-examples/voice-pipeline-agent-node), or [create your own from scratch](https://docs.livekit.io/agents/quickstart/).
+You'll also need an agent to speak with. Try our [voice AI quickstart](https://docs.livekit.io/agents/start/voice-ai) for the easiest way to get started.
 
 > [!NOTE]
 > To setup without the LiveKit CLI, clone the repository and then either create a `VoiceAssistant/.env.xcconfig` with a `LIVEKIT_SANDBOX_ID` (if using a [Sandbox Token Server](https://cloud.livekit.io/projects/p_/sandbox/templates/token-server)), or open `TokenService.swift` and add your [manually generated](#token-generation) URL and token.
@@ -33,10 +33,10 @@ In a production environment, you will be responsible for developing a solution t
 
 ## Chat transcription
 
-The app uses LiveKit [text stream](https://docs.livekit.io/agents/v1/build/text/) functionality to deliver transcription events from the agent. It requires some client-side processing to aggregate the partial results into messages. `TranscriptionStreamReceiver` is responsible for this aggregation. It buffers stream chunks and publishes complete messages when the transcription is finished. Messages have unique IDs and timestamps to help with ordering and display in the UI.
+The app supports agent [transcriptions](https://docs.livekit.io/agents/build/text/). It requires some client-side processing to aggregate the partial results into messages. `TranscriptionStreamReceiver` is responsible for this aggregation. It buffers stream chunks and publishes complete messages when the transcription is finished. Messages have unique IDs and timestamps to help with ordering and display in the UI.
 
 > [!NOTE]
-> Text streams are fully supported in LiveKit Agents v1, for v0.x, you'll need to use legacy [transcription events](https://docs.livekit.io/agents/v1/build/text/#transcription-events) as shown in `TranscriptionDelegateReceiver.swift`.
+> Text streams are fully supported in LiveKit Agents v1, for v0.x, you'll need to use legacy [transcription events](https://docs.livekit.io/agents/build/text/#transcription-events) as shown in `TranscriptionDelegateReceiver.swift`.
 
 ## Contributing
 
