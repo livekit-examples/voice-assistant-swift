@@ -28,10 +28,22 @@ struct ContentView: View {
             if room.connectionState == .disconnected {
                 ControlBar()
             } else {
-                VStack(spacing: 16) {
-                    agent()
-                    chat()
-                    toolbar()
+                GeometryReader { geometry in
+                    VStack(spacing: 0) {
+                        // Top spacer to push content down
+                        Spacer()
+                            .frame(height: max((geometry.size.height - 256 - 64 - 80) / 2, 0))
+                        
+                        // Agent centered in the middle
+                        agent()
+                        
+                        // Chat takes remaining space with minimum height
+                        chat()
+                            .frame(height: max((geometry.size.height - 256 - 64) / 2, 80))
+                        
+                        // Fixed toolbar at bottom
+                        toolbar()
+                    }
                 }
             }
         }
@@ -55,12 +67,12 @@ struct ContentView: View {
     private func agent() -> some View {
         if let participant = room.agentParticipant {
             AgentView()
-                .frame(maxWidth: 256, maxHeight: 256)
+                .frame(width: 256, height: 256)
                 .environmentObject(participant as Participant)
         } else {
             Rectangle()
                 .fill(.clear)
-                .frame(maxWidth: 256, maxHeight: 256)
+                .frame(width: 256, height: 256)
         }
     }
 

@@ -27,6 +27,5 @@ struct AgentView: View {
                 AgentBarAudioVisualizer(audioTrack: micTrack, agentState: participant.agentState, barColor: .primary, barCount: 5)
             }
         }
-        .id("agent-\(participant.identity?.stringValue ?? "none")-\(cameraTrack?.sid?.stringValue ?? "none")-\(micTrack?.sid?.stringValue ?? "none")")
     }
 }
