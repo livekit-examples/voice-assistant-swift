@@ -62,7 +62,6 @@ struct ContentView: View {
                 .fill(.clear)
                 .frame(maxWidth: 256, maxHeight: 256)
         }
-
     }
 
     @ViewBuilder
