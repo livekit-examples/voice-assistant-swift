@@ -94,7 +94,6 @@
 			packageProductDependencies = (
 				B5E1B90E2D14E9EC00A38CB6 /* LiveKitComponents */,
 				B5E1B9112D14E9F500A38CB6 /* LiveKit */,
-				B577A9892D16796000B59A0B /* LiveKitKrispNoiseFilter */,
 				ACBC17792D8C34B5007EE71F /* AsyncAlgorithms */,
 				ACFBA1DA2D8D5CBE0021202B /* Collections */,
 			);
@@ -418,7 +417,7 @@
 			repositoryURL = "https://github.com/livekit/client-sdk-swift";
 			requirement = {
 				kind = upToNextMajorVersion;
-				minimumVersion = 2.3.1;
+				minimumVersion = 2.5.0;
 			};
 		};
 /* End XCRemoteSwiftPackageReference section */
@@ -433,10 +432,6 @@
 			isa = XCSwiftPackageProductDependency;
 			package = ACFBA1D92D8D5CBE0021202B /* XCRemoteSwiftPackageReference "swift-collections" */;
 			productName = Collections;
-		};
-		B577A9892D16796000B59A0B /* LiveKitKrispNoiseFilter */ = {
-			isa = XCSwiftPackageProductDependency;
-			productName = LiveKitKrispNoiseFilter;
 		};
 		B5E1B90E2D14E9EC00A38CB6 /* LiveKitComponents */ = {
 			isa = XCSwiftPackageProductDependency;
