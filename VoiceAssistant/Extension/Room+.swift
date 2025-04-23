@@ -3,20 +3,14 @@ import LiveKit
 
 extension Room {
     // Find the first agent participant in the room
-    // This assumes there's only one agent and they publish only one audio track
-    // Your application may have more complex requirements
+    // This also filters out avatar workers but otherwise assumes there's only one agent
     var agentParticipant: RemoteParticipant? {
         for participant in remoteParticipants.values {
-            if participant.kind == .agent {
+            if participant.kind == .agent && !participant.attributes.keys.contains("lk.publish_on_behalf") {
                 return participant
             }
         }
 
         return nil
-    }
-
-    // Reads the agent state property which is updated automatically
-    var agentState: AgentState {
-        agentParticipant?.agentState ?? .initializing
     }
 }
