@@ -29,7 +29,7 @@ You'll also need an agent to speak with. Try our [voice AI quickstart](https://d
 
 ## Token generation
 
-In a production environment, you will be responsible for developing a solution to [generate tokens for your users])(https://docs.livekit.io/home/server/generating-tokens/) which is integrated with your authentication solution. You should disable your sandbox token server and modify `TokenService.swift` to use your own token server.
+In a production environment, you will be responsible for developing a solution to [generate tokens for your users](https://docs.livekit.io/home/server/generating-tokens/) which is integrated with your authentication solution. You should disable your sandbox token server and modify `TokenService.swift` to use your own token server.
 
 ## Chat transcription
 
