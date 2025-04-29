@@ -106,6 +106,9 @@ struct ControlBar: View {
             let participantName = "user-\(Int.random(in: 1000 ... 9999))"
 
             do {
+                // Start preconnect
+                try await room.startCapturingBeforeConnecting()
+
                 // Fetch connection details from token service
                 if let connectionDetails = try await tokenService.fetchConnectionDetails(
                     roomName: roomName,
