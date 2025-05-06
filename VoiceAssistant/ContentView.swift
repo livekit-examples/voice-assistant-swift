@@ -9,6 +9,12 @@ struct ContentView: View {
         let room = Room()
         _room = StateObject(wrappedValue: room)
         _chatViewModel = State(initialValue: ChatViewModel(room: room, messageReceivers: TranscriptionStreamReceiver(room: room)))
+
+        do {
+            try AudioManager.shared.setRecordingAlwaysPreparedMode(true)
+        } catch {
+            print("Failed to prepare recording")
+        }
     }
 
     var body: some View {
