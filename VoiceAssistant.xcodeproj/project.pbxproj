@@ -416,8 +416,8 @@
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/livekit/client-sdk-swift";
 			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 2.5.0;
+				branch = "blaze/pre-connect-timeout";
+				kind = branch;
 			};
 		};
 /* End XCRemoteSwiftPackageReference section */

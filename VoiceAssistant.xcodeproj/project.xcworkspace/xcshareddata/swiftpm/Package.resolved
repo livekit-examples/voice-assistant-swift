@@ -6,8 +6,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/livekit/client-sdk-swift",
       "state" : {
-        "revision" : "4f9db591da71bfd7c556589e43963e1d777cf337",
-        "version" : "2.5.0"
+        "branch" : "blaze/pre-connect-timeout",
+        "revision" : "a4d0b2acfb2b375cdf4e201d51289c44b2e82111"
       }
     },
     {
@@ -60,8 +60,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/livekit/webrtc-xcframework.git",
       "state" : {
-        "revision" : "70bbd9b51f2c46333a91469c8a8be8303b0797b7",
-        "version" : "125.6422.28"
+        "revision" : "f2c6bd1e65a7ef59c4cd7ee6ba4eb2f96fee2b8a",
+        "version" : "125.6422.29"
       }
     }
   ],
