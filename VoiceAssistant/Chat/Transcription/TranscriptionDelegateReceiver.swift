@@ -1,5 +1,5 @@
 import Foundation
-@preconcurrency import LiveKit
+import LiveKit
 
 /// An actor that receives transcription messages from the room and yields them as messages.
 ///
