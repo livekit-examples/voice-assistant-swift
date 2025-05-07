@@ -1,4 +1,5 @@
 @preconcurrency import LiveKit
+import LiveKitComponents
 import SwiftUI
 
 struct ContentView: View {
