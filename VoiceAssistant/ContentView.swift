@@ -6,6 +6,14 @@ struct ContentView: View {
     @StateObject private var room: Room
     @State private var chatViewModel: ChatViewModel
 
+    final class OverrideUIOptions: UIOptions {
+        override func noTrackView() -> AnyView {
+            AnyView(ProgressView())
+        }
+    }
+
+    @State private var uiOptions: UIOptions = OverrideUIOptions()
+
     init() {
         let room = Room()
         _room = StateObject(wrappedValue: room)
@@ -40,6 +48,7 @@ struct ContentView: View {
         }
         .padding()
         .environmentObject(room)
+        .environment(\.liveKitUIOptions, uiOptions)
     }
 
     @ViewBuilder
