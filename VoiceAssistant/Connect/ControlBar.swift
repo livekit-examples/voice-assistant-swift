@@ -1,6 +1,4 @@
-import LiveKit
 import LiveKitComponents
-import SwiftUI
 
 /// The ControlBar component handles connection, disconnection, and audio controls
 /// You can customize this component to fit your app's needs

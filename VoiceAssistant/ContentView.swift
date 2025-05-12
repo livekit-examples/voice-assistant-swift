@@ -1,6 +1,4 @@
-import LiveKit
 import LiveKitComponents
-import SwiftUI
 
 struct ContentView: View {
     @StateObject private var room: Room
@@ -61,7 +59,7 @@ struct ContentView: View {
     @ViewBuilder
     private func agent() -> some View {
         if let agent = room.agentParticipant {
-            ParticipantView(showInformation: false)
+            AgentView(showInformation: false)
                 .environmentObject(agent)
         } else {
             Spacer()
