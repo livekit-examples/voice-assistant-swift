@@ -408,15 +408,15 @@
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/livekit/components-swift";
 			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 0.1.2;
+				branch = "blaze/extract-agent-components";
+				kind = branch;
 			};
 		};
 		B5E1B9102D14E9F500A38CB6 /* XCRemoteSwiftPackageReference "client-sdk-swift" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/livekit/client-sdk-swift";
 			requirement = {
-				branch = "blaze/pre-connect-timeout";
+				branch = main;
 				kind = branch;
 			};
 		};

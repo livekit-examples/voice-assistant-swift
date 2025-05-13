@@ -6,8 +6,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/livekit/client-sdk-swift",
       "state" : {
-        "branch" : "blaze/pre-connect-timeout",
-        "revision" : "a4d0b2acfb2b375cdf4e201d51289c44b2e82111"
+        "branch" : "main",
+        "revision" : "ba652f1ccd018116c66b06936be74c507580a973"
       }
     },
     {
@@ -15,8 +15,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/livekit/components-swift",
       "state" : {
-        "revision" : "af58685b9224f7b59a73e4c623424795f7a5573e",
-        "version" : "0.1.2"
+        "branch" : "blaze/extract-agent-components",
+        "revision" : "20668852323ff85ad18b604e150eeb94e8fcb3cf"
       }
     },
     {

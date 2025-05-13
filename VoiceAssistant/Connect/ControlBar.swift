@@ -114,7 +114,7 @@ struct ControlBar: View {
                         return
                     }
                     // Connect to the room
-                    try await room.connect(url: connectionDetails.serverUrl, token: connectionDetails.participantToken)
+                    try await room.connect(url: connectionDetails.serverUrl, token: connectionDetails.participantToken, connectOptions: .init(enableMicrophone: true))
                 }
             } catch {
                 print("Connection error: \(error)")
