@@ -59,7 +59,7 @@ struct ContentView: View {
     @ViewBuilder
     private func agent() -> some View {
         if let agent = room.agentParticipant {
-            AgentView(showInformation: false)
+            ParticipantView(showInformation: false)
                 .environmentObject(agent)
         } else {
             Spacer()
