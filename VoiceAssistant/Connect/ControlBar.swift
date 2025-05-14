@@ -104,23 +104,18 @@ struct ControlBar: View {
             let participantName = "user-\(Int.random(in: 1000 ... 9999))"
 
             do {
-                // Fetch connection details from token service
-                if let connectionDetails = try await tokenService.fetchConnectionDetails(
-                    roomName: roomName,
-                    participantName: participantName
-                ) {
-                    // Connect to the room and enable the microphone
-                    try await room.connect(
-                        url: connectionDetails.serverUrl, token: connectionDetails.participantToken,
-                        connectOptions: ConnectOptions(enableMicrophone: true)
-                    )
-                    isConnecting = false
-                } else {
-                    print("Failed to fetch connection details")
+                try await room.withPreConnectAudio {
+                    Task { @MainActor in isConnecting = false }
+                    // Fetch connection details from token service
+                    guard let connectionDetails = try await tokenService.fetchConnectionDetails(roomName: roomName, participantName: participantName) else {
+                        print("Failed to fetch connection details")
+                        return
+                    }
+                    // Connect to the room
+                    try await room.connect(url: connectionDetails.serverUrl, token: connectionDetails.participantToken, connectOptions: .init(enableMicrophone: true))
                 }
             } catch {
                 print("Connection error: \(error)")
-                isConnecting = false
             }
         }
     }
