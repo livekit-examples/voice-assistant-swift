@@ -1,7 +1,7 @@
 import AsyncAlgorithms
 import Collections
 import Foundation
-@preconcurrency import LiveKit
+import LiveKit
 import Observation
 
 /// A class that aggregates messages from multiple message providers

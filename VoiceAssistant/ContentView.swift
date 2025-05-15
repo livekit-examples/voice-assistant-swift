@@ -1,9 +1,16 @@
-@preconcurrency import LiveKit
-import SwiftUI
+import LiveKitComponents
 
 struct ContentView: View {
     @StateObject private var room: Room
     @State private var chatViewModel: ChatViewModel
+
+    final class OverrideUIOptions: UIOptions {
+        override func noTrackView() -> AnyView {
+            AnyView(ProgressView())
+        }
+    }
+
+    @State private var uiOptions: UIOptions = OverrideUIOptions()
 
     init() {
         let room = Room()
@@ -20,24 +27,26 @@ struct ContentView: View {
                     VStack(spacing: 0) {
                         Spacer()
                             .frame(height: max((geometry.size.height - 256 - 64 - 80) / 2, 0))
-                        
+
                         // Agent centered in the middle
                         agent()
                             .frame(maxWidth: geometry.size.width - 32)
                             .padding(.bottom, 32)
-                        
+
                         // Chat takes remaining space with minimum height
                         chat()
                             .frame(height: max((geometry.size.height - 256 - 64 - 32) / 2, 80))
-                        
+
                         // Fixed toolbar at bottom
                         toolbar()
+                            .frame(height: 64)
                     }
                 }
             }
         }
         .padding()
         .environmentObject(room)
+        .environment(\.liveKitUIOptions, uiOptions)
     }
 
     @ViewBuilder
@@ -49,21 +58,17 @@ struct ContentView: View {
 
     @ViewBuilder
     private func agent() -> some View {
-        if let participant = room.agentParticipant {
-            AgentView()
-                .frame(height: 256)
-                .environmentObject(participant as Participant)
+        if let agent = room.agentParticipant {
+            ParticipantView(showInformation: false)
+                .environmentObject(agent)
         } else {
-            Rectangle()
-                .fill(.clear)
-                .frame(height: 256)
+            Spacer()
         }
     }
 
     @ViewBuilder
     private func toolbar() -> some View {
         ControlBar()
-            .frame(height: 64)
     }
 
     @ViewBuilder

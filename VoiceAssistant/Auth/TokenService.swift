@@ -23,7 +23,7 @@ struct ConnectionDetails: Codable {
     let participantToken: String
 }
 
-final class TokenService: ObservableObject, Sendable {
+actor TokenService: ObservableObject {
     func fetchConnectionDetails(roomName: String, participantName: String) async throws -> ConnectionDetails? {
         if let hardcodedConnectionDetails = fetchHardcodedConnectionDetails(roomName: roomName, participantName: participantName) {
             return hardcodedConnectionDetails

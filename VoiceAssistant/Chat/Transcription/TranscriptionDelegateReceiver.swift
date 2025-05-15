@@ -1,5 +1,5 @@
 import Foundation
-@preconcurrency import LiveKit
+import LiveKit
 
 /// An actor that receives transcription messages from the room and yields them as messages.
 ///
@@ -11,6 +11,7 @@ import Foundation
 /// { id: "1", content: "Hello" }
 /// { id: "1", content: "Hello world!" }
 /// ```
+@available(*, deprecated, message: "Use TranscriptionStreamReceiver compatible with livekit-agents 1.0")
 actor TranscriptionDelegateReceiver: MessageReceiver, RoomDelegate {
     private let room: Room
     private var continuation: AsyncStream<Message>.Continuation?
@@ -38,7 +39,7 @@ actor TranscriptionDelegateReceiver: MessageReceiver, RoomDelegate {
                 let message = Message(
                     id: segment.id,
                     timestamp: segment.lastReceivedTime,
-                    content: participant.kind == .agent ? .agentTranscript(segment.text) : .userTranscript(segment.text)
+                    content: participant.isAgent ? .agentTranscript(segment.text) : .userTranscript(segment.text)
                 )
                 Task {
                     await yield(message)
