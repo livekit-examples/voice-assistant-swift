@@ -87,8 +87,10 @@ struct ControlBar: View {
             }
         }
         .animation(.spring(duration: 0.3), value: currentConfiguration)
+        #if !os(visionOS)
         .sensoryFeedback(.impact, trigger: isConnecting)
         .sensoryFeedback(.impact, trigger: isDisconnecting)
+        #endif
     }
 
     /// Fetches a token and connects to the LiveKit room
