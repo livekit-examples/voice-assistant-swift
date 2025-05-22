@@ -8,8 +8,7 @@
 import SwiftUI
 
 struct StartView: View {
-    @State private var isConnecting = false
-    private let error: Error? = NSError()
+    @Environment(AppViewModel.self) private var viewModel
 
     var body: some View {
         VStack(spacing: 16) {
@@ -24,7 +23,7 @@ struct StartView: View {
             .foregroundStyle(Color.foreground1)
             .tint(Color.foreground1)
 
-            if error != nil {
+            if viewModel.state.error != nil {
                 Text("Error connecting. Make sure your agent is properly configured and try again.")
                     .font(.system(size: 12, weight: .medium))
                     .foregroundStyle(Color.foregroundSerious)
@@ -34,17 +33,18 @@ struct StartView: View {
                 .frame(height: 16)
 
             Button {
-                isConnecting.toggle()
+                viewModel.connect()
             } label: {
                 HStack(spacing: 8) {
                     Spacer()
-                    if isConnecting {
+                    if viewModel.state.connectionState == .connecting {
                         Spinner()
                             .transition(.scale.combined(with: .opacity))
                     }
-                    Text(isConnecting ? "Connecting" : "Start call")
+                    Text(viewModel.state.connectionState == .connecting ? "Connecting" : "Start call")
                         .textCase(.uppercase)
                         .monospaced()
+                        .foregroundStyle(Color.white)
                         .font(.system(size: 14, weight: .semibold))
                         .frame(maxHeight: .infinity)
                     Spacer()
@@ -60,13 +60,14 @@ struct StartView: View {
         }
         .multilineTextAlignment(.center)
         .padding(.horizontal, 64)
-        .animation(.easeInOut(duration: 0.2), value: isConnecting)
-        #if !os(visionOS)
-            .sensoryFeedback(.selection, trigger: isConnecting)
-        #endif
+//        .animation(.easeInOut(duration: 0.2), value: viewModel.connectionState)
+//        #if !os(visionOS)
+//        .sensoryFeedback(.selection, trigger: viewModel.state.isConnecting)
+//        #endif
     }
 }
 
 #Preview {
     StartView()
+        .environment(AppViewModel())
 }
