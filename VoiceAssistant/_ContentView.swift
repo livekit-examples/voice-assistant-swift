@@ -1,6 +1,6 @@
 import LiveKitComponents
 
-struct ContentView: View {
+struct _ContentView: View {
     @StateObject private var room: Room
     @State private var chatViewModel: ChatViewModel
 
