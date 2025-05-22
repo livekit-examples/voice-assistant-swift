@@ -69,5 +69,4 @@ struct StartView: View {
 
 #Preview {
     StartView()
-        .environment(AppViewModel())
 }

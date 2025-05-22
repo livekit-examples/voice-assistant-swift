@@ -15,7 +15,7 @@ struct _ContentView: View {
     init() {
         let room = Room()
         _room = StateObject(wrappedValue: room)
-        _chatViewModel = State(initialValue: ChatViewModel(room: room, messageReceivers: TranscriptionStreamReceiver(room: room)))
+        _chatViewModel = State(initialValue: ChatViewModel(room: room, messageReceivers: [TranscriptionStreamReceiver(room: room)]))
 
         do {
             try AudioManager.shared.setRecordingAlwaysPreparedMode(true)

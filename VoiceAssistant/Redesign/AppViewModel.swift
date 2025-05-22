@@ -8,16 +8,18 @@ final class AppViewModel {
         var connectionState: ConnectionState = .disconnected
         var isListening = false
         var error: Error?
+
+        var agent: Participant?
     }
 
-    var state: State = .init()
+    var state = State()
 
     @ObservationIgnored
     let room: Room
     @ObservationIgnored
     private let tokenService: TokenService
 
-    init(room: Room = Room(), tokenService: TokenService = TokenService()) {
+    init(room: Room = Dependencies.shared.room, tokenService: TokenService = Dependencies.shared.tokenService) {
         self.room = room
         self.tokenService = tokenService
 
@@ -72,6 +74,22 @@ extension AppViewModel: RoomDelegate {
     nonisolated func room(_: Room, didUpdateConnectionState connectionState: ConnectionState, from _: ConnectionState) {
         Task { @MainActor in
             state.connectionState = connectionState
+        }
+    }
+
+    nonisolated func room(_: Room, participantDidConnect participant: RemoteParticipant) {
+        Task { @MainActor in
+            if participant.isAgent {
+                state.agent = participant
+            }
+        }
+    }
+
+    nonisolated func room(_: Room, participantDidDisconnect participant: RemoteParticipant) {
+        Task { @MainActor in
+            if participant.isAgent {
+                state.agent = nil
+            }
         }
     }
 }

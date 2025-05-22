@@ -18,7 +18,7 @@ final class ChatViewModel {
     @ObservationIgnored
     private var messageObservers: [Task<Void, Never>] = []
 
-    init(room: Room, messageReceivers: any MessageReceiver...) {
+    init(room: Room = Dependencies.shared.room, messageReceivers: [any MessageReceiver] = [Dependencies.shared.transcriptionStreamReceiver]) {
         self.room = room
         room.add(delegate: self)
 

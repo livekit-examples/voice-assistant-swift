@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct ContentView: View {
-    @State private var viewModel = AppViewModel()
+    @Environment(AppViewModel.self) private var viewModel
 
     var body: some View {
         Group {
@@ -17,14 +17,10 @@ struct ContentView: View {
                 StartView()
             case .connecting where !viewModel.state.isListening:
                 StartView()
-            case .connected:
-                ChatView()
-                    .environment(ChatViewModel(room: viewModel.room, messageReceivers: TranscriptionStreamReceiver(room: viewModel.room)))
-            default:
-                Text("\(viewModel.state.connectionState)")
+            case .connecting, .connected, .reconnecting:
+                CallView()
             }
         }
-        .environment(viewModel)
         .animation(.default, value: viewModel.state.connectionState)
     }
 }
