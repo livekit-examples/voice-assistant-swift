@@ -17,6 +17,20 @@ struct CallBar: View {
 
     var body: some View {
         HStack {
+            Button(action: viewModel.toggleMute) {
+                HStack(spacing: 8) {
+                    Image(systemName: viewModel.isMuted ? "microphone.slash.fill" : "microphone.fill")
+                    LocalAudioVisualizer(track: viewModel.localParticipant.firstAudioTrack)
+                }
+                .padding(.horizontal, 8)
+                .frame(height: Constants.buttonHeight)
+            }
+
+            #if os(macOS)
+            AudioDeviceSelector2()
+                .frame(height: Constants.buttonHeight)
+            #endif
+
             Button {} label: {
                 Image(systemName: "video.slash.fill")
                     .frame(width: Constants.buttonWidth, height: Constants.buttonHeight)

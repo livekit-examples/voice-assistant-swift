@@ -88,8 +88,8 @@ struct ControlBar: View {
         }
         .animation(.spring(duration: 0.3), value: currentConfiguration)
         #if !os(visionOS)
-        .sensoryFeedback(.impact, trigger: isConnecting)
-        .sensoryFeedback(.impact, trigger: isDisconnecting)
+            .sensoryFeedback(.impact, trigger: isConnecting)
+            .sensoryFeedback(.impact, trigger: isDisconnecting)
         #endif
     }
 
@@ -129,40 +129,6 @@ struct ControlBar: View {
             await room.disconnect()
             isDisconnecting = false
         }
-    }
-}
-
-/// Displays real-time audio levels for the local participant
-private struct LocalAudioVisualizer: View {
-    var track: AudioTrack?
-
-    @StateObject private var audioProcessor: AudioProcessor
-
-    init(track: AudioTrack?) {
-        self.track = track
-        _audioProcessor = StateObject(
-            wrappedValue: AudioProcessor(
-                track: track,
-                bandCount: 9,
-                isCentered: false
-            ))
-    }
-
-    public var body: some View {
-        HStack(spacing: 3) {
-            ForEach(0 ..< 9, id: \.self) { index in
-                RoundedRectangle(cornerRadius: 1)
-                    .fill(.primary)
-                    .frame(width: 2)
-                    .frame(maxHeight: .infinity)
-                    .scaleEffect(
-                        y: max(0.05, CGFloat(audioProcessor.bands[index])), anchor: .center
-                    )
-            }
-        }
-        .padding(.vertical, 8)
-        .padding(.leading, 0)
-        .padding(.trailing, 8)
     }
 }
 

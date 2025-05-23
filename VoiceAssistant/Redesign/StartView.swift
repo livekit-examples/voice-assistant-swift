@@ -23,7 +23,7 @@ struct StartView: View {
             .foregroundStyle(Color.foreground1)
             .tint(Color.foreground1)
 
-            if viewModel.state.error != nil {
+            if viewModel.error != nil {
                 Text("Error connecting. Make sure your agent is properly configured and try again.")
                     .font(.system(size: 12, weight: .medium))
                     .foregroundStyle(Color.foregroundSerious)
@@ -37,11 +37,11 @@ struct StartView: View {
             } label: {
                 HStack(spacing: 8) {
                     Spacer()
-                    if viewModel.state.connectionState == .connecting {
+                    if viewModel.connectionState == .connecting {
                         Spinner()
                             .transition(.scale.combined(with: .opacity))
                     }
-                    Text(viewModel.state.connectionState == .connecting ? "Connecting" : "Start call")
+                    Text(viewModel.connectionState == .connecting ? "Connecting" : "Start call")
                         .textCase(.uppercase)
                         .monospaced()
                         .foregroundStyle(Color.white)

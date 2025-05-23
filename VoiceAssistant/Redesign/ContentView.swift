@@ -13,7 +13,7 @@ struct ContentView: View {
 
     var body: some View {
         Group {
-            switch (viewModel.state.connectionState, viewModel.state.inputMode) {
+            switch (viewModel.connectionState, viewModel.inputMode) {
             case (.disconnected, _):
                 StartView()
 //            case .connecting where !viewModel.state.isListening:
@@ -34,8 +34,8 @@ struct ContentView: View {
                 Text("Reconnecting...")
             }
         }
-        .animation(.default, value: viewModel.state.connectionState)
-        .animation(.default, value: viewModel.state.inputMode)
+        .animation(.default, value: viewModel.connectionState)
+        .animation(.default, value: viewModel.inputMode)
     }
 }
 

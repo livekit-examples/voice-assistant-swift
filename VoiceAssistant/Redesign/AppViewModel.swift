@@ -9,17 +9,19 @@ final class AppViewModel {
         case text
     }
 
-    struct State {
-        var connectionState: ConnectionState = .disconnected
-        var isListening = false
-        var error: Error?
+    private(set) var connectionState: ConnectionState = .disconnected
+    private(set) var isListening = false
+    private(set) var error: Error?
 
-        var agent: Participant?
+    private(set) var agent: Participant?
+    var localParticipant: Participant { room.localParticipant }
 
-        var inputMode: InputMode = .voice
-    }
+    private(set) var inputMode: InputMode = .voice
 
-    private(set) var state = State()
+    private(set) var isMuted = false
+
+    private(set) var audioDevices: [AudioDevice] = []
+    private(set) var selectedDevice: AudioDevice?
 
     @ObservationIgnored
     @Dependency(\.room) private var room
@@ -28,20 +30,28 @@ final class AppViewModel {
 
     init() {
         room.add(delegate: self)
+
+        AudioManager.shared.onDeviceUpdate = { _ in
+            Task { @MainActor in
+                self.audioDevices = AudioManager.shared.inputDevices
+                self.selectedDevice = AudioManager.shared.inputDevice
+            }
+        }
     }
 
     deinit {
         // TODO: Fixme
         //        room.remove(delegate: self)
+        AudioManager.shared.onDeviceUpdate = nil
     }
 
     func connect() {
-        state.error = nil
-        state.isListening = false
+        error = nil
+        isListening = false
         Task {
             do {
-                try await room.withPreConnectAudio {
-                    await MainActor.run { self.state.isListening = true }
+                try await self.room.withPreConnectAudio {
+                    await MainActor.run { self.isListening = true }
 
                     let connectionDetails = try await self.getConnection()
 
@@ -52,8 +62,8 @@ final class AppViewModel {
                     )
                 }
             } catch {
-                state.error = error
-                state.isListening = false
+                self.error = error
+                isListening = false
             }
         }
     }
@@ -75,21 +85,32 @@ final class AppViewModel {
     }
 
     func enterTextInputMode() {
-        state.inputMode = .text
+        inputMode = .text
+    }
+
+    func toggleMute() {
+        isMuted.toggle()
+        Task {
+            try await room.localParticipant.setMicrophone(enabled: !isMuted)
+        }
+    }
+
+    func select(audioDevice: AudioDevice) {
+        selectedDevice = audioDevice
     }
 }
 
 extension AppViewModel: RoomDelegate {
     nonisolated func room(_: Room, didUpdateConnectionState connectionState: ConnectionState, from _: ConnectionState) {
         Task { @MainActor in
-            state.connectionState = connectionState
+            self.connectionState = connectionState
         }
     }
 
     nonisolated func room(_: Room, participantDidConnect participant: RemoteParticipant) {
         Task { @MainActor in
             if participant.isAgent {
-                state.agent = participant
+                agent = participant
             }
         }
     }
@@ -97,7 +118,7 @@ extension AppViewModel: RoomDelegate {
     nonisolated func room(_: Room, participantDidDisconnect participant: RemoteParticipant) {
         Task { @MainActor in
             if participant.isAgent {
-                state.agent = nil
+                agent = nil
             }
         }
     }

@@ -11,7 +11,7 @@ struct CallView: View {
     @Environment(AppViewModel.self) private var viewModel
 
     var body: some View {
-        if let agent = viewModel.state.agent {
+        if let agent = viewModel.agent {
             ParticipantView(showInformation: false)
                 .environmentObject(agent)
         } else {
