@@ -142,6 +142,14 @@ extension AppViewModel: RoomDelegate {
         }
     }
 
+    nonisolated func room(_: Room, participant: Participant, trackPublication: TrackPublication, didUpdateIsMuted isMuted: Bool) {
+        Task { @MainActor in
+            if participant == localParticipant, trackPublication.source == .camera {
+                video = isMuted ? nil : trackPublication
+            }
+        }
+    }
+
     nonisolated func room(_: Room, participantDidConnect participant: RemoteParticipant) {
         Task { @MainActor in
             if participant.isAgent {
