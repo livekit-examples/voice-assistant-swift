@@ -24,7 +24,7 @@ struct Spinner: View {
             .frame(width: 16, height: 16)
             .rotationEffect(.degrees(rotation))
             .onAppear {
-                withAnimation(.linear(duration: 1).repeatForever(autoreverses: false)) {
+                withAnimation(.linear(duration: 0.5).repeatForever(autoreverses: false)) {
                     rotation = 360
                 }
             }

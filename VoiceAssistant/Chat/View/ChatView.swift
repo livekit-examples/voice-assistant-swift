@@ -27,13 +27,6 @@ struct ChatView: View {
             }
             .listStyle(.plain)
             .scrollIndicators(.hidden)
-            .mask(
-                LinearGradient(
-                    gradient: Gradient(colors: [.clear, .black, .black]),
-                    startPoint: .top,
-                    endPoint: .init(x: 0.5, y: 0.2)
-                )
-            )
         }
         .animation(.default, value: viewModel.messages)
         .alert("Error while connecting to Chat", isPresented: .constant(viewModel.error != nil)) {

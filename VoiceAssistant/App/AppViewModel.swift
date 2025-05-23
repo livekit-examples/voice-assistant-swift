@@ -33,6 +33,7 @@ final class AppViewModel {
     init() {
         room.add(delegate: self)
 
+        try? AudioManager.shared.setRecordingAlwaysPreparedMode(true)
         AudioManager.shared.onDeviceUpdate = { _ in
             Task { @MainActor in
                 self.audioDevices = AudioManager.shared.inputDevices

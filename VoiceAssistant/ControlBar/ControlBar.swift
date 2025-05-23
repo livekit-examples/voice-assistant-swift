@@ -1,5 +1,5 @@
 //
-//  CallBar.swift
+//  ControlBar.swift
 //  VoiceAssistant
 //
 //  Created by Blaze Pankowski on 23/05/2025.
@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct CallBar: View {
+struct ControlBar: View {
     @Environment(AppViewModel.self) private var viewModel
 
     enum Constants {
@@ -90,6 +90,6 @@ struct CallBarButtonStyle: ButtonStyle {
 }
 
 #Preview {
-    CallBar()
+    ControlBar()
         .environment(AppViewModel())
 }

@@ -7,7 +7,7 @@
 
 import LiveKitComponents
 
-struct AudioDeviceSelector2: View {
+struct AudioDeviceSelector: View {
     @Environment(AppViewModel.self) private var viewModel
 
     var body: some View {

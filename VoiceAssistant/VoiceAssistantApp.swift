@@ -7,7 +7,7 @@ struct VoiceAssistantApp: App {
 
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            AppView()
                 .environment(viewModel)
         }
     }
