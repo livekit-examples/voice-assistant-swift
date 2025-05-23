@@ -9,7 +9,6 @@ import LiveKitComponents
 
 struct CallView: View {
     @Environment(AppViewModel.self) private var viewModel
-    @State private var chatViewModel = ChatViewModel()
 
     var body: some View {
         if let agent = viewModel.state.agent {
@@ -18,9 +17,6 @@ struct CallView: View {
         } else {
             Text("No agent")
         }
-
-        ChatView()
-            .environment(chatViewModel)
     }
 }
 

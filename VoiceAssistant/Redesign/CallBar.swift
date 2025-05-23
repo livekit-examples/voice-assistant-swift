@@ -27,7 +27,7 @@ struct CallBar: View {
                     .frame(width: Constants.buttonWidth, height: Constants.buttonHeight)
             }
 
-            Button {} label: {
+            Button(action: viewModel.enterTextInputMode) {
                 Image(systemName: "ellipsis.message.fill")
                     .frame(width: Constants.buttonWidth, height: Constants.buttonHeight)
             }
@@ -36,7 +36,7 @@ struct CallBar: View {
                 .fill(.separator1)
                 .frame(width: 1, height: Constants.buttonHeight)
 
-            Button {} label: {
+            Button(action: viewModel.disconnect) {
                 Image(systemName: "phone.down.fill")
                     .frame(width: Constants.buttonWidth, height: Constants.buttonHeight)
             }

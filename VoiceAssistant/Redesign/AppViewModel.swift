@@ -4,12 +4,19 @@ import Observation
 @MainActor
 @Observable
 final class AppViewModel {
+    enum InputMode {
+        case voice
+        case text
+    }
+
     struct State {
         var connectionState: ConnectionState = .disconnected
         var isListening = false
         var error: Error?
 
         var agent: Participant?
+
+        var inputMode: InputMode = .voice
     }
 
     private(set) var state = State()
@@ -25,7 +32,7 @@ final class AppViewModel {
 
     deinit {
         // TODO: Fixme
-//        room.remove(delegate: self)
+        //        room.remove(delegate: self)
     }
 
     func connect() {
@@ -65,6 +72,10 @@ final class AppViewModel {
             roomName: roomName,
             participantName: participantName
         )!
+    }
+
+    func enterTextInputMode() {
+        state.inputMode = .text
     }
 }
 
