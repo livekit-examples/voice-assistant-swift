@@ -1,0 +1,81 @@
+//
+//  CallBar.swift
+//  VoiceAssistant
+//
+//  Created by Blaze Pankowski on 23/05/2025.
+//
+
+import SwiftUI
+
+struct CallBar: View {
+    @Environment(AppViewModel.self) private var viewModel
+
+    enum Constants {
+        static let buttonWidth = 62.0
+        static let buttonHeight = 44.0
+    }
+
+    var body: some View {
+        HStack {
+            Button {} label: {
+                Image(systemName: "video.slash.fill")
+                    .frame(width: Constants.buttonWidth, height: Constants.buttonHeight)
+            }
+
+            Button {} label: {
+                Image(systemName: "arrow.up.square.fill")
+                    .frame(width: Constants.buttonWidth, height: Constants.buttonHeight)
+            }
+
+            Button {} label: {
+                Image(systemName: "ellipsis.message.fill")
+                    .frame(width: Constants.buttonWidth, height: Constants.buttonHeight)
+            }
+
+            Rectangle()
+                .fill(.separator1)
+                .frame(width: 1, height: Constants.buttonHeight)
+
+            Button {} label: {
+                Image(systemName: "phone.down.fill")
+                    .frame(width: Constants.buttonWidth, height: Constants.buttonHeight)
+            }
+            .buttonStyle(CallBarButtonStyle(foregroundColor: .foregroundSerious, backgroundColor: .backgroundSerious, borderColor: .separatorSerious))
+        }
+        .padding(8)
+        .buttonStyle(CallBarButtonStyle(
+            foregroundColor: .foreground1,
+            backgroundColor: .background2,
+            borderColor: .separator1
+        ))
+        .overlay(
+            RoundedRectangle(cornerRadius: 8)
+                .stroke(.separator1, lineWidth: 1)
+        )
+    }
+}
+
+struct CallBarButtonStyle: ButtonStyle {
+    let foregroundColor: Color
+    let backgroundColor: Color
+    let borderColor: Color
+
+    func makeBody(configuration: Configuration) -> some View {
+        configuration.label
+            .font(.system(size: 15, weight: .medium))
+            .foregroundStyle(configuration.isPressed ? foregroundColor.opacity(0.5) : foregroundColor)
+            .background(
+                RoundedRectangle(cornerRadius: 8)
+                    .fill(configuration.isPressed ? backgroundColor.opacity(0.5) : backgroundColor)
+            )
+            .overlay(
+                RoundedRectangle(cornerRadius: 8)
+                    .stroke(configuration.isPressed ? borderColor.opacity(0.5) : borderColor, lineWidth: 1)
+            )
+    }
+}
+
+#Preview {
+    CallBar()
+        .environment(AppViewModel())
+}
