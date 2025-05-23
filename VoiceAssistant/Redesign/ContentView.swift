@@ -7,6 +7,76 @@
 
 import LiveKitComponents
 
+struct LocalParticipantView: View {
+    @Environment(AppViewModel.self) private var viewModel
+    var namespace: Namespace.ID
+
+    var body: some View {
+        if let video = viewModel.video {
+            ParticipantView(showInformation: false)
+                .environmentObject(viewModel.localParticipant)
+                .clipShape(RoundedRectangle(cornerRadius: 8))
+                .aspectRatio(video.aspectRatio, contentMode: .fit)
+                .shadow(radius: 20, y: 10)
+                .matchedGeometryEffect(id: "local", in: namespace)
+        }
+    }
+}
+
+struct AgentParticipantView: View {
+    @Environment(AppViewModel.self) private var viewModel
+    var namespace: Namespace.ID
+
+    var body: some View {
+        if let agent = viewModel.agent {
+            ParticipantView(showInformation: false)
+                .environmentObject(agent)
+                .clipShape(RoundedRectangle(cornerRadius: 8))
+                .shadow(radius: 20, y: 10)
+                .matchedGeometryEffect(id: "agent", in: namespace)
+        } else {
+            BarAudioVisualizer(audioTrack: nil, agentState: .listening)
+        }
+    }
+}
+
+struct TextInputView: View {
+    @Environment(AppViewModel.self) private var viewModel
+    var namespace: Namespace.ID
+
+    var body: some View {
+        VStack {
+            HStack {
+                AgentParticipantView(namespace: namespace)
+                    .frame(maxWidth: 120, maxHeight: 200)
+                LocalParticipantView(namespace: namespace)
+                    .frame(maxWidth: 120, maxHeight: 200)
+            }
+            ChatView()
+        }
+        .safeAreaInset(edge: .bottom) {
+            CallBar()
+        }
+    }
+}
+
+struct VoiceInputView: View {
+    @Environment(AppViewModel.self) private var viewModel
+    var namespace: Namespace.ID
+
+    var body: some View {
+        ZStack(alignment: .topTrailing) {
+            AgentParticipantView(namespace: namespace)
+            LocalParticipantView(namespace: namespace)
+                .frame(maxWidth: 120, maxHeight: 200)
+        }
+        .padding(.horizontal)
+        .safeAreaInset(edge: .bottom) {
+            CallBar()
+        }
+    }
+}
+
 struct ContentView: View {
     @Environment(AppViewModel.self) private var viewModel
     @State private var chatViewModel = ChatViewModel()
@@ -17,64 +87,13 @@ struct ContentView: View {
             switch (viewModel.connectionState, viewModel.inputMode) {
             case (.disconnected, _):
                 StartView()
-//            case .connecting where !viewModel.state.isListening:
             case (.connecting, _):
                 StartView()
             case (.connected, .text):
-                VStack {
-                    HStack {
-                        if let agent = viewModel.agent {
-                            ParticipantView(showInformation: false)
-                                .environmentObject(agent)
-                                .frame(maxWidth: 120)
-                                .clipShape(RoundedRectangle(cornerRadius: 8))
-                                .shadow(radius: 20, y: 10)
-                                .matchedGeometryEffect(id: "agent", in: transitions)
-                        }
-                        if let video = viewModel.video {
-                            ParticipantView(showInformation: false)
-                                .environmentObject(viewModel.localParticipant)
-                                .clipShape(RoundedRectangle(cornerRadius: 8))
-                                .aspectRatio(video.aspectRatio, contentMode: .fit)
-                                .frame(maxWidth: 120, maxHeight: 120)
-                                .shadow(radius: 20, y: 10)
-                                .matchedGeometryEffect(id: "local", in: transitions)
-                        }
-                    }
-                    .frame(height: 120)
-                    ChatView()
-                        .environment(chatViewModel)
-                        .safeAreaInset(edge: .bottom) {
-                            CallBar()
-                        }
-                }
+                TextInputView(namespace: transitions)
+                    .environment(chatViewModel)
             case (.connected, .voice):
-                ZStack(alignment: .topTrailing) {
-                    if let agent = viewModel.agent {
-                        ParticipantView(showInformation: false)
-                            .environmentObject(agent)
-                            .matchedGeometryEffect(id: "agent", in: transitions)
-                            .safeAreaInset(edge: .bottom) {
-                                CallBar()
-                            }
-                    } else {
-                        Text("No agent")
-                            .safeAreaInset(edge: .bottom) {
-                                CallBar()
-                            }
-                    }
-
-                    if let video = viewModel.video {
-                        ParticipantView(showInformation: false)
-                            .environmentObject(viewModel.localParticipant)
-                            .clipShape(RoundedRectangle(cornerRadius: 8))
-                            .aspectRatio(video.aspectRatio, contentMode: .fit)
-                            .frame(maxWidth: 200, maxHeight: 200)
-                            .shadow(radius: 20, y: 10)
-                            .matchedGeometryEffect(id: "local", in: transitions)
-                            .padding()
-                    }
-                }
+                VoiceInputView(namespace: transitions)
             case (.reconnecting, _):
                 Text("Reconnecting...")
             }
