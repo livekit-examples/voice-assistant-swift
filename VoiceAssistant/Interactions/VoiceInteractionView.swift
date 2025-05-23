@@ -1,5 +1,5 @@
 //
-//  VoiceInputView.swift
+//  VoiceInteractionView.swift
 //  VoiceAssistant
 //
 //  Created by Blaze Pankowski on 23/05/2025.
@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct VoiceInputView: View {
+struct VoiceInteractionView: View {
     @Environment(AppViewModel.self) private var viewModel
     var namespace: Namespace.ID
 

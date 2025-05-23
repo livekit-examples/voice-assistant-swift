@@ -20,10 +20,10 @@ struct AppView: View {
             case (.connecting, _):
                 StartView()
             case (.connected, .text):
-                TextInputView(namespace: transitions)
+                TextInteractionView(namespace: transitions)
                     .environment(chatViewModel)
             case (.connected, .voice):
-                VoiceInputView(namespace: transitions)
+                VoiceInteractionView(namespace: transitions)
             case (.reconnecting, _):
                 Text("Reconnecting...")
             }

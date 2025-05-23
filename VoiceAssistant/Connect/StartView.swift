@@ -34,6 +34,7 @@ struct StartView: View {
 
             AsyncButton(action: viewModel.connect) {
                 Text("Start call")
+                    .frame(width: 232, height: 44)
             } busyLabel: {
                 HStack(spacing: 8) {
                     Spacer()
@@ -41,9 +42,9 @@ struct StartView: View {
                     Text("Connecting")
                     Spacer()
                 }
+                .frame(width: 232, height: 44)
             }
             .buttonStyle(StartButtonStyle())
-            .frame(height: 44)
         }
         .multilineTextAlignment(.center)
         .padding(.horizontal, 64)
@@ -61,7 +62,6 @@ struct StartButtonStyle: ButtonStyle {
             .foregroundStyle(Color.white)
             .background(Color.blue500)
             .cornerRadius(8)
-            .padding(.horizontal, 24)
     }
 }
 
