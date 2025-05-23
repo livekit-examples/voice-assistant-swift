@@ -31,8 +31,8 @@ struct CallBar: View {
                 .frame(height: Constants.buttonHeight)
             #endif
 
-            Button {} label: {
-                Image(systemName: "video.slash.fill")
+            Button(action: viewModel.toggleVideo) {
+                Image(systemName: viewModel.isVideoEnabled ? "video.fill" : "video.slash.fill")
                     .frame(width: Constants.buttonWidth, height: Constants.buttonHeight)
             }
 

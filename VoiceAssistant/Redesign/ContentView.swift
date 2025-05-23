@@ -10,7 +10,7 @@ import LiveKitComponents
 struct ContentView: View {
     @Environment(AppViewModel.self) private var viewModel
     @State private var chatViewModel = ChatViewModel()
-    @Namespace private var participantNamespace
+    @Namespace private var transitions
 
     var body: some View {
         Group {
@@ -27,7 +27,14 @@ struct ContentView: View {
                             ParticipantView(showInformation: false)
                                 .environmentObject(agent)
                                 .frame(maxWidth: 120)
-                                .matchedGeometryEffect(id: "participant", in: participantNamespace)
+                                .matchedGeometryEffect(id: "agent", in: transitions)
+                        }
+                        if viewModel.video != nil {
+                            ParticipantView(showInformation: false)
+                                .environmentObject(viewModel.localParticipant)
+                                .frame(maxWidth: 120)
+                                .clipShape(RoundedRectangle(cornerRadius: 8))
+                                .matchedGeometryEffect(id: "local", in: transitions)
                         }
                     }
                     .frame(height: 120)
@@ -38,18 +45,28 @@ struct ContentView: View {
                         }
                 }
             case (.connected, .voice):
-                if let agent = viewModel.agent {
-                    ParticipantView(showInformation: false)
-                        .environmentObject(agent)
-                        .matchedGeometryEffect(id: "participant", in: participantNamespace)
-                        .safeAreaInset(edge: .bottom) {
-                            CallBar()
-                        }
-                } else {
-                    Text("No agent")
-                        .safeAreaInset(edge: .bottom) {
-                            CallBar()
-                        }
+                ZStack(alignment: .topTrailing) {
+                    if let agent = viewModel.agent {
+                        ParticipantView(showInformation: false)
+                            .environmentObject(agent)
+                            .matchedGeometryEffect(id: "agent", in: transitions)
+                            .safeAreaInset(edge: .bottom) {
+                                CallBar()
+                            }
+                    } else {
+                        Text("No agent")
+                            .safeAreaInset(edge: .bottom) {
+                                CallBar()
+                            }
+                    }
+
+                    if viewModel.video != nil {
+                        ParticipantView(showInformation: false)
+                            .environmentObject(viewModel.localParticipant)
+                            .frame(maxWidth: 120, maxHeight: 120)
+                            .clipShape(RoundedRectangle(cornerRadius: 8))
+                            .matchedGeometryEffect(id: "local", in: transitions)
+                    }
                 }
             case (.reconnecting, _):
                 Text("Reconnecting...")
@@ -57,6 +74,7 @@ struct ContentView: View {
         }
         .animation(.default, value: viewModel.connectionState)
         .animation(.default, value: viewModel.inputMode)
+        .animation(.default, value: viewModel.video)
     }
 }
 

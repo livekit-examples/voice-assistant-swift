@@ -19,6 +19,8 @@ final class AppViewModel {
     private(set) var inputMode: InputMode = .voice
 
     private(set) var isMuted = false
+    private(set) var isVideoEnabled = false
+    private(set) var video: TrackPublication?
 
     private(set) var audioDevices: [AudioDevice] = []
     private(set) var selectedDevice: AudioDevice?
@@ -100,6 +102,20 @@ final class AppViewModel {
         }
     }
 
+    func toggleVideo() {
+        isVideoEnabled.toggle()
+        Task {
+            if isVideoEnabled {
+                let track = LocalVideoTrack.createCameraTrack()
+                try await room.localParticipant.publish(videoTrack: track)
+            } else {
+                if let track = room.localParticipant.firstCameraPublication as? LocalTrackPublication {
+                    try await room.localParticipant.unpublish(publication: track)
+                }
+            }
+        }
+    }
+
     func select(audioDevice: AudioDevice) {
         selectedDevice = audioDevice
     }
@@ -109,6 +125,22 @@ extension AppViewModel: RoomDelegate {
     nonisolated func room(_: Room, didUpdateConnectionState connectionState: ConnectionState, from _: ConnectionState) {
         Task { @MainActor in
             self.connectionState = connectionState
+        }
+    }
+
+    nonisolated func room(_: Room, participant _: LocalParticipant, didPublishTrack publication: LocalTrackPublication) {
+        Task { @MainActor in
+            if publication.track is LocalVideoTrack {
+                video = publication
+            }
+        }
+    }
+
+    nonisolated func room(_: Room, participant _: LocalParticipant, didUnpublishTrack publication: LocalTrackPublication) {
+        Task { @MainActor in
+            if publication.track is LocalVideoTrack {
+                video = nil
+            }
         }
     }
 
