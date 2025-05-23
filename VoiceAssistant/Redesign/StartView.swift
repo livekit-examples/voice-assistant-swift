@@ -60,10 +60,9 @@ struct StartView: View {
         }
         .multilineTextAlignment(.center)
         .padding(.horizontal, 64)
-//        .animation(.easeInOut(duration: 0.2), value: viewModel.connectionState)
-//        #if !os(visionOS)
-//        .sensoryFeedback(.selection, trigger: viewModel.state.isConnecting)
-//        #endif
+        #if !os(visionOS)
+            .sensoryFeedback(.impact, trigger: viewModel.connectionState == .connecting)
+        #endif
     }
 }
 

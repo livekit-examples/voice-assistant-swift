@@ -22,8 +22,8 @@ final class AppViewModel {
     private(set) var isVideoEnabled = false
     private(set) var video: TrackPublication?
 
-    private(set) var audioDevices: [AudioDevice] = []
-    private(set) var selectedDevice: AudioDevice?
+    private(set) var audioDevices: [AudioDevice] = AudioManager.shared.inputDevices
+    private(set) var selectedDevice: AudioDevice = AudioManager.shared.inputDevice
 
     @ObservationIgnored
     @Dependency(\.room) private var room
@@ -47,9 +47,17 @@ final class AppViewModel {
         AudioManager.shared.onDeviceUpdate = nil
     }
 
-    func connect() {
+    private func resetState() {
         error = nil
         isListening = false
+        inputMode = .voice
+        isMuted = false
+        isVideoEnabled = false
+        video = nil
+    }
+
+    func connect() {
+        resetState()
         Task {
             do {
                 try await self.room.withPreConnectAudio {
@@ -130,7 +138,7 @@ extension AppViewModel: RoomDelegate {
 
     nonisolated func room(_: Room, participant _: LocalParticipant, didPublishTrack publication: LocalTrackPublication) {
         Task { @MainActor in
-            if publication.track is LocalVideoTrack {
+            if publication.source == .camera, !publication.isMuted {
                 video = publication
             }
         }
@@ -138,7 +146,7 @@ extension AppViewModel: RoomDelegate {
 
     nonisolated func room(_: Room, participant _: LocalParticipant, didUnpublishTrack publication: LocalTrackPublication) {
         Task { @MainActor in
-            if publication.track is LocalVideoTrack {
+            if publication.source == .camera {
                 video = nil
             }
         }

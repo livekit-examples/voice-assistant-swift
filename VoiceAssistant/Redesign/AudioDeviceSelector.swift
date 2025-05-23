@@ -18,7 +18,7 @@ struct AudioDeviceSelector2: View {
                 } label: {
                     HStack {
                         Text(device.name)
-                        if device.deviceId == viewModel.selectedDevice?.deviceId {
+                        if device.deviceId == viewModel.selectedDevice.deviceId {
                             Image(systemName: "checkmark")
                         }
                     }

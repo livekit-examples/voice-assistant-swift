@@ -27,13 +27,17 @@ struct ContentView: View {
                             ParticipantView(showInformation: false)
                                 .environmentObject(agent)
                                 .frame(maxWidth: 120)
+                                .clipShape(RoundedRectangle(cornerRadius: 8))
+                                .shadow(radius: 20, y: 10)
                                 .matchedGeometryEffect(id: "agent", in: transitions)
                         }
-                        if viewModel.video != nil {
+                        if let video = viewModel.video {
                             ParticipantView(showInformation: false)
                                 .environmentObject(viewModel.localParticipant)
-                                .frame(maxWidth: 120)
                                 .clipShape(RoundedRectangle(cornerRadius: 8))
+                                .aspectRatio(video.aspectRatio, contentMode: .fit)
+                                .frame(maxWidth: 120, maxHeight: 120)
+                                .shadow(radius: 20, y: 10)
                                 .matchedGeometryEffect(id: "local", in: transitions)
                         }
                     }
@@ -60,12 +64,15 @@ struct ContentView: View {
                             }
                     }
 
-                    if viewModel.video != nil {
+                    if let video = viewModel.video {
                         ParticipantView(showInformation: false)
                             .environmentObject(viewModel.localParticipant)
-                            .frame(maxWidth: 120, maxHeight: 120)
                             .clipShape(RoundedRectangle(cornerRadius: 8))
+                            .aspectRatio(video.aspectRatio, contentMode: .fit)
+                            .frame(maxWidth: 200, maxHeight: 200)
+                            .shadow(radius: 20, y: 10)
                             .matchedGeometryEffect(id: "local", in: transitions)
+                            .padding()
                     }
                 }
             case (.reconnecting, _):
@@ -80,4 +87,11 @@ struct ContentView: View {
 
 #Preview {
     ContentView()
+}
+
+extension TrackPublication {
+    var aspectRatio: CGFloat {
+        guard let dimensions else { return 1 }
+        return CGFloat(dimensions.width) / CGFloat(dimensions.height)
+    }
 }
