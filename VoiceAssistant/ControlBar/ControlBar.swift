@@ -17,43 +17,47 @@ struct ControlBar: View {
 
     var body: some View {
         HStack {
-            Button(action: viewModel.toggleMute) {
+            AsyncButton(action: viewModel.toggleMute) {
                 HStack(spacing: 8) {
                     Image(systemName: viewModel.isMuted ? "microphone.slash.fill" : "microphone.fill")
                     LocalAudioVisualizer(track: viewModel.localParticipant.firstAudioTrack)
                 }
                 .padding(.horizontal, 8)
-                .frame(height: Constants.buttonHeight)
             }
+            .frame(height: Constants.buttonHeight)
 
             #if os(macOS)
             AudioDeviceSelector2()
                 .frame(height: Constants.buttonHeight)
             #endif
 
-            Button(action: viewModel.toggleVideo) {
+            AsyncButton(action: viewModel.toggleVideo) {
                 Image(systemName: viewModel.isVideoEnabled ? "video.fill" : "video.slash.fill")
                     .frame(width: Constants.buttonWidth, height: Constants.buttonHeight)
             }
+            .frame(width: Constants.buttonWidth, height: Constants.buttonHeight)
 
-            Button {} label: {
+            AsyncButton {} label: {
                 Image(systemName: "arrow.up.square.fill")
                     .frame(width: Constants.buttonWidth, height: Constants.buttonHeight)
             }
+            .frame(width: Constants.buttonWidth, height: Constants.buttonHeight)
 
-            Button(action: viewModel.enterTextInputMode) {
+            AsyncButton(action: viewModel.enterTextInputMode) {
                 Image(systemName: "ellipsis.message.fill")
                     .frame(width: Constants.buttonWidth, height: Constants.buttonHeight)
             }
+            .frame(width: Constants.buttonWidth, height: Constants.buttonHeight)
 
             Rectangle()
                 .fill(.separator1)
                 .frame(width: 1, height: Constants.buttonHeight)
 
-            Button(action: viewModel.disconnect) {
+            AsyncButton(action: viewModel.disconnect) {
                 Image(systemName: "phone.down.fill")
                     .frame(width: Constants.buttonWidth, height: Constants.buttonHeight)
             }
+            .frame(width: Constants.buttonWidth, height: Constants.buttonHeight)
             .buttonStyle(CallBarButtonStyle(foregroundColor: .foregroundSerious, backgroundColor: .backgroundSerious, borderColor: .separatorSerious))
         }
         .padding(8)

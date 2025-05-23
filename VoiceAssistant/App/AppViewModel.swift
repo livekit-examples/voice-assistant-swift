@@ -57,32 +57,28 @@ final class AppViewModel {
         video = nil
     }
 
-    func connect() {
+    func connect() async {
         resetState()
-        Task {
-            do {
-                try await self.room.withPreConnectAudio {
-                    await MainActor.run { self.isListening = true }
+        do {
+            try await room.withPreConnectAudio {
+                await MainActor.run { self.isListening = true }
 
-                    let connectionDetails = try await self.getConnection()
+                let connectionDetails = try await self.getConnection()
 
-                    try await self.room.connect(
-                        url: connectionDetails.serverUrl,
-                        token: connectionDetails.participantToken,
-                        connectOptions: .init(enableMicrophone: true)
-                    )
-                }
-            } catch {
-                self.error = error
-                isListening = false
+                try await self.room.connect(
+                    url: connectionDetails.serverUrl,
+                    token: connectionDetails.participantToken,
+                    connectOptions: .init(enableMicrophone: true)
+                )
             }
+        } catch {
+            self.error = error
+            isListening = false
         }
     }
 
-    func disconnect() {
-        Task {
-            await room.disconnect()
-        }
+    func disconnect() async {
+        await room.disconnect()
     }
 
     private func getConnection() async throws -> ConnectionDetails {
@@ -104,25 +100,18 @@ final class AppViewModel {
         }
     }
 
-    func toggleMute() {
+    func toggleMute() async {
         isMuted.toggle()
-        Task {
+        do {
             try await room.localParticipant.setMicrophone(enabled: !isMuted)
-        }
+        } catch {}
     }
 
-    func toggleVideo() {
+    func toggleVideo() async {
         isVideoEnabled.toggle()
-        Task {
-            if isVideoEnabled {
-                let track = LocalVideoTrack.createCameraTrack()
-                try await room.localParticipant.publish(videoTrack: track)
-            } else {
-                if let track = room.localParticipant.firstCameraPublication as? LocalTrackPublication {
-                    try await room.localParticipant.unpublish(publication: track)
-                }
-            }
-        }
+        do {
+            try await room.localParticipant.setCamera(enabled: isVideoEnabled)
+        } catch {}
     }
 
     func select(audioDevice: AudioDevice) {

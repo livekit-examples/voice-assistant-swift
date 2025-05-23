@@ -32,37 +32,36 @@ struct StartView: View {
             Spacer()
                 .frame(height: 16)
 
-            Button {
-                viewModel.connect()
-            } label: {
+            AsyncButton(action: viewModel.connect) {
+                Text("Start call")
+            } busyLabel: {
                 HStack(spacing: 8) {
                     Spacer()
-                    if viewModel.connectionState == .connecting {
-                        Spinner()
-                            .transition(.scale.combined(with: .opacity))
-                    }
-                    Text(viewModel.connectionState == .connecting ? "Connecting" : "Start call")
-                        .textCase(.uppercase)
-                        .monospaced()
-                        .foregroundStyle(Color.white)
-                        .font(.system(size: 14, weight: .semibold))
-                        .frame(maxHeight: .infinity)
+                    Spinner()
+                    Text("Connecting")
                     Spacer()
                 }
-                .background(.blue500)
-                .cornerRadius(8)
-                .frame(height: 44)
-                .frame(maxWidth: .infinity)
-                .padding(.horizontal, 24)
             }
-            .buttonStyle(.plain)
-            .tint(Color.blue500)
+            .buttonStyle(StartButtonStyle())
+            .frame(height: 44)
         }
         .multilineTextAlignment(.center)
         .padding(.horizontal, 64)
         #if !os(visionOS)
             .sensoryFeedback(.impact, trigger: viewModel.connectionState == .connecting)
         #endif
+    }
+}
+
+struct StartButtonStyle: ButtonStyle {
+    func makeBody(configuration: Configuration) -> some View {
+        configuration.label
+            .textCase(.uppercase)
+            .font(.system(size: 14, weight: .semibold, design: .monospaced))
+            .foregroundStyle(Color.white)
+            .background(Color.blue500)
+            .cornerRadius(8)
+            .padding(.horizontal, 24)
     }
 }
 

@@ -13,7 +13,12 @@ final class Dependencies {
 
     private init() {}
 
+    // MARK: LiveKit
+
     lazy var room = Room()
+
+    // MARK: Services
+
     lazy var tokenService = TokenService()
     lazy var messageReceivers: [any MessageReceiver] = [TranscriptionStreamReceiver(room: room)]
 }
