@@ -16,5 +16,19 @@ final class Dependencies {
 
     lazy var room = Room()
     lazy var tokenService = TokenService()
-    lazy var transcriptionStreamReceiver = TranscriptionStreamReceiver(room: room)
+    lazy var messageReceivers: [any MessageReceiver] = [TranscriptionStreamReceiver(room: room)]
+}
+
+@MainActor
+@propertyWrapper
+struct Dependency<T> {
+    let keyPath: KeyPath<Dependencies, T>
+
+    init(_ keyPath: KeyPath<Dependencies, T>) {
+        self.keyPath = keyPath
+    }
+
+    var wrappedValue: T {
+        Dependencies.shared[keyPath: keyPath]
+    }
 }

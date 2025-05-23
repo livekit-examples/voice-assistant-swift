@@ -12,22 +12,20 @@ final class AppViewModel {
         var agent: Participant?
     }
 
-    var state = State()
+    private(set) var state = State()
 
     @ObservationIgnored
-    let room: Room
+    @Dependency(\.room) private var room
     @ObservationIgnored
-    private let tokenService: TokenService
+    @Dependency(\.tokenService) private var tokenService
 
-    init(room: Room = Dependencies.shared.room, tokenService: TokenService = Dependencies.shared.tokenService) {
-        self.room = room
-        self.tokenService = tokenService
-
+    init() {
         room.add(delegate: self)
     }
 
     deinit {
-        room.remove(delegate: self)
+        // TODO: Fixme
+//        room.remove(delegate: self)
     }
 
     func connect() {

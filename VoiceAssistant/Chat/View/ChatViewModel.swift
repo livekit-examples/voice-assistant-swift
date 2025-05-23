@@ -14,12 +14,13 @@ final class ChatViewModel {
     private(set) var error: Error?
 
     @ObservationIgnored
-    private let room: Room
+    @Dependency(\.room) private var room
+    @ObservationIgnored
+    @Dependency(\.messageReceivers) private var messageReceivers
     @ObservationIgnored
     private var messageObservers: [Task<Void, Never>] = []
 
-    init(room: Room = Dependencies.shared.room, messageReceivers: [any MessageReceiver] = [Dependencies.shared.transcriptionStreamReceiver]) {
-        self.room = room
+    init() {
         room.add(delegate: self)
 
         for messageReceiver in messageReceivers {
@@ -42,7 +43,8 @@ final class ChatViewModel {
 
     deinit {
         messageObservers.forEach { $0.cancel() }
-        room.remove(delegate: self)
+        // TODO: Fixme
+        // room.remove(delegate: self)
     }
 
     private func clearHistory() {
