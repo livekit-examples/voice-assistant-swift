@@ -85,7 +85,12 @@ final class AppViewModel {
     }
 
     func enterTextInputMode() {
-        inputMode = .text
+        switch inputMode {
+        case .voice:
+            inputMode = .text
+        case .text:
+            inputMode = .voice
+        }
     }
 
     func toggleMute() {

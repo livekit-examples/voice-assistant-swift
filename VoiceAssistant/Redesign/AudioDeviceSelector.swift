@@ -26,6 +26,7 @@ struct AudioDeviceSelector2: View {
             }
         } label: {
             Image(systemName: "chevron.down")
+                .frame(width: 48, height: 44)
         }
     }
 }

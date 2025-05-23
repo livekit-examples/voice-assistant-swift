@@ -5,11 +5,12 @@
 //  Created by Blaze Pankowski on 22/05/2025.
 //
 
-import SwiftUI
+import LiveKitComponents
 
 struct ContentView: View {
     @Environment(AppViewModel.self) private var viewModel
     @State private var chatViewModel = ChatViewModel()
+    @Namespace private var participantNamespace
 
     var body: some View {
         Group {
@@ -20,16 +21,36 @@ struct ContentView: View {
             case (.connecting, _):
                 StartView()
             case (.connected, .text):
-                ChatView()
-                    .environment(chatViewModel)
-                    .safeAreaInset(edge: .bottom) {
-                        CallBar()
+                VStack {
+                    HStack {
+                        if let agent = viewModel.agent {
+                            ParticipantView(showInformation: false)
+                                .environmentObject(agent)
+                                .frame(maxWidth: 120)
+                                .matchedGeometryEffect(id: "participant", in: participantNamespace)
+                        }
                     }
+                    .frame(height: 120)
+                    ChatView()
+                        .environment(chatViewModel)
+                        .safeAreaInset(edge: .bottom) {
+                            CallBar()
+                        }
+                }
             case (.connected, .voice):
-                CallView()
-                    .safeAreaInset(edge: .bottom) {
-                        CallBar()
-                    }
+                if let agent = viewModel.agent {
+                    ParticipantView(showInformation: false)
+                        .environmentObject(agent)
+                        .matchedGeometryEffect(id: "participant", in: participantNamespace)
+                        .safeAreaInset(edge: .bottom) {
+                            CallBar()
+                        }
+                } else {
+                    Text("No agent")
+                        .safeAreaInset(edge: .bottom) {
+                            CallBar()
+                        }
+                }
             case (.reconnecting, _):
                 Text("Reconnecting...")
             }
