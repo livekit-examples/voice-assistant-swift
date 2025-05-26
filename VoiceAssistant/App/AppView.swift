@@ -16,7 +16,7 @@ struct AppView: View {
     @Namespace private var transitions
 
     var body: some View {
-        Group {
+        ZStack(alignment: .top) {
             switch viewModel.connectionState {
             case .connecting where viewModel.isListening, .connected, .reconnecting:
                 switch viewModel.interactionMode {
@@ -25,17 +25,16 @@ struct AppView: View {
                 }
             case .disconnected, .connecting: StartView()
             }
-        }
-        .animation(.default, value: viewModel.connectionState)
-        .animation(.default, value: viewModel.interactionMode)
-        .animation(.default, value: viewModel.video)
-        .overlay(alignment: .top) {
+
             if let error {
                 ErrorView(error: error) { self.error = nil }
             }
         }
+        .animation(.default, value: viewModel.connectionState)
+        .animation(.default, value: viewModel.interactionMode)
+        .animation(.default, value: viewModel.video)
         .onAppear {
-            Dependencies.shared.errorHandler = { error = $0 }
+            Dependencies.shared.errorHandler = { print("🔴", $0); error = $0 }
         }
     }
 }
