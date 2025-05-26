@@ -11,18 +11,17 @@ import Observation
 @Observable
 final class ChatViewModel {
     private(set) var messages: OrderedDictionary<Message.ID, Message> = [:]
-    private(set) var error: Error?
 
     @ObservationIgnored
     @Dependency(\.room) private var room
     @ObservationIgnored
     @Dependency(\.messageReceivers) private var messageReceivers
     @ObservationIgnored
+    @Dependency(\.errorHandler) private var errorHandler
+    @ObservationIgnored
     private var messageObservers: [Task<Void, Never>] = []
 
     init() {
-        room.add(delegate: self)
-
         for messageReceiver in messageReceivers {
             let observer = Task { [weak self] in
                 guard let self else { return }
@@ -34,28 +33,28 @@ final class ChatViewModel {
                         messages.updateValue(message, forKey: message.id)
                     }
                 } catch {
-                    self.error = error
+                    errorHandler(error)
                 }
             }
             messageObservers.append(observer)
+        }
+
+        Task { @MainActor [weak self] in
+            guard let changes = self?.room.changes else { return }
+            for await _ in changes {
+                guard let self else { return }
+                if room.connectionState == .disconnected {
+                    clearHistory()
+                }
+            }
         }
     }
 
     deinit {
         messageObservers.forEach { $0.cancel() }
-        // TODO: Fixme
-        // room.remove(delegate: self)
     }
 
     private func clearHistory() {
         messages.removeAll()
-    }
-}
-
-extension ChatViewModel: RoomDelegate {
-    nonisolated func room(_: Room, didDisconnectWithError _: LiveKitError?) {
-        Task { @MainActor in
-            clearHistory()
-        }
     }
 }

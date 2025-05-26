@@ -86,6 +86,7 @@ final class AppViewModel {
 
     func disconnect() async {
         await room.disconnect()
+        resetState()
     }
 
     private func getConnection() async throws -> ConnectionDetails {
