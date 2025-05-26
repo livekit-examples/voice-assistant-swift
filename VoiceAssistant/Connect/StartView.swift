@@ -23,11 +23,11 @@ struct StartView: View {
             .foregroundStyle(Color.foreground1)
             .tint(Color.foreground1)
 
-            if viewModel.error != nil {
-                Text("Error connecting. Make sure your agent is properly configured and try again.")
-                    .font(.system(size: 12, weight: .medium))
-                    .foregroundStyle(Color.foregroundSerious)
-            }
+//            if viewModel.error != nil {
+//                Text("Error connecting. Make sure your agent is properly configured and try again.")
+//                    .font(.system(size: 12, weight: .medium))
+//                    .foregroundStyle(Color.foregroundSerious)
+//            }
 
             Spacer()
                 .frame(height: 16)

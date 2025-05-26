@@ -12,7 +12,6 @@ final class AppViewModel {
 
     private(set) var connectionState: ConnectionState = .disconnected
     private(set) var isListening = false
-    private(set) var error: Error?
 
     private(set) var agent: Participant?
     var localParticipant: Participant { room.localParticipant }
@@ -30,6 +29,8 @@ final class AppViewModel {
     @Dependency(\.room) private var room
     @ObservationIgnored
     @Dependency(\.tokenService) private var tokenService
+    @ObservationIgnored
+    @Dependency(\.errorHandler) private var errorHandler
 
     init() {
         Task { @MainActor [weak self] in
@@ -56,7 +57,6 @@ final class AppViewModel {
     }
 
     private func resetState() {
-        error = nil
         isListening = false
         inputMode = .voice
         isMuted = false
@@ -79,7 +79,7 @@ final class AppViewModel {
                 )
             }
         } catch {
-            self.error = error
+            errorHandler(error)
             isListening = false
         }
     }

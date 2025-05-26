@@ -21,6 +21,10 @@ final class Dependencies {
 
     lazy var tokenService = TokenService()
     lazy var messageReceivers: [any MessageReceiver] = [TranscriptionStreamReceiver(room: room)]
+
+    // MARK: Error
+
+    lazy var errorHandler: (Error) -> Void = { _ in }
 }
 
 @MainActor
