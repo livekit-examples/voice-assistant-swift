@@ -23,12 +23,6 @@ struct StartView: View {
             .foregroundStyle(Color.foreground1)
             .tint(Color.foreground1)
 
-//            if viewModel.error != nil {
-//                Text("Error connecting. Make sure your agent is properly configured and try again.")
-//                    .font(.system(size: 12, weight: .medium))
-//                    .foregroundStyle(Color.foregroundSerious)
-//            }
-
             Spacer()
                 .frame(height: 16)
 
@@ -48,6 +42,7 @@ struct StartView: View {
         }
         .multilineTextAlignment(.center)
         .padding(.horizontal, 64)
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
         #if !os(visionOS)
             .sensoryFeedback(.impact, trigger: viewModel.connectionState == .connecting)
         #endif
