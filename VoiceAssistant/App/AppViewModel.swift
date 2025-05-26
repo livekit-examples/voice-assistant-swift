@@ -5,7 +5,7 @@ import Observation
 @MainActor
 @Observable
 final class AppViewModel {
-    enum InputMode {
+    enum InteractionMode {
         case voice
         case text
     }
@@ -16,7 +16,7 @@ final class AppViewModel {
     private(set) var agent: Participant?
     var localParticipant: Participant { room.localParticipant }
 
-    private(set) var inputMode: InputMode = .voice
+    private(set) var interactionMode: InteractionMode = .voice
 
     private(set) var isMuted = false
     private(set) var isVideoEnabled = false
@@ -58,7 +58,7 @@ final class AppViewModel {
 
     private func resetState() {
         isListening = false
-        inputMode = .voice
+        interactionMode = .voice
         isMuted = false
         isVideoEnabled = false
         video = nil
@@ -99,11 +99,11 @@ final class AppViewModel {
     }
 
     func enterTextInputMode() {
-        switch inputMode {
+        switch interactionMode {
         case .voice:
-            inputMode = .text
+            interactionMode = .text
         case .text:
-            inputMode = .voice
+            interactionMode = .voice
         }
     }
 

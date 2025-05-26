@@ -17,22 +17,17 @@ struct AppView: View {
 
     var body: some View {
         Group {
-            switch (viewModel.connectionState, viewModel.inputMode) {
-            case (.disconnected, _):
-                StartView()
-            case (.connecting, _):
-                StartView()
-            case (.connected, .text):
-                TextInteractionView(namespace: transitions)
-                    .environment(chatViewModel)
-            case (.connected, .voice):
-                VoiceInteractionView(namespace: transitions)
-            case (.reconnecting, _):
-                Text("Reconnecting...")
+            switch viewModel.connectionState {
+            case .connecting where viewModel.isListening, .connected, .reconnecting:
+                switch viewModel.interactionMode {
+                case .text: TextInteractionView(namespace: transitions).environment(chatViewModel)
+                case .voice: VoiceInteractionView(namespace: transitions)
+                }
+            case .disconnected, .connecting: StartView()
             }
         }
         .animation(.default, value: viewModel.connectionState)
-        .animation(.default, value: viewModel.inputMode)
+        .animation(.default, value: viewModel.interactionMode)
         .animation(.default, value: viewModel.video)
         .overlay(alignment: .top) {
             if let error {
