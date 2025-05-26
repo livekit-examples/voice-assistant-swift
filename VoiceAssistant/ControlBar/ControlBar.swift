@@ -27,7 +27,7 @@ struct ControlBar: View {
             .frame(height: Constants.buttonHeight)
 
             #if os(macOS)
-            AudioDeviceSelector2()
+            AudioDeviceSelector()
                 .frame(height: Constants.buttonHeight)
             #endif
 

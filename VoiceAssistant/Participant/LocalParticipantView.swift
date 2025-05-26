@@ -12,7 +12,7 @@ struct LocalParticipantView: View {
     var namespace: Namespace.ID
 
     var body: some View {
-        if let video = viewModel.video, viewModel.isVideoEnabled {
+        if let video = viewModel.video {
             ParticipantView(showInformation: false)
                 .environmentObject(viewModel.localParticipant)
                 .clipShape(RoundedRectangle(cornerRadius: 8))

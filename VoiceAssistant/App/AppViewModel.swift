@@ -1,3 +1,4 @@
+import Combine
 import LiveKit
 import Observation
 
@@ -31,7 +32,15 @@ final class AppViewModel {
     @Dependency(\.tokenService) private var tokenService
 
     init() {
-        room.add(delegate: self)
+        Task { @MainActor [weak self] in
+            guard let changes = self?.room.changes else { return }
+            for await _ in changes {
+                guard let self else { return }
+                connectionState = room.connectionState
+                agent = room.remoteParticipants.values.first { $0.isAgent }
+                video = localParticipant.firstCameraPublication
+            }
+        }
 
         try? AudioManager.shared.setRecordingAlwaysPreparedMode(true)
         AudioManager.shared.onDeviceUpdate = { _ in
@@ -43,8 +52,6 @@ final class AppViewModel {
     }
 
     deinit {
-        // TODO: Fixme
-        //        room.remove(delegate: self)
         AudioManager.shared.onDeviceUpdate = nil
     }
 
@@ -116,53 +123,5 @@ final class AppViewModel {
 
     func select(audioDevice: AudioDevice) {
         selectedDevice = audioDevice
-    }
-}
-
-extension AppViewModel: RoomDelegate {
-    nonisolated func room(_: Room, didUpdateConnectionState connectionState: ConnectionState, from _: ConnectionState) {
-        Task { @MainActor in
-            self.connectionState = connectionState
-        }
-    }
-
-    nonisolated func room(_: Room, participant _: LocalParticipant, didPublishTrack publication: LocalTrackPublication) {
-        Task { @MainActor in
-            if publication.source == .camera, !publication.isMuted {
-                video = publication
-            }
-        }
-    }
-
-    nonisolated func room(_: Room, participant _: LocalParticipant, didUnpublishTrack publication: LocalTrackPublication) {
-        Task { @MainActor in
-            if publication.source == .camera {
-                video = nil
-            }
-        }
-    }
-
-    nonisolated func room(_: Room, participant: Participant, trackPublication: TrackPublication, didUpdateIsMuted isMuted: Bool) {
-        Task { @MainActor in
-            if participant == localParticipant, trackPublication.source == .camera {
-                video = isMuted ? nil : trackPublication
-            }
-        }
-    }
-
-    nonisolated func room(_: Room, participantDidConnect participant: RemoteParticipant) {
-        Task { @MainActor in
-            if participant.isAgent {
-                agent = participant
-            }
-        }
-    }
-
-    nonisolated func room(_: Room, participantDidDisconnect participant: RemoteParticipant) {
-        Task { @MainActor in
-            if participant.isAgent {
-                agent = nil
-            }
-        }
     }
 }
