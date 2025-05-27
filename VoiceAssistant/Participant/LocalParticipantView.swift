@@ -23,7 +23,7 @@ struct LocalParticipantView: View {
     }
 }
 
-extension TrackPublication {
+extension VideoTrack {
     var aspectRatio: CGFloat {
         guard let dimensions else { return 1 }
         return CGFloat(dimensions.width) / CGFloat(dimensions.height)

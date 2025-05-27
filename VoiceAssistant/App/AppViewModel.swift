@@ -20,7 +20,7 @@ final class AppViewModel {
 
     private(set) var isMuted = false
     private(set) var isVideoEnabled = false
-    private(set) var video: TrackPublication?
+    private(set) var video: (any VideoTrack)?
 
     private(set) var audioDevices: [AudioDevice] = AudioManager.shared.inputDevices
     private(set) var selectedDevice: AudioDevice = AudioManager.shared.inputDevice
@@ -39,7 +39,7 @@ final class AppViewModel {
                 guard let self else { return }
                 connectionState = room.connectionState
                 agent = room.remoteParticipants.values.first { $0.isAgent }
-                video = localParticipant.firstCameraPublication
+                video = localParticipant.firstCameraVideoTrack
             }
         }
 

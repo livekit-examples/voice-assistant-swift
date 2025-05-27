@@ -17,6 +17,8 @@ final class ChatViewModel {
     @ObservationIgnored
     @Dependency(\.messageReceivers) private var messageReceivers
     @ObservationIgnored
+    @Dependency(\.messageSender) private var messageSender
+    @ObservationIgnored
     @Dependency(\.errorHandler) private var errorHandler
     @ObservationIgnored
     private var messageObservers: [Task<Void, Never>] = []
@@ -56,5 +58,13 @@ final class ChatViewModel {
 
     private func clearHistory() {
         messages.removeAll()
+    }
+
+    func sendMessage(_ text: String) async {
+        do {
+            try await messageSender.send(message: text)
+        } catch {
+            errorHandler(error)
+        }
     }
 }

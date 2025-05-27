@@ -32,9 +32,9 @@ struct AppView: View {
         }
         .animation(.default, value: viewModel.connectionState)
         .animation(.default, value: viewModel.interactionMode)
-        .animation(.default, value: viewModel.video)
+        .animation(.default, value: viewModel.video == nil)
         .onAppear {
-            Dependencies.shared.errorHandler = { print("🔴", $0); error = $0 }
+            Dependencies.shared.errorHandler = { error = $0 }
         }
     }
 }
