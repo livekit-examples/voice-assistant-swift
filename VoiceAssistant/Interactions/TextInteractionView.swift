@@ -9,6 +9,8 @@ import SwiftUI
 
 struct TextInteractionView: View {
     @Environment(AppViewModel.self) private var viewModel
+    @Environment(ChatViewModel.self) private var chatViewModel
+
     var namespace: Namespace.ID
 
     var body: some View {
@@ -29,7 +31,10 @@ struct TextInteractionView: View {
                 )
         }
         .safeAreaInset(edge: .bottom) {
-            ControlBar()
+            VStack {
+                ChatTextInputView()
+                ControlBar()
+            }
         }
     }
 }
