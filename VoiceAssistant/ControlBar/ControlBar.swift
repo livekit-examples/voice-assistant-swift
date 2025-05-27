@@ -22,7 +22,7 @@ struct ControlBar: View {
                     Image(systemName: viewModel.isMuted ? "microphone.slash.fill" : "microphone.fill")
                     LocalAudioVisualizer(track: viewModel.localParticipant.firstAudioTrack)
                 }
-                .padding(.horizontal, 8)
+                .padding(.leading, 16)
             }
             .frame(height: Constants.buttonHeight)
 
@@ -60,14 +60,16 @@ struct ControlBar: View {
             .frame(width: Constants.buttonWidth, height: Constants.buttonHeight)
             .buttonStyle(CallBarButtonStyle(foregroundColor: .foregroundSerious, backgroundColor: .backgroundSerious, borderColor: .separatorSerious))
         }
-        .padding(8)
         .buttonStyle(CallBarButtonStyle(
             foregroundColor: .foreground1,
             backgroundColor: .background2,
             borderColor: .separator1
         ))
+        .backgroundStyle(Color.background1)
+        .frame(height: 60)
+        .shadow(color: .black.opacity(0.1), radius: 20)
         .overlay(
-            RoundedRectangle(cornerRadius: 8)
+            RoundedRectangle(cornerRadius: 30)
                 .stroke(.separator1, lineWidth: 1)
         )
     }
@@ -82,14 +84,14 @@ struct CallBarButtonStyle: ButtonStyle {
         configuration.label
             .font(.system(size: 15, weight: .medium))
             .foregroundStyle(configuration.isPressed ? foregroundColor.opacity(0.5) : foregroundColor)
-            .background(
-                RoundedRectangle(cornerRadius: 8)
-                    .fill(configuration.isPressed ? backgroundColor.opacity(0.5) : backgroundColor)
-            )
-            .overlay(
-                RoundedRectangle(cornerRadius: 8)
-                    .stroke(configuration.isPressed ? borderColor.opacity(0.5) : borderColor, lineWidth: 1)
-            )
+//            .background(
+//                RoundedRectangle(cornerRadius: 8)
+//                    .fill(configuration.isPressed ? backgroundColor.opacity(0.5) : backgroundColor)
+//            )
+//            .overlay(
+//                RoundedRectangle(cornerRadius: 8)
+//                    .stroke(configuration.isPressed ? borderColor.opacity(0.5) : borderColor, lineWidth: 1)
+//            )
     }
 }
 

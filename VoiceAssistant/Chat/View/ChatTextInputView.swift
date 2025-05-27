@@ -6,8 +6,8 @@ struct ChatTextInputView: View {
 
     var body: some View {
         HStack(spacing: 12) {
-            TextField("Type a message...", text: $messageText, axis: .vertical)
-                .textFieldStyle(.roundedBorder)
+            TextField("Message", text: $messageText, axis: .vertical)
+                .textFieldStyle(.plain)
                 .lineLimit(5)
                 .submitLabel(.send)
                 .onSubmit {
@@ -15,13 +15,20 @@ struct ChatTextInputView: View {
                         await sendMessage()
                     }
                 }
+                .background(Color.background2)
 
             AsyncButton(action: sendMessage) {
                 Image(systemName: "arrow.up.circle.fill")
-                    .font(.title2)
+                    .font(.system(size: 32))
             }
+            .tint(.blue500)
             .disabled(messageText.isEmpty)
         }
+        .frame(height: 48)
+        .background(Color.background2)
+        .clipShape(RoundedRectangle(cornerRadius: 24))
+        .shadow(color: .black.opacity(0.1), radius: 20)
+        .padding(.horizontal)
     }
 
     private func sendMessage() async {
@@ -29,4 +36,9 @@ struct ChatTextInputView: View {
         defer { messageText = "" }
         await chatViewModel.sendMessage(messageText)
     }
+}
+
+#Preview {
+    ChatTextInputView()
+        .environment(ChatViewModel())
 }

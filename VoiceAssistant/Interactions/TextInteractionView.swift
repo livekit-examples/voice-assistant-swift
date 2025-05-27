@@ -10,6 +10,8 @@ import SwiftUI
 struct TextInteractionView: View {
     @Environment(AppViewModel.self) private var viewModel
     @Environment(ChatViewModel.self) private var chatViewModel
+    @FocusState private var isKeyboardFocused: Bool
+    @State private var keyboardHeight: CGFloat = 0
 
     var namespace: Namespace.ID
 
@@ -29,12 +31,15 @@ struct TextInteractionView: View {
                         endPoint: .init(x: 0.5, y: 0.2)
                     )
                 )
-        }
-        .safeAreaInset(edge: .bottom) {
-            VStack {
-                ChatTextInputView()
+            ChatTextInputView()
+                .focused($isKeyboardFocused)
+            if !isKeyboardFocused {
                 ControlBar()
             }
+        }
+        .contentShape(Rectangle())
+        .onTapGesture {
+            isKeyboardFocused = false
         }
     }
 }
