@@ -32,7 +32,7 @@ struct ChatView: View {
     }
 
     @ViewBuilder
-    private func message(_ message: Message) -> some View {
+    private func message(_ message: ReceivedMessage) -> some View {
         Group {
             switch message.content {
             case let .userTranscript(text):

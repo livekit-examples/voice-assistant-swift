@@ -20,8 +20,15 @@ final class Dependencies {
     // MARK: Services
 
     lazy var tokenService = TokenService()
-    lazy var messageReceivers: [any MessageReceiver] = [TranscriptionStreamReceiver(room: room)]
-    lazy var messageSender: any MessageSender = TopicMessageSender(room: room)
+
+    private lazy var topicMessageSender = TopicMessageSender(room: room)
+    lazy var messageSenders: [any MessageSender] = [
+        topicMessageSender,
+    ]
+    lazy var messageReceivers: [any MessageReceiver] = [
+        TranscriptionStreamReceiver(room: room),
+        topicMessageSender,
+    ]
 
     // MARK: Error
 

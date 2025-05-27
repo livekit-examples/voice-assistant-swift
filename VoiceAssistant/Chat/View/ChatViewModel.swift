@@ -10,14 +10,14 @@ import Observation
 @MainActor
 @Observable
 final class ChatViewModel {
-    private(set) var messages: OrderedDictionary<Message.ID, Message> = [:]
+    private(set) var messages: OrderedDictionary<ReceivedMessage.ID, ReceivedMessage> = [:]
 
     @ObservationIgnored
     @Dependency(\.room) private var room
     @ObservationIgnored
     @Dependency(\.messageReceivers) private var messageReceivers
     @ObservationIgnored
-    @Dependency(\.messageSender) private var messageSender
+    @Dependency(\.messageSenders) private var messageSenders
     @ObservationIgnored
     @Dependency(\.errorHandler) private var errorHandler
     @ObservationIgnored
@@ -61,8 +61,11 @@ final class ChatViewModel {
     }
 
     func sendMessage(_ text: String) async {
+        let message = SentMessage(id: UUID().uuidString, timestamp: Date(), content: .userText(text))
         do {
-            try await messageSender.send(message: text)
+            for sender in messageSenders {
+                try await sender.send(message)
+            }
         } catch {
             errorHandler(error)
         }

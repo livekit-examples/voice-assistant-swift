@@ -1,5 +1,5 @@
 import Foundation
 
 protocol MessageSender: Sendable {
-    func send(message: String) async throws
+    func send(_ message: SentMessage) async throws
 }
