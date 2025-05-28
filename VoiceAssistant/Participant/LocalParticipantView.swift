@@ -13,12 +13,11 @@ struct LocalParticipantView: View {
 
     var body: some View {
         if let cameraTrack = viewModel.cameraTrack {
-            ParticipantView(showInformation: false)
-                .environmentObject(viewModel.localParticipant)
+            SwiftUIVideoView(cameraTrack)
                 .clipShape(RoundedRectangle(cornerRadius: 8))
                 .aspectRatio(cameraTrack.aspectRatio, contentMode: .fit)
                 .shadow(radius: 20, y: 10)
-                .matchedGeometryEffect(id: "local", in: namespace)
+                .matchedGeometryEffect(id: String(describing: Self.self), in: namespace)
         }
     }
 }

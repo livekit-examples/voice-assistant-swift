@@ -21,6 +21,8 @@ final class AppViewModel {
     private(set) var isMicrophoneEnabled = false
     private(set) var isCameraEnabled = false
     private(set) var cameraTrack: (any VideoTrack)?
+    private(set) var isScreenShareEnabled = false
+    private(set) var screenShareTrack: (any VideoTrack)?
 
     private(set) var audioDevices: [AudioDevice] = AudioManager.shared.inputDevices
     private(set) var selectedDevice: AudioDevice = AudioManager.shared.inputDevice
@@ -51,6 +53,8 @@ final class AppViewModel {
                 isMicrophoneEnabled = localParticipant.isMicrophoneEnabled()
                 isCameraEnabled = localParticipant.isCameraEnabled()
                 cameraTrack = localParticipant.firstCameraVideoTrack
+                isScreenShareEnabled = localParticipant.isScreenShareEnabled()
+                screenShareTrack = localParticipant.firstScreenShareVideoTrack
             }
         }
 
@@ -92,7 +96,7 @@ final class AppViewModel {
             }
         } catch {
             errorHandler(error)
-            isListening = false
+            resetState()
         }
     }
 
@@ -131,6 +135,14 @@ final class AppViewModel {
     func toggleCamera() async {
         do {
             try await room.localParticipant.setCamera(enabled: !isCameraEnabled)
+        } catch {
+            errorHandler(error)
+        }
+    }
+
+    func toggleScreenShare() async {
+        do {
+            try await room.localParticipant.setScreenShare(enabled: !isScreenShareEnabled)
         } catch {
             errorHandler(error)
         }

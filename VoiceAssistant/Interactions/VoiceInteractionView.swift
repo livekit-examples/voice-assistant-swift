@@ -14,8 +14,12 @@ struct VoiceInteractionView: View {
     var body: some View {
         ZStack(alignment: .topTrailing) {
             AgentParticipantView(namespace: namespace)
-            LocalParticipantView(namespace: namespace)
-                .frame(maxWidth: 120, maxHeight: 200)
+            HStack {
+                LocalParticipantView(namespace: namespace)
+                    .frame(maxWidth: 120, maxHeight: 200)
+                ScreenShareView(namespace: namespace)
+                    .frame(maxWidth: 200, maxHeight: 200)
+            }
         }
         .padding(.horizontal)
         .safeAreaInset(edge: .bottom) {

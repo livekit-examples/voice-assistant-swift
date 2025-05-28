@@ -37,7 +37,7 @@ struct ControlBar: View {
             }
             .frame(width: Constants.buttonWidth, height: Constants.buttonHeight)
 
-            AsyncButton {} label: {
+            AsyncButton(action: viewModel.toggleScreenShare) {
                 Image(systemName: "arrow.up.square.fill")
                     .frame(width: Constants.buttonWidth, height: Constants.buttonHeight)
             }

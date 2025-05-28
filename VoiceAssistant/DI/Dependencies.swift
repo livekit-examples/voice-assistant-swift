@@ -15,7 +15,7 @@ final class Dependencies {
 
     // MARK: LiveKit
 
-    lazy var room = Room()
+    lazy var room = Room(roomOptions: RoomOptions(defaultScreenShareCaptureOptions: ScreenShareCaptureOptions(useBroadcastExtension: true)))
 
     // MARK: Services
 

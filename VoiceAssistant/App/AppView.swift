@@ -32,7 +32,9 @@ struct AppView: View {
         }
         .animation(.default, value: viewModel.connectionState)
         .animation(.default, value: viewModel.interactionMode)
-        .animation(.default, value: viewModel.cameraTrack == nil)
+        .animation(.default, value: viewModel.isCameraEnabled)
+        .animation(.default, value: viewModel.isScreenShareEnabled)
+        .animation(.default, value: viewModel.agent)
         .onAppear {
             Dependencies.shared.errorHandler = { error = $0 }
         }

@@ -21,6 +21,8 @@ struct TextInteractionView: View {
                     .frame(maxWidth: 120, maxHeight: 200)
                 LocalParticipantView(namespace: namespace)
                     .frame(maxWidth: 120, maxHeight: 200)
+                ScreenShareView(namespace: namespace)
+                    .frame(maxWidth: 200, maxHeight: 200)
             }
             ChatView()
                 .mask(
