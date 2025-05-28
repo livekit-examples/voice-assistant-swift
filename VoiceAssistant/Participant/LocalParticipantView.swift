@@ -17,8 +17,15 @@ struct LocalParticipantView: View {
                 .clipShape(RoundedRectangle(cornerRadius: 8))
                 .aspectRatio(cameraTrack.aspectRatio, contentMode: .fit)
                 .shadow(radius: 20, y: 10)
-                .matchedGeometryEffect(id: String(describing: Self.self), in: namespace)
                 .transition(.scale.combined(with: .opacity))
+                .overlay(alignment: .bottomTrailing) {
+                    if viewModel.canSwitchCamera {
+                        AsyncButton(action: viewModel.switchCamera) {
+                            Image(systemName: "arrow.trianglehead.2.clockwise.rotate.90")
+                        }
+                    }
+                }
+                .matchedGeometryEffect(id: String(describing: Self.self), in: namespace)
         }
     }
 }

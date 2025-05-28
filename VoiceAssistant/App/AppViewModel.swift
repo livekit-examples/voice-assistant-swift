@@ -27,6 +27,8 @@ final class AppViewModel {
     private(set) var audioDevices: [AudioDevice] = AudioManager.shared.inputDevices
     private(set) var selectedDevice: AudioDevice = AudioManager.shared.inputDevice
 
+    private(set) var canSwitchCamera = false
+
     @ObservationIgnored
     @Dependency(\.room) private var room
     @ObservationIgnored
@@ -69,6 +71,10 @@ final class AppViewModel {
                 self.audioDevices = AudioManager.shared.inputDevices
                 self.selectedDevice = AudioManager.shared.inputDevice
             }
+        }
+
+        Task { @MainActor in
+            canSwitchCamera = try await CameraCapturer.canSwitchPosition()
         }
     }
 
@@ -151,5 +157,15 @@ final class AppViewModel {
 
     func select(audioDevice: AudioDevice) {
         selectedDevice = audioDevice
+    }
+
+    func switchCamera() async {
+        guard let cameraTrack = cameraTrack as? LocalVideoTrack,
+              let cameraCapturer = cameraTrack.capturer as? CameraCapturer else { return }
+        do {
+            try await cameraCapturer.switchCameraPosition()
+        } catch {
+            errorHandler(error)
+        }
     }
 }
