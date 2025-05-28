@@ -13,12 +13,12 @@ final class AppViewModel {
     private(set) var connectionState: ConnectionState = .disconnected
     private(set) var isListening = false
 
-    var localParticipant: Participant { room.localParticipant }
     private(set) var agent: Participant?
 
     private(set) var interactionMode: InteractionMode = .voice
 
     private(set) var isMicrophoneEnabled = false
+    private(set) var audioTrack: (any AudioTrack)?
     private(set) var isCameraEnabled = false
     private(set) var cameraTrack: (any VideoTrack)?
     private(set) var isScreenShareEnabled = false
@@ -46,15 +46,16 @@ final class AppViewModel {
         }
 
         Task { @MainActor [weak self] in
-            guard let changes = self?.localParticipant.changes else { return }
+            guard let changes = self?.room.localParticipant.changes else { return }
             for await _ in changes {
                 guard let self else { return }
 
-                isMicrophoneEnabled = localParticipant.isMicrophoneEnabled()
-                isCameraEnabled = localParticipant.isCameraEnabled()
-                cameraTrack = localParticipant.firstCameraVideoTrack
-                isScreenShareEnabled = localParticipant.isScreenShareEnabled()
-                screenShareTrack = localParticipant.firstScreenShareVideoTrack
+                isMicrophoneEnabled = room.localParticipant.isMicrophoneEnabled()
+                audioTrack = room.localParticipant.firstAudioTrack
+                isCameraEnabled = room.localParticipant.isCameraEnabled()
+                cameraTrack = room.localParticipant.firstCameraVideoTrack
+                isScreenShareEnabled = room.localParticipant.isScreenShareEnabled()
+                screenShareTrack = room.localParticipant.firstScreenShareVideoTrack
             }
         }
 

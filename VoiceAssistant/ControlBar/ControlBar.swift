@@ -20,7 +20,7 @@ struct ControlBar: View {
             AsyncButton(action: viewModel.toggleMicrophone) {
                 HStack(spacing: 8) {
                     Image(systemName: viewModel.isMicrophoneEnabled ? "microphone.fill" : "microphone.slash.fill")
-                    LocalAudioVisualizer(track: viewModel.localParticipant.firstAudioTrack)
+                    LocalAudioVisualizer(track: viewModel.audioTrack)
                 }
                 .padding(.leading, 16)
             }
