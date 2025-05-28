@@ -25,6 +25,11 @@ struct ChatView: View {
                     }
                 }
             }
+            .onScrollGeometryChange(for: CGFloat.self) { geometry in
+                geometry.visibleRect.height
+            } action: { _, _ in
+                proxy.scrollTo(last, anchor: .bottom)
+            }
             .listStyle(.plain)
             .scrollIndicators(.hidden)
         }

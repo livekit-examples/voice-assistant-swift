@@ -16,31 +16,41 @@ struct TextInteractionView: View {
 
     var body: some View {
         VStack {
-            HStack {
-                AgentParticipantView(namespace: namespace)
-                    .frame(maxWidth: 120, maxHeight: 200)
-                LocalParticipantView(namespace: namespace)
-                    .frame(maxWidth: 120, maxHeight: 200)
-                ScreenShareView(namespace: namespace)
-                    .frame(maxWidth: 200, maxHeight: 200)
-            }
-            ChatView()
-                .mask(
-                    LinearGradient(
-                        gradient: Gradient(colors: [.clear, .black, .black]),
-                        startPoint: .top,
-                        endPoint: .init(x: 0.5, y: 0.2)
+            Group {
+                HStack {
+                    AgentParticipantView(namespace: namespace)
+                        .frame(maxWidth: 120)
+                    LocalParticipantView(namespace: namespace)
+                        .frame(maxWidth: 120)
+                    ScreenShareView(namespace: namespace)
+                        .frame(maxWidth: 200)
+                }
+                .frame(maxHeight: isKeyboardFocused ? 120 : 200)
+
+                ChatView()
+                    .mask(
+                        LinearGradient(
+                            gradient: Gradient(colors: [.clear, .black, .black]),
+                            startPoint: .top,
+                            endPoint: .init(x: 0.5, y: 0.2)
+                        )
                     )
-                )
+            }
+            .contentShape(Rectangle())
+            .onTapGesture {
+                isKeyboardFocused = false
+            }
+
             ChatTextInputView()
                 .focused($isKeyboardFocused)
+            #if os(iOS)
             if !isKeyboardFocused {
                 ControlBar()
             }
+            #else
+            ControlBar()
+            #endif
         }
-        .contentShape(Rectangle())
-        .onTapGesture {
-            isKeyboardFocused = false
-        }
+        .animation(.default, value: isKeyboardFocused)
     }
 }

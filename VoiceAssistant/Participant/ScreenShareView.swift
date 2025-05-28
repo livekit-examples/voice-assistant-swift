@@ -18,6 +18,7 @@ struct ScreenShareView: View {
                 .aspectRatio(screenShareTrack.aspectRatio, contentMode: .fit)
                 .shadow(radius: 20, y: 10)
                 .matchedGeometryEffect(id: String(describing: Self.self), in: namespace)
+                .transition(.scale.combined(with: .opacity))
         }
     }
 }
