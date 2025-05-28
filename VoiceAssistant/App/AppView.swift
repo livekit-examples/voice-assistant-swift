@@ -32,7 +32,7 @@ struct AppView: View {
         }
         .animation(.default, value: viewModel.connectionState)
         .animation(.default, value: viewModel.interactionMode)
-        .animation(.default, value: viewModel.video == nil)
+        .animation(.default, value: viewModel.cameraTrack == nil)
         .onAppear {
             Dependencies.shared.errorHandler = { error = $0 }
         }

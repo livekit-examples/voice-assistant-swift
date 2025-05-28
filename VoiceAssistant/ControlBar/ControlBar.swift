@@ -17,9 +17,9 @@ struct ControlBar: View {
 
     var body: some View {
         HStack {
-            AsyncButton(action: viewModel.toggleMute) {
+            AsyncButton(action: viewModel.toggleMicrophone) {
                 HStack(spacing: 8) {
-                    Image(systemName: viewModel.isMuted ? "microphone.slash.fill" : "microphone.fill")
+                    Image(systemName: viewModel.isMicrophoneEnabled ? "microphone.fill" : "microphone.slash.fill")
                     LocalAudioVisualizer(track: viewModel.localParticipant.firstAudioTrack)
                 }
                 .padding(.leading, 16)
@@ -31,8 +31,8 @@ struct ControlBar: View {
                 .frame(height: Constants.buttonHeight)
             #endif
 
-            AsyncButton(action: viewModel.toggleVideo) {
-                Image(systemName: viewModel.isVideoEnabled ? "video.fill" : "video.slash.fill")
+            AsyncButton(action: viewModel.toggleCamera) {
+                Image(systemName: viewModel.isCameraEnabled ? "video.fill" : "video.slash.fill")
                     .frame(width: Constants.buttonWidth, height: Constants.buttonHeight)
             }
             .frame(width: Constants.buttonWidth, height: Constants.buttonHeight)

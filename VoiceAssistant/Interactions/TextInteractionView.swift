@@ -11,7 +11,6 @@ struct TextInteractionView: View {
     @Environment(AppViewModel.self) private var viewModel
     @Environment(ChatViewModel.self) private var chatViewModel
     @FocusState private var isKeyboardFocused: Bool
-    @State private var keyboardHeight: CGFloat = 0
 
     var namespace: Namespace.ID
 

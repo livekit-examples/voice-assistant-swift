@@ -13,14 +13,14 @@ final class AppViewModel {
     private(set) var connectionState: ConnectionState = .disconnected
     private(set) var isListening = false
 
-    private(set) var agent: Participant?
     var localParticipant: Participant { room.localParticipant }
+    private(set) var agent: Participant?
 
     private(set) var interactionMode: InteractionMode = .voice
 
-    private(set) var isMuted = false
-    private(set) var isVideoEnabled = false
-    private(set) var video: (any VideoTrack)?
+    private(set) var isMicrophoneEnabled = false
+    private(set) var isCameraEnabled = false
+    private(set) var cameraTrack: (any VideoTrack)?
 
     private(set) var audioDevices: [AudioDevice] = AudioManager.shared.inputDevices
     private(set) var selectedDevice: AudioDevice = AudioManager.shared.inputDevice
@@ -37,13 +37,28 @@ final class AppViewModel {
             guard let changes = self?.room.changes else { return }
             for await _ in changes {
                 guard let self else { return }
+
                 connectionState = room.connectionState
-                agent = room.remoteParticipants.values.first { $0.isAgent }
-                video = localParticipant.firstCameraVideoTrack
+                agent = room.agentParticipant
             }
         }
 
-        try? AudioManager.shared.setRecordingAlwaysPreparedMode(true)
+        Task { @MainActor [weak self] in
+            guard let changes = self?.localParticipant.changes else { return }
+            for await _ in changes {
+                guard let self else { return }
+
+                isMicrophoneEnabled = localParticipant.isMicrophoneEnabled()
+                isCameraEnabled = localParticipant.isCameraEnabled()
+                cameraTrack = localParticipant.firstCameraVideoTrack
+            }
+        }
+
+        do {
+            try AudioManager.shared.setRecordingAlwaysPreparedMode(true)
+        } catch {
+            errorHandler(error)
+        }
         AudioManager.shared.onDeviceUpdate = { _ in
             Task { @MainActor in
                 self.audioDevices = AudioManager.shared.inputDevices
@@ -59,9 +74,6 @@ final class AppViewModel {
     private func resetState() {
         isListening = false
         interactionMode = .voice
-        isMuted = false
-        isVideoEnabled = false
-        video = nil
     }
 
     func connect() async {
@@ -108,18 +120,20 @@ final class AppViewModel {
         }
     }
 
-    func toggleMute() async {
-        isMuted.toggle()
+    func toggleMicrophone() async {
         do {
-            try await room.localParticipant.setMicrophone(enabled: !isMuted)
-        } catch {}
+            try await room.localParticipant.setMicrophone(enabled: !isMicrophoneEnabled)
+        } catch {
+            errorHandler(error)
+        }
     }
 
-    func toggleVideo() async {
-        isVideoEnabled.toggle()
+    func toggleCamera() async {
         do {
-            try await room.localParticipant.setCamera(enabled: isVideoEnabled)
-        } catch {}
+            try await room.localParticipant.setCamera(enabled: !isCameraEnabled)
+        } catch {
+            errorHandler(error)
+        }
     }
 
     func select(audioDevice: AudioDevice) {

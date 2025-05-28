@@ -27,7 +27,6 @@ struct ChatTextInputView: View {
         .frame(height: 48)
         .background(Color.background2)
         .clipShape(RoundedRectangle(cornerRadius: 24))
-        .shadow(color: .black.opacity(0.1), radius: 20)
         .padding(.horizontal)
     }
 
