@@ -36,6 +36,12 @@ struct ControlBar: View {
                     .frame(width: Constants.buttonWidth, height: Constants.buttonHeight)
             }
             .frame(width: Constants.buttonWidth, height: Constants.buttonHeight)
+            .buttonStyle(CallBarButtonStyle(
+                isToggled: viewModel.isCameraEnabled,
+                foregroundColor: .foreground1,
+                backgroundColor: .background2,
+                borderColor: .separator1
+            ))
 
             AsyncButton(action: viewModel.toggleScreenShare) {
                 Image(systemName: "arrow.up.square.fill")
@@ -76,6 +82,7 @@ struct ControlBar: View {
 }
 
 struct CallBarButtonStyle: ButtonStyle {
+    var isToggled: Bool = false
     let foregroundColor: Color
     let backgroundColor: Color
     let borderColor: Color
@@ -84,10 +91,10 @@ struct CallBarButtonStyle: ButtonStyle {
         configuration.label
             .font(.system(size: 15, weight: .medium))
             .foregroundStyle(configuration.isPressed ? foregroundColor.opacity(0.5) : foregroundColor)
-//            .background(
-//                RoundedRectangle(cornerRadius: 8)
-//                    .fill(configuration.isPressed ? backgroundColor.opacity(0.5) : backgroundColor)
-//            )
+            .background(
+                RoundedRectangle(cornerRadius: 8)
+                    .fill(isToggled ? backgroundColor : .clear)
+            )
 //            .overlay(
 //                RoundedRectangle(cornerRadius: 8)
 //                    .stroke(configuration.isPressed ? borderColor.opacity(0.5) : borderColor, lineWidth: 1)
