@@ -1,3 +1,4 @@
+@preconcurrency import AVFoundation
 import Combine
 import LiveKit
 import Observation
@@ -26,6 +27,9 @@ final class AppViewModel {
 
     private(set) var audioDevices: [AudioDevice] = AudioManager.shared.inputDevices
     private(set) var selectedDevice: AudioDevice = AudioManager.shared.inputDevice
+
+    private(set) var videoDevices: [AVCaptureDevice] = []
+    private(set) var selectedVideoDevice: AVCaptureDevice?
 
     private(set) var canSwitchCamera = false
 
@@ -75,6 +79,8 @@ final class AppViewModel {
 
         Task { @MainActor in
             canSwitchCamera = try await CameraCapturer.canSwitchPosition()
+            videoDevices = try await CameraCapturer.captureDevices()
+            selectedVideoDevice = videoDevices.first
         }
     }
 
@@ -141,7 +147,7 @@ final class AppViewModel {
 
     func toggleCamera() async {
         do {
-            try await room.localParticipant.setCamera(enabled: !isCameraEnabled)
+            try await room.localParticipant.setCamera(enabled: !isCameraEnabled, captureOptions: CameraCaptureOptions(device: selectedVideoDevice))
         } catch {
             errorHandler(error)
         }
@@ -157,6 +163,22 @@ final class AppViewModel {
 
     func select(audioDevice: AudioDevice) {
         selectedDevice = audioDevice
+
+        AudioManager.shared.inputDevice = audioDevice
+    }
+
+    func select(videoDevice: AVCaptureDevice) async {
+        selectedVideoDevice = videoDevice
+
+        guard let cameraTrack = cameraTrack as? LocalVideoTrack,
+              let cameraCapturer = cameraTrack.capturer as? CameraCapturer else { return }
+
+        do {
+            let captureOptions = CameraCaptureOptions(device: videoDevice)
+            try await cameraCapturer.set(options: captureOptions)
+        } catch {
+            errorHandler(error)
+        }
     }
 
     func switchCamera() async {

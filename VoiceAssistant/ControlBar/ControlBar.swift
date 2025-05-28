@@ -43,6 +43,11 @@ struct ControlBar: View {
                 borderColor: .separator1
             ))
 
+            #if os(macOS)
+            VideoDeviceSelector()
+                .frame(height: Constants.buttonHeight)
+            #endif
+
             AsyncButton(action: viewModel.toggleScreenShare) {
                 Image(systemName: "arrow.up.square.fill")
                     .frame(width: Constants.buttonWidth, height: Constants.buttonHeight)
@@ -78,6 +83,12 @@ struct ControlBar: View {
             RoundedRectangle(cornerRadius: 30)
                 .stroke(.separator1, lineWidth: 1)
         )
+        #if !os(visionOS)
+        .sensoryFeedback(.selection, trigger: viewModel.isMicrophoneEnabled)
+        .sensoryFeedback(.selection, trigger: viewModel.isCameraEnabled)
+        .sensoryFeedback(.selection, trigger: viewModel.isScreenShareEnabled)
+        .sensoryFeedback(.selection, trigger: viewModel.interactionMode)
+        #endif
     }
 }
 
