@@ -14,7 +14,7 @@ struct Spinner: View {
         Circle()
             .stroke(
                 AngularGradient(
-                    gradient: Gradient(colors: [.clear, .accentColor]),
+                    gradient: Gradient(colors: [.clear, .primary]),
                     center: .center,
                     startAngle: .degrees(0),
                     endAngle: .degrees(360)

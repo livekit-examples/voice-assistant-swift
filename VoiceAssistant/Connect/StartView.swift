@@ -15,10 +15,8 @@ struct StartView: View {
             Group {
                 Image(systemName: "apple.terminal")
                     .font(.system(size: 64, weight: .thin))
-                Text(
-                    "Start a call to chat with your voice agent. Need help getting set up?\nCheck out the \(Text("[agent guide](https://docs.livekit.io/agents)").underline())."
-                )
-                .font(.system(size: 17))
+                Text("\(Text("connect.tip")) \(Text("connect.link").underline()).")
+                    .font(.system(size: 17))
             }
             .foregroundStyle(Color.foreground1)
             .tint(Color.foreground1)
@@ -27,13 +25,13 @@ struct StartView: View {
                 .frame(height: 16)
 
             AsyncButton(action: viewModel.connect) {
-                Text("Start call")
+                Text("connect.start")
                     .frame(width: 232, height: 44)
             } busyLabel: {
                 HStack(spacing: 8) {
                     Spacer()
                     Spinner()
-                    Text("Connecting")
+                    Text("connect.connecting")
                     Spacer()
                 }
                 .frame(width: 232, height: 44)
@@ -49,17 +47,7 @@ struct StartView: View {
     }
 }
 
-struct StartButtonStyle: ButtonStyle {
-    func makeBody(configuration: Configuration) -> some View {
-        configuration.label
-            .textCase(.uppercase)
-            .font(.system(size: 14, weight: .semibold, design: .monospaced))
-            .foregroundStyle(Color.white)
-            .background(Color.blue500)
-            .cornerRadius(8)
-    }
-}
-
 #Preview {
     StartView()
+        .environment(AppViewModel())
 }
