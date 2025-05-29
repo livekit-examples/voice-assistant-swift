@@ -9,16 +9,16 @@ import SwiftUI
 
 struct StartView: View {
     @Environment(AppViewModel.self) private var viewModel
+    @Environment(\.horizontalSizeClass) private var horizontalSizeClass
 
     var body: some View {
         VStack(spacing: 16) {
             Group {
                 Image(systemName: "apple.terminal")
-                    .font(.system(size: 64, weight: .thin))
+                    .font(.system(size: 56, weight: .thin))
                 Text("\(Text("connect.tip")) \(Text("connect.link").underline()).")
                     .font(.system(size: 17))
             }
-            .foregroundStyle(Color.foreground1)
             .tint(Color.foreground1)
 
             Spacer()
@@ -39,11 +39,8 @@ struct StartView: View {
             .buttonStyle(StartButtonStyle())
         }
         .multilineTextAlignment(.center)
-        .padding(.horizontal, 64)
+        .padding(.horizontal, horizontalSizeClass == .regular ? 128 : 64)
         .frame(maxWidth: .infinity, maxHeight: .infinity)
-        #if !os(visionOS)
-            .sensoryFeedback(.impact, trigger: viewModel.connectionState == .connecting)
-        #endif
     }
 }
 

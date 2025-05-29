@@ -13,7 +13,7 @@ struct StartButtonStyle: ButtonStyle {
             .textCase(.uppercase)
             .font(.system(size: 14, weight: .semibold, design: .monospaced))
             .foregroundStyle(Color.white)
-            .background(Color.blue500)
+            .background(Color.blue500.opacity(configuration.isPressed ? 0.75 : 1))
             .cornerRadius(8)
     }
 }

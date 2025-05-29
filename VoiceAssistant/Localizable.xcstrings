@@ -1,6 +1,19 @@
 {
   "sourceLanguage" : "en",
   "strings" : {
+    "%@ %@." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "%1$@ %2$@."
+          }
+        }
+      }
+    },
+    "Agent is listening, start talking" : {
+
+    },
     "connect.connecting" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -44,6 +57,12 @@
           }
         }
       }
+    },
+    "Error" : {
+
+    },
+    "Message" : {
+
     }
   },
   "version" : "1.0"

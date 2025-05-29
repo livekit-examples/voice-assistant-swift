@@ -18,7 +18,10 @@ struct AppView: View {
     var body: some View {
         ZStack(alignment: .top) {
             switch viewModel.connectionState {
-            case .connecting where viewModel.isListening, .connected, .reconnecting:
+            case .disconnected where viewModel.isListening,
+                 .connecting where viewModel.isListening,
+                 .connected,
+                 .reconnecting:
                 switch viewModel.interactionMode {
                 case .text: TextInteractionView(namespace: transitions).environment(chatViewModel)
                 case .voice: VoiceInteractionView(namespace: transitions)
@@ -30,6 +33,8 @@ struct AppView: View {
                 ErrorView(error: error) { self.error = nil }
             }
         }
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
+        .background(Color.background1)
         .animation(.default, value: viewModel.connectionState)
         .animation(.default, value: viewModel.interactionMode)
         .animation(.default, value: viewModel.isCameraEnabled)
@@ -38,6 +43,7 @@ struct AppView: View {
         .onAppear {
             Dependencies.shared.errorHandler = { error = $0 }
         }
+        .sensoryFeedback(.impact, trigger: viewModel.isListening)
     }
 }
 
