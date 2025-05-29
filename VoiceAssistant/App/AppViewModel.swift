@@ -25,6 +25,9 @@ final class AppViewModel {
     private(set) var isScreenShareEnabled = false
     private(set) var screenShareTrack: (any VideoTrack)?
 
+    private(set) var agentAudioTrack: (any AudioTrack)?
+    private(set) var avatarCameraTrack: (any VideoTrack)?
+
     private(set) var audioDevices: [AudioDevice] = AudioManager.shared.inputDevices
     private(set) var selectedDevice: AudioDevice = AudioManager.shared.inputDevice
 
@@ -48,13 +51,6 @@ final class AppViewModel {
 
                 connectionState = room.connectionState
                 agent = room.agentParticipant
-            }
-        }
-
-        Task { @MainActor [weak self] in
-            guard let changes = self?.room.localParticipant.changes else { return }
-            for await _ in changes {
-                guard let self else { return }
 
                 isMicrophoneEnabled = room.localParticipant.isMicrophoneEnabled()
                 audioTrack = room.localParticipant.firstAudioTrack
@@ -62,6 +58,9 @@ final class AppViewModel {
                 cameraTrack = room.localParticipant.firstCameraVideoTrack
                 isScreenShareEnabled = room.localParticipant.isScreenShareEnabled()
                 screenShareTrack = room.localParticipant.firstScreenShareVideoTrack
+
+                agentAudioTrack = room.agentParticipant?.firstAudioTrack
+                avatarCameraTrack = room.agentParticipant?.avatarWorker?.firstCameraVideoTrack
             }
         }
 

@@ -18,6 +18,7 @@ struct VoiceInteractionView: View {
                 ZStack(alignment: .bottomTrailing) {
                     AgentParticipantView(namespace: namespace)
                         .frame(maxWidth: .infinity)
+                        .ignoresSafeArea()
                     VStack {
                         ScreenShareView(namespace: namespace)
                             .frame(maxWidth: 200, maxHeight: 200)
@@ -37,7 +38,6 @@ struct VoiceInteractionView: View {
                 }
             }
         }
-        .padding(.horizontal)
         .safeAreaInset(edge: .bottom) {
             ControlBar()
         }
