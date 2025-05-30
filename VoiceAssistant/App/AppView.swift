@@ -29,6 +29,10 @@ struct AppView: View {
             case .disconnected, .connecting: StartView()
             }
 
+            if case .reconnecting = viewModel.connectionState {
+                WarningView(warning: "warning.reconnecting")
+            }
+
             if let error {
                 ErrorView(error: error) { self.error = nil }
             }

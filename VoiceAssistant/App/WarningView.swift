@@ -1,36 +1,28 @@
-import LiveKit
 import SwiftUI
 
-struct ErrorView: View {
-    let error: Error
-    let onDismiss: () -> Void
+struct WarningView: View {
+    let warning: LocalizedStringKey
 
     var body: some View {
         VStack(spacing: 8) {
             HStack(spacing: 8) {
                 Image(systemName: "exclamationmark.triangle")
-
-                Text("error.title")
+                Text("warning.title")
                     .font(.system(size: 15, weight: .semibold))
                 Spacer()
-                Button {
-                    onDismiss()
-                } label: {
-                    Image(systemName: "xmark")
-                }
             }
 
-            Text(error.localizedDescription)
+            Text(warning)
                 .font(.system(size: 15))
                 .frame(maxWidth: .infinity, alignment: .leading)
         }
         .padding(16)
-        .background(Color.backgroundSerious)
-        .foregroundStyle(Color.foregroundSerious)
+        .foregroundStyle(Color.foregroundModerate)
+        .background(Color.backgroundModerate)
         .clipShape(RoundedRectangle(cornerRadius: 8))
         .overlay(
             RoundedRectangle(cornerRadius: 8)
-                .stroke(Color.separatorSerious, lineWidth: 1)
+                .stroke(Color.separatorModerate, lineWidth: 1)
         )
         .padding(.horizontal, 16)
         .padding(.top, 8)
@@ -38,5 +30,5 @@ struct ErrorView: View {
 }
 
 #Preview {
-    ErrorView(error: NSError(domain: "", code: 0, userInfo: [NSLocalizedDescriptionKey: "Sample error message"]), onDismiss: {})
+    WarningView(warning: "Sample warning message")
 }

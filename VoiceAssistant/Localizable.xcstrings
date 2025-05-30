@@ -64,6 +64,28 @@
           }
         }
       }
+    },
+    "warning.reconnecting" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Trying to reconnect"
+          }
+        }
+      }
+    },
+    "warning.title" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Warning"
+          }
+        }
+      }
     }
   },
   "version" : "1.0"
