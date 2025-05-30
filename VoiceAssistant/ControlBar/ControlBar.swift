@@ -79,9 +79,8 @@ struct ControlBar: View {
                 HStack(spacing: .grid) {
                     Image(systemName: viewModel.isMicrophoneEnabled ? "microphone.fill" : "microphone.slash.fill")
                     BarAudioVisualizer(audioTrack: viewModel.audioTrack, barColor: .foreground1, barCount: 3, barSpacingFactor: 0.1)
-                        .frame(width: 2 * .grid)
+                        .frame(width: 2 * .grid, height: 0.5 * Constants.buttonHeight)
                         .frame(maxHeight: .infinity)
-                        .scaleEffect(y: 0.5)
                         .id(viewModel.audioTrack?.id)
                 }
                 .frame(height: Constants.buttonHeight)

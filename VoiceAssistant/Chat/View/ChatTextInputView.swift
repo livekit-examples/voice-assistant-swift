@@ -8,26 +8,27 @@ struct ChatTextInputView: View {
         HStack(spacing: 12) {
             TextField("message.placeholder", text: $messageText, axis: .vertical)
                 .textFieldStyle(.plain)
-                .lineLimit(5)
+                .lineLimit(3)
                 .submitLabel(.send)
                 .onSubmit {
                     Task {
                         await sendMessage()
                     }
                 }
-                .background(Color.background2)
+                .padding(.leading)
 
             AsyncButton(action: sendMessage) {
-                Image(systemName: "arrow.up.circle.fill")
-                    .font(.system(size: 32))
+                Image(systemName: "arrow.up")
+                    .frame(width: 8 * .grid, height: 8 * .grid)
             }
-            .tint(.blue500)
+            .padding(.trailing, 2 * .grid)
             .disabled(messageText.isEmpty)
+            .buttonStyle(RoundButtonStyle())
         }
-        .frame(height: 48)
+        .frame(height: 12 * .grid)
         .background(Color.background2)
-        .clipShape(RoundedRectangle(cornerRadius: 24))
-        .padding(.horizontal)
+        .clipShape(RoundedRectangle(cornerRadius: 6 * .grid))
+        .safeAreaPadding(.horizontal, 4 * .grid)
     }
 
     private func sendMessage() async {

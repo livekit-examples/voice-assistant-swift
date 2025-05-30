@@ -23,6 +23,18 @@ struct ProminentButtonStyle: ButtonStyle {
     }
 }
 
+struct RoundButtonStyle: ButtonStyle {
+    @Environment(\.isEnabled) var isEnabled
+
+    func makeBody(configuration: Configuration) -> some View {
+        configuration.label
+            .font(.system(size: 12))
+            .foregroundColor(.white)
+            .background(isEnabled ? Color.blue500.opacity(configuration.isPressed ? 0.75 : 1) : Color.gray)
+            .clipShape(Circle())
+    }
+}
+
 struct ControlBarButtonStyle: ButtonStyle {
     var isToggled: Bool = false
     let foregroundColor: Color
@@ -31,7 +43,7 @@ struct ControlBarButtonStyle: ButtonStyle {
 
     func makeBody(configuration: Configuration) -> some View {
         configuration.label
-            .font(.system(size: 15, weight: .medium))
+            .font(.system(size: 17, weight: .medium))
             .foregroundStyle(configuration.isPressed ? foregroundColor.opacity(0.5) : foregroundColor)
             .background(
                 RoundedRectangle(cornerRadius: .defaultCornerRadius)

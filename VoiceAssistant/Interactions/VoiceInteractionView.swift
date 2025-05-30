@@ -15,10 +15,8 @@ struct VoiceInteractionView: View {
     var body: some View {
         Group {
             if horizontalSizeClass == .regular {
-                ZStack(alignment: .bottomTrailing) {
+                HStack(alignment: .bottom) {
                     AgentParticipantView(namespace: namespace)
-                        .frame(maxWidth: .infinity)
-                        .ignoresSafeArea()
                     VStack {
                         ScreenShareView(namespace: namespace)
                             .frame(maxWidth: 200, maxHeight: 200)
@@ -29,6 +27,9 @@ struct VoiceInteractionView: View {
             } else {
                 ZStack(alignment: .topTrailing) {
                     AgentParticipantView(namespace: namespace)
+                        .frame(maxWidth: .infinity, maxHeight: .infinity)
+                        .ignoresSafeArea()
+                        .border(Color.purple)
                     HStack {
                         LocalParticipantView(namespace: namespace)
                             .frame(maxWidth: 120, maxHeight: 200)
@@ -39,6 +40,7 @@ struct VoiceInteractionView: View {
             }
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
+        .ignoresSafeArea()
         .safeAreaInset(edge: .bottom) {
             ControlBar()
         }

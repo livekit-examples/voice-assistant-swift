@@ -19,10 +19,13 @@ struct AgentParticipantView: View {
                     .clipShape(RoundedRectangle(cornerRadius: .defaultCornerRadius))
                     .shadow(radius: 20, y: 10)
                     .mask(
-                        Circle()
-                            .frame(maxWidth: videoTransition ? .infinity : 24)
-                            .scaleEffect(2)
-                            .animation(.smooth(duration: 1.5), value: videoTransition)
+                        GeometryReader { proxy in
+                            let targetSize = max(proxy.size.width, proxy.size.height)
+                            Circle()
+                                .frame(width: videoTransition ? targetSize : 6 * .grid)
+                                .scaleEffect(2)
+                                .animation(.smooth(duration: 1.5), value: videoTransition)
+                        }
                     )
                     .onAppear {
                         videoTransition = true
@@ -31,13 +34,14 @@ struct AgentParticipantView: View {
                         videoTransition = false
                     }
             } else if let agent = viewModel.agent, let agentAudioTrack = viewModel.agentAudioTrack {
-                BarAudioVisualizer(audioTrack: agentAudioTrack, agentState: agent.agentState, barCount: 5, barSpacingFactor: 0.08)
-                    .frame(maxWidth: 300, maxHeight: 200)
+                BarAudioVisualizer(audioTrack: agentAudioTrack, agentState: agent.agentState, barCount: 5, barSpacingFactor: 0.025)
+                    .frame(width: 75 * .grid)
+                    .frame(maxHeight: 48 * .grid)
             } else {
                 VStack {
                     BarAudioVisualizer(audioTrack: nil, agentState: .listening, barCount: 1)
-                        .frame(maxWidth: 48, maxHeight: 200)
-                        .transition(.scale)
+                        .frame(width: 12 * .grid)
+                        .frame(maxHeight: 48 * .grid)
                 }
             }
         }
