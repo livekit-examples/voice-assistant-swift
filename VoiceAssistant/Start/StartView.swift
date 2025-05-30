@@ -13,32 +13,39 @@ struct StartView: View {
 
     var body: some View {
         VStack(spacing: 4 * .grid) {
-            Image(systemName: "apple.terminal")
-                .font(.system(size: 56, weight: .thin))
-            Text("connect.tip")
-                .font(.system(size: 17))
-                .tint(.secondary) // for markdown links
-
-            Spacer()
-                .frame(height: 4 * .grid)
-
-            AsyncButton(action: viewModel.connect) {
-                Text("connect.start")
-                    .frame(width: 232, height: 44)
-            } busyLabel: {
-                HStack(spacing: .grid) {
-                    Spacer()
-                    Spinner()
-                    Text("connect.connecting")
-                    Spacer()
-                }
-                .frame(width: 232, height: 44)
-            }
-            .buttonStyle(ProminentButtonStyle())
+            text()
+            Spacer().frame(height: 4 * .grid)
+            connectButton()
         }
         .multilineTextAlignment(.center)
         .padding(.horizontal, horizontalSizeClass == .regular ? 128 : 64)
         .frame(maxWidth: .infinity, maxHeight: .infinity)
+    }
+
+    @ViewBuilder
+    private func text() -> some View {
+        Image(systemName: "apple.terminal")
+            .font(.system(size: 56, weight: .thin))
+        Text("connect.tip")
+            .font(.system(size: 17))
+            .tint(.secondary) // for markdown links
+    }
+
+    @ViewBuilder
+    private func connectButton() -> some View {
+        AsyncButton(action: viewModel.connect) {
+            Text("connect.start")
+                .frame(width: 232, height: 44)
+        } busyLabel: {
+            HStack(spacing: .grid) {
+                Spacer()
+                Spinner()
+                Text("connect.connecting")
+                Spacer()
+            }
+            .frame(width: 232, height: 44)
+        }
+        .buttonStyle(ProminentButtonStyle())
     }
 }
 

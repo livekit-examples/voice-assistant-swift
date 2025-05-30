@@ -48,7 +48,9 @@ struct AppView: View {
         .onAppear {
             Dependencies.shared.errorHandler = { error = $0 }
         }
+        #if os(iOS)
         .sensoryFeedback(.impact, trigger: viewModel.isListening)
+        #endif
     }
 }
 

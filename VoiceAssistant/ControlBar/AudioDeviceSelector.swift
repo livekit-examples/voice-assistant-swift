@@ -7,6 +7,7 @@
 
 import LiveKitComponents
 
+#if os(macOS)
 struct AudioDeviceSelector: View {
     @Environment(AppViewModel.self) private var viewModel
 
@@ -26,7 +27,9 @@ struct AudioDeviceSelector: View {
             }
         } label: {
             Image(systemName: "chevron.down")
-                .frame(width: 48, height: 44)
+                .frame(height: 11 * .grid)
+                .font(.system(size: 12, weight: .semibold))
         }
     }
 }
+#endif

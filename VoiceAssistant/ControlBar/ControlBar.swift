@@ -9,107 +9,121 @@ import SwiftUI
 
 struct ControlBar: View {
     @Environment(AppViewModel.self) private var viewModel
+    @Environment(\.horizontalSizeClass) private var horizontalSizeClass
 
-    enum Constants {
-        static let buttonWidth = 62.0
-        static let buttonHeight = 44.0
+    private enum Constants {
+        static let buttonWidth: CGFloat = 16 * .grid
+        static let buttonHeight: CGFloat = 11 * .grid
     }
 
     var body: some View {
-        HStack {
+        HStack(spacing: .zero) {
+            flexibleSpacer()
+            audioControls()
+            flexibleSpacer()
+            videoControls()
+            flexibleSpacer()
+            screenShareButton()
+            flexibleSpacer()
+            textInputButton()
+            flexibleSpacer()
+            disconnectButton()
+            flexibleSpacer()
+        }
+        .buttonStyle(
+            ControlBarButtonStyle(
+                foregroundColor: .foreground1,
+                backgroundColor: .background2,
+                borderColor: .separator1
+            )
+        )
+        .font(.system(size: 17, weight: .medium))
+        .frame(height: 15 * .grid)
+        .clipShape(RoundedRectangle(cornerRadius: 7.5 * .grid))
+        .overlay(
+            RoundedRectangle(cornerRadius: 7.5 * .grid)
+                .stroke(.separator1, lineWidth: 1)
+        )
+        .background()
+        .shadow(color: .black.opacity(1), radius: 10, y: 10)
+    }
+
+    @ViewBuilder
+    private func flexibleSpacer() -> some View {
+        Spacer()
+            .frame(maxWidth: horizontalSizeClass == .regular ? 8 * .grid : .zero)
+    }
+
+    @ViewBuilder
+    private func audioControls() -> some View {
+        Spacer()
+            .frame(width: 4 * .grid)
+        HStack(spacing: 2 * .grid) {
             AsyncButton(action: viewModel.toggleMicrophone) {
                 HStack(spacing: 2 * .grid) {
                     Image(systemName: viewModel.isMicrophoneEnabled ? "microphone.fill" : "microphone.slash.fill")
                     LocalAudioVisualizer(track: viewModel.audioTrack)
                 }
-                .padding(.leading, 4 * .grid)
+                .frame(height: Constants.buttonHeight)
             }
-            .frame(height: Constants.buttonHeight)
-
             #if os(macOS)
+            Rectangle()
+                .fill(.separator1)
+                .frame(width: 1, height: 3 * .grid)
             AudioDeviceSelector()
                 .frame(height: Constants.buttonHeight)
             #endif
+        }
+        .frame(minWidth: Constants.buttonWidth)
+    }
 
+    @ViewBuilder
+    private func videoControls() -> some View {
+        HStack(spacing: 2 * .grid) {
             AsyncButton(action: viewModel.toggleCamera) {
                 Image(systemName: viewModel.isCameraEnabled ? "video.fill" : "video.slash.fill")
-                    .frame(width: Constants.buttonWidth, height: Constants.buttonHeight)
+                    .frame(height: Constants.buttonHeight)
             }
-            .frame(width: Constants.buttonWidth, height: Constants.buttonHeight)
-            .buttonStyle(CallBarButtonStyle(
-                isToggled: viewModel.isCameraEnabled,
-                foregroundColor: .foreground1,
-                backgroundColor: .background2,
-                borderColor: .separator1
-            ))
-
             #if os(macOS)
+            Rectangle()
+                .fill(.separator1)
+                .frame(width: 1, height: 3 * .grid)
             VideoDeviceSelector()
                 .frame(height: Constants.buttonHeight)
             #endif
-
-            AsyncButton(action: viewModel.toggleScreenShare) {
-                Image(systemName: "arrow.up.square.fill")
-                    .frame(width: Constants.buttonWidth, height: Constants.buttonHeight)
-            }
-            .frame(width: Constants.buttonWidth, height: Constants.buttonHeight)
-
-            AsyncButton(action: viewModel.enterTextInputMode) {
-                Image(systemName: "ellipsis.message.fill")
-                    .frame(width: Constants.buttonWidth, height: Constants.buttonHeight)
-            }
-            .frame(width: Constants.buttonWidth, height: Constants.buttonHeight)
-
-            Rectangle()
-                .fill(.separator1)
-                .frame(width: 1, height: Constants.buttonHeight)
-
-            AsyncButton(action: viewModel.disconnect) {
-                Image(systemName: "phone.down.fill")
-                    .frame(width: Constants.buttonWidth, height: Constants.buttonHeight)
-            }
-            .frame(width: Constants.buttonWidth, height: Constants.buttonHeight)
-            .buttonStyle(CallBarButtonStyle(foregroundColor: .foregroundSerious, backgroundColor: .backgroundSerious, borderColor: .separatorSerious))
         }
-        .buttonStyle(CallBarButtonStyle(
-            foregroundColor: .foreground1,
-            backgroundColor: .background2,
-            borderColor: .separator1
-        ))
-        .backgroundStyle(Color.background1)
-        .frame(height: 60)
-        .shadow(color: .black.opacity(0.1), radius: 20)
-        .overlay(
-            RoundedRectangle(cornerRadius: 30)
-                .stroke(.separator1, lineWidth: 1)
-        )
-        #if !os(visionOS)
-        .sensoryFeedback(.selection, trigger: viewModel.isMicrophoneEnabled)
-        .sensoryFeedback(.selection, trigger: viewModel.isCameraEnabled)
-        .sensoryFeedback(.selection, trigger: viewModel.isScreenShareEnabled)
-        .sensoryFeedback(.selection, trigger: viewModel.interactionMode)
-        #endif
+        .frame(minWidth: Constants.buttonWidth)
     }
-}
 
-struct CallBarButtonStyle: ButtonStyle {
-    var isToggled: Bool = false
-    let foregroundColor: Color
-    let backgroundColor: Color
-    let borderColor: Color
+    @ViewBuilder
+    private func screenShareButton() -> some View {
+        AsyncButton(action: viewModel.toggleScreenShare) {
+            Image(systemName: "arrow.up.square.fill")
+                .frame(width: Constants.buttonWidth, height: Constants.buttonHeight)
+        }
+    }
 
-    func makeBody(configuration: Configuration) -> some View {
-        configuration.label
-            .font(.system(size: 15, weight: .medium))
-            .foregroundStyle(configuration.isPressed ? foregroundColor.opacity(0.5) : foregroundColor)
-            .background(
-                RoundedRectangle(cornerRadius: .defaultCornerRadius)
-                    .fill(isToggled ? backgroundColor : .clear)
+    @ViewBuilder
+    private func textInputButton() -> some View {
+        AsyncButton(action: viewModel.enterTextInputMode) {
+            Image(systemName: "ellipsis.message.fill")
+                .frame(width: Constants.buttonWidth, height: Constants.buttonHeight)
+        }
+    }
+
+    @ViewBuilder
+    private func disconnectButton() -> some View {
+        AsyncButton(action: viewModel.disconnect) {
+            Image(systemName: "phone.down.fill")
+                .frame(width: Constants.buttonWidth, height: Constants.buttonHeight)
+        }
+        .buttonStyle(
+            ControlBarButtonStyle(
+                foregroundColor: .foregroundSerious,
+                backgroundColor: .backgroundSerious,
+                borderColor: .separatorSerious
             )
-//            .overlay(
-//                RoundedRectangle(cornerRadius: .defaultCornerRadius)
-//                    .stroke(configuration.isPressed ? borderColor.opacity(0.5) : borderColor, lineWidth: 1)
-//            )
+        )
     }
 }
 

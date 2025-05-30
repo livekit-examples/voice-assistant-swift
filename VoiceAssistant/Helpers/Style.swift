@@ -22,3 +22,20 @@ struct ProminentButtonStyle: ButtonStyle {
             .cornerRadius(8)
     }
 }
+
+struct ControlBarButtonStyle: ButtonStyle {
+    var isToggled: Bool = false
+    let foregroundColor: Color
+    let backgroundColor: Color
+    let borderColor: Color
+
+    func makeBody(configuration: Configuration) -> some View {
+        configuration.label
+            .font(.system(size: 15, weight: .medium))
+            .foregroundStyle(configuration.isPressed ? foregroundColor.opacity(0.5) : foregroundColor)
+            .background(
+                RoundedRectangle(cornerRadius: .defaultCornerRadius)
+                    .fill(isToggled ? backgroundColor : .clear)
+            )
+    }
+}

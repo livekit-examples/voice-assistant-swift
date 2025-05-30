@@ -8,6 +8,7 @@
 import AVFoundation
 import LiveKitComponents
 
+#if os(macOS)
 struct VideoDeviceSelector: View {
     @Environment(AppViewModel.self) private var viewModel
 
@@ -27,7 +28,9 @@ struct VideoDeviceSelector: View {
             }
         } label: {
             Image(systemName: "chevron.down")
-                .frame(width: 48, height: 44)
+                .frame(height: 11 * .grid)
+                .font(.system(size: 12, weight: .semibold))
         }
     }
 }
+#endif
