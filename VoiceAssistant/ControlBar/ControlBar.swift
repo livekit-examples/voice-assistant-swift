@@ -103,11 +103,11 @@ struct CallBarButtonStyle: ButtonStyle {
             .font(.system(size: 15, weight: .medium))
             .foregroundStyle(configuration.isPressed ? foregroundColor.opacity(0.5) : foregroundColor)
             .background(
-                RoundedRectangle(cornerRadius: 8)
+                RoundedRectangle(cornerRadius: .defaultCornerRadius)
                     .fill(isToggled ? backgroundColor : .clear)
             )
 //            .overlay(
-//                RoundedRectangle(cornerRadius: 8)
+//                RoundedRectangle(cornerRadius: .defaultCornerRadius)
 //                    .stroke(configuration.isPressed ? borderColor.opacity(0.5) : borderColor, lineWidth: 1)
 //            )
     }

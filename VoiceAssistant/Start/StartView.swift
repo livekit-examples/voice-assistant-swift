@@ -17,9 +17,10 @@ struct StartView: View {
                 .font(.system(size: 56, weight: .thin))
             Text("connect.tip")
                 .font(.system(size: 17))
+                .tint(.secondary) // for markdown links
 
             Spacer()
-                .frame(height: 16)
+                .frame(height: 32)
 
             AsyncButton(action: viewModel.connect) {
                 Text("connect.start")
@@ -33,7 +34,7 @@ struct StartView: View {
                 }
                 .frame(width: 232, height: 44)
             }
-            .buttonStyle(StartButtonStyle())
+            .buttonStyle(ProminentButtonStyle())
         }
         .multilineTextAlignment(.center)
         .padding(.horizontal, horizontalSizeClass == .regular ? 128 : 64)

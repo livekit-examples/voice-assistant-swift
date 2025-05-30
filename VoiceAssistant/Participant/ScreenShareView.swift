@@ -14,7 +14,7 @@ struct ScreenShareView: View {
     var body: some View {
         if let screenShareTrack = viewModel.screenShareTrack {
             SwiftUIVideoView(screenShareTrack)
-                .clipShape(RoundedRectangle(cornerRadius: 8))
+                .clipShape(RoundedRectangle(cornerRadius: .defaultCornerRadius))
                 .aspectRatio(screenShareTrack.aspectRatio, contentMode: .fit)
                 .shadow(radius: 20, y: 10)
                 .matchedGeometryEffect(id: String(describing: Self.self), in: namespace)

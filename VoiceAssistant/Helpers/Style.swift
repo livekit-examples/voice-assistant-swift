@@ -1,5 +1,5 @@
 //
-//  ButtonStyle.swift
+//  Style.swift
 //  VoiceAssistant
 //
 //  Created by Blaze Pankowski on 29/05/2025.
@@ -7,7 +7,11 @@
 
 import SwiftUI
 
-struct StartButtonStyle: ButtonStyle {
+extension CGFloat {
+    static let defaultCornerRadius: Self = 8
+}
+
+struct ProminentButtonStyle: ButtonStyle {
     func makeBody(configuration: Configuration) -> some View {
         configuration.label
             .textCase(.uppercase)

@@ -14,7 +14,7 @@ struct LocalParticipantView: View {
     var body: some View {
         if let cameraTrack = viewModel.cameraTrack {
             SwiftUIVideoView(cameraTrack)
-                .clipShape(RoundedRectangle(cornerRadius: 8))
+                .clipShape(RoundedRectangle(cornerRadius: .defaultCornerRadius))
                 .aspectRatio(cameraTrack.aspectRatio, contentMode: .fit)
                 .shadow(radius: 20, y: 10)
                 .transition(.scale.combined(with: .opacity))

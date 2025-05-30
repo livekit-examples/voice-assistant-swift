@@ -6,9 +6,11 @@ struct WarningView: View {
     var body: some View {
         VStack(spacing: 8) {
             HStack(spacing: 8) {
-                Image(systemName: "exclamationmark.triangle")
-                Text("warning.title")
-                    .font(.system(size: 15, weight: .semibold))
+                Group {
+                    Image(systemName: "exclamationmark.triangle")
+                    Text("warning.title")
+                }
+                .font(.system(size: 15, weight: .semibold))
                 Spacer()
             }
 
@@ -16,16 +18,15 @@ struct WarningView: View {
                 .font(.system(size: 15))
                 .frame(maxWidth: .infinity, alignment: .leading)
         }
-        .padding(16)
+        .padding(12)
         .foregroundStyle(Color.foregroundModerate)
         .background(Color.backgroundModerate)
-        .clipShape(RoundedRectangle(cornerRadius: 8))
+        .clipShape(RoundedRectangle(cornerRadius: .defaultCornerRadius))
         .overlay(
-            RoundedRectangle(cornerRadius: 8)
+            RoundedRectangle(cornerRadius: .defaultCornerRadius)
                 .stroke(Color.separatorModerate, lineWidth: 1)
         )
-        .padding(.horizontal, 16)
-        .padding(.top, 8)
+        .padding(16)
     }
 }
 

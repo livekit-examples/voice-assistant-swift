@@ -8,32 +8,34 @@ struct ErrorView: View {
     var body: some View {
         VStack(spacing: 8) {
             HStack(spacing: 8) {
-                Image(systemName: "exclamationmark.triangle")
+                Group {
+                    Image(systemName: "exclamationmark.triangle")
+                    Text("error.title")
+                }
+                .font(.system(size: 15, weight: .semibold))
 
-                Text("error.title")
-                    .font(.system(size: 15, weight: .semibold))
                 Spacer()
                 Button {
                     onDismiss()
                 } label: {
                     Image(systemName: "xmark")
                 }
+                .buttonStyle(.plain)
             }
 
             Text(error.localizedDescription)
                 .font(.system(size: 15))
                 .frame(maxWidth: .infinity, alignment: .leading)
         }
-        .padding(16)
+        .padding(12)
         .background(Color.backgroundSerious)
         .foregroundStyle(Color.foregroundSerious)
-        .clipShape(RoundedRectangle(cornerRadius: 8))
+        .clipShape(RoundedRectangle(cornerRadius: .defaultCornerRadius))
         .overlay(
-            RoundedRectangle(cornerRadius: 8)
+            RoundedRectangle(cornerRadius: .defaultCornerRadius)
                 .stroke(Color.separatorSerious, lineWidth: 1)
         )
-        .padding(.horizontal, 16)
-        .padding(.top, 8)
+        .padding(16)
     }
 }
 
