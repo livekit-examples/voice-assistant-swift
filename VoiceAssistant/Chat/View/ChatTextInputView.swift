@@ -6,7 +6,7 @@ struct ChatTextInputView: View {
 
     var body: some View {
         HStack(spacing: 12) {
-            TextField("Message", text: $messageText, axis: .vertical)
+            TextField("message.placeholder", text: $messageText, axis: .vertical)
                 .textFieldStyle(.plain)
                 .lineLimit(5)
                 .submitLabel(.send)

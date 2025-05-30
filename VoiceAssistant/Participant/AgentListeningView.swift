@@ -11,7 +11,7 @@ struct AgentListeningView: View {
     @State private var textShimmer = false
 
     var body: some View {
-        Text("Agent is listening, start talking")
+        Text("agent.listening")
             .font(.system(size: 15))
             .mask(
                 LinearGradient(

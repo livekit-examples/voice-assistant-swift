@@ -13,13 +13,10 @@ struct StartView: View {
 
     var body: some View {
         VStack(spacing: 16) {
-            Group {
-                Image(systemName: "apple.terminal")
-                    .font(.system(size: 56, weight: .thin))
-                Text("\(Text("connect.tip")) \(Text("connect.link").underline()).")
-                    .font(.system(size: 17))
-            }
-            .tint(Color.foreground1)
+            Image(systemName: "apple.terminal")
+                .font(.system(size: 56, weight: .thin))
+            Text("connect.tip")
+                .font(.system(size: 17))
 
             Spacer()
                 .frame(height: 16)

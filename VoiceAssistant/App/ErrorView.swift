@@ -9,7 +9,7 @@ struct ErrorView: View {
             HStack(spacing: 8) {
                 Image(systemName: "exclamationmark.triangle")
                     .foregroundStyle(Color.foregroundSerious)
-                Text("Error")
+                Text("error.title")
                     .font(.system(size: 15, weight: .semibold))
                     .foregroundStyle(Color.foregroundSerious)
                 Spacer()

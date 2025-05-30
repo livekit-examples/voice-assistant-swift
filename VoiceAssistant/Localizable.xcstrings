@@ -1,18 +1,16 @@
 {
   "sourceLanguage" : "en",
   "strings" : {
-    "%@ %@." : {
+    "agent.listening" : {
+      "extractionState" : "manual",
       "localizations" : {
         "en" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "%1$@ %2$@."
+            "state" : "translated",
+            "value" : "Agent is listening, start talking"
           }
         }
       }
-    },
-    "Agent is listening, start talking" : {
-
     },
     "connect.connecting" : {
       "extractionState" : "manual",
@@ -21,17 +19,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Connecting"
-          }
-        }
-      }
-    },
-    "connect.link" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "[voice AI quickstart](https://docs.livekit.io/agents/start/voice-ai/)"
           }
         }
       }
@@ -53,16 +40,30 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Start a call to chat with your voice agent. Need help getting set up? Check out the"
+            "value" : "Start a call to chat with your voice agent. Need help getting set up? Check out the [voice AI quickstart](https://docs.livekit.io/agents/start/voice-ai/)."
           }
         }
       }
     },
-    "Error" : {
-
+    "error.title" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Error"
+          }
+        }
+      }
     },
-    "Message" : {
-
+    "message.placeholder" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Message"
+          }
+        }
+      }
     }
   },
   "version" : "1.0"
