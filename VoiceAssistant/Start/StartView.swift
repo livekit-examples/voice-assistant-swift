@@ -12,7 +12,7 @@ struct StartView: View {
     @Environment(\.horizontalSizeClass) private var horizontalSizeClass
 
     var body: some View {
-        VStack(spacing: 16) {
+        VStack(spacing: 4 * .grid) {
             Image(systemName: "apple.terminal")
                 .font(.system(size: 56, weight: .thin))
             Text("connect.tip")
@@ -20,13 +20,13 @@ struct StartView: View {
                 .tint(.secondary) // for markdown links
 
             Spacer()
-                .frame(height: 32)
+                .frame(height: 4 * .grid)
 
             AsyncButton(action: viewModel.connect) {
                 Text("connect.start")
                     .frame(width: 232, height: 44)
             } busyLabel: {
-                HStack(spacing: 8) {
+                HStack(spacing: .grid) {
                     Spacer()
                     Spinner()
                     Text("connect.connecting")

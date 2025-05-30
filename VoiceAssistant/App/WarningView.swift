@@ -4,8 +4,8 @@ struct WarningView: View {
     let warning: LocalizedStringKey
 
     var body: some View {
-        VStack(spacing: 8) {
-            HStack(spacing: 8) {
+        VStack(spacing: 2 * .grid) {
+            HStack(spacing: 2 * .grid) {
                 Group {
                     Image(systemName: "exclamationmark.triangle")
                     Text("warning.title")
@@ -18,7 +18,7 @@ struct WarningView: View {
                 .font(.system(size: 15))
                 .frame(maxWidth: .infinity, alignment: .leading)
         }
-        .padding(12)
+        .padding(3 * .grid)
         .foregroundStyle(Color.foregroundModerate)
         .background(Color.backgroundModerate)
         .clipShape(RoundedRectangle(cornerRadius: .defaultCornerRadius))
@@ -26,7 +26,7 @@ struct WarningView: View {
             RoundedRectangle(cornerRadius: .defaultCornerRadius)
                 .stroke(Color.separatorModerate, lineWidth: 1)
         )
-        .padding(16)
+        .padding(4 * .grid)
     }
 }
 

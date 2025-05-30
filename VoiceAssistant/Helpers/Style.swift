@@ -8,7 +8,8 @@
 import SwiftUI
 
 extension CGFloat {
-    static let defaultCornerRadius: Self = 8
+    static let grid: Self = 4
+    static let defaultCornerRadius: Self = 2 * grid
 }
 
 struct ProminentButtonStyle: ButtonStyle {

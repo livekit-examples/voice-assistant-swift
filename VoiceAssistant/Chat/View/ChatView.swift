@@ -12,7 +12,7 @@ struct ChatView: View {
             List {
                 Group {
                     ForEach(viewModel.messages.values, content: message)
-                    Spacer(minLength: 16)
+                    Spacer(minLength: 4 * .grid)
                         .id(last)
                         .onAppear { scrolledToLast = true }
                         .onDisappear { scrolledToLast = false }
@@ -52,11 +52,11 @@ struct ChatView: View {
     @ViewBuilder
     private func userTranscript(_ text: String, dark: Bool) -> some View {
         HStack {
-            Spacer(minLength: 16)
+            Spacer(minLength: 4 * .grid)
             Text(text.trimmingCharacters(in: .whitespacesAndNewlines))
                 .font(.system(size: 15))
-                .padding(.horizontal, 16)
-                .padding(.vertical, 8)
+                .padding(.horizontal, 4 * .grid)
+                .padding(.vertical, 2 * .grid)
                 .background(
                     RoundedRectangle(cornerRadius: 16)
                         .fill(.background.secondary)
@@ -70,8 +70,8 @@ struct ChatView: View {
         HStack {
             Text(text.trimmingCharacters(in: .whitespacesAndNewlines))
                 .font(.system(size: 20))
-                .padding(.vertical, 8)
-            Spacer(minLength: 16)
+                .padding(.vertical, 2 * .grid)
+            Spacer(minLength: 4 * .grid)
         }
     }
 }

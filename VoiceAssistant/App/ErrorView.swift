@@ -6,8 +6,8 @@ struct ErrorView: View {
     let onDismiss: () -> Void
 
     var body: some View {
-        VStack(spacing: 8) {
-            HStack(spacing: 8) {
+        VStack(spacing: 2 * .grid) {
+            HStack(spacing: 2 * .grid) {
                 Group {
                     Image(systemName: "exclamationmark.triangle")
                     Text("error.title")
@@ -27,7 +27,7 @@ struct ErrorView: View {
                 .font(.system(size: 15))
                 .frame(maxWidth: .infinity, alignment: .leading)
         }
-        .padding(12)
+        .padding(3 * .grid)
         .background(Color.backgroundSerious)
         .foregroundStyle(Color.foregroundSerious)
         .clipShape(RoundedRectangle(cornerRadius: .defaultCornerRadius))
@@ -35,7 +35,7 @@ struct ErrorView: View {
             RoundedRectangle(cornerRadius: .defaultCornerRadius)
                 .stroke(Color.separatorSerious, lineWidth: 1)
         )
-        .padding(16)
+        .padding(4 * .grid)
     }
 }
 
