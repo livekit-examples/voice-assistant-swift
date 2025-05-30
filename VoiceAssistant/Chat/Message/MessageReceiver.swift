@@ -1,5 +1,5 @@
 import Foundation
 
-protocol MessageReceiver {
-    func createMessageStream() async throws -> AsyncStream<Message>
+protocol MessageReceiver: Sendable {
+    func createMessageStream() async throws -> AsyncStream<ReceivedMessage>
 }

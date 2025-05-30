@@ -14,7 +14,7 @@ import LiveKit
 @available(*, deprecated, message: "Use TranscriptionStreamReceiver compatible with livekit-agents 1.0")
 actor TranscriptionDelegateReceiver: MessageReceiver, RoomDelegate {
     private let room: Room
-    private var continuation: AsyncStream<Message>.Continuation?
+    private var continuation: AsyncStream<ReceivedMessage>.Continuation?
 
     init(room: Room) {
         self.room = room
@@ -26,8 +26,8 @@ actor TranscriptionDelegateReceiver: MessageReceiver, RoomDelegate {
     }
 
     /// Creates a new message stream for the transcription delegate receiver.
-    func createMessageStream() -> AsyncStream<Message> {
-        let (stream, continuation) = AsyncStream.makeStream(of: Message.self)
+    func createMessageStream() -> AsyncStream<ReceivedMessage> {
+        let (stream, continuation) = AsyncStream.makeStream(of: ReceivedMessage.self)
         self.continuation = continuation
         return stream
     }
@@ -36,7 +36,7 @@ actor TranscriptionDelegateReceiver: MessageReceiver, RoomDelegate {
         segments
             .filter { !$0.text.isEmpty }
             .forEach { segment in
-                let message = Message(
+                let message = ReceivedMessage(
                     id: segment.id,
                     timestamp: segment.lastReceivedTime,
                     content: participant.isAgent ? .agentTranscript(segment.text) : .userTranscript(segment.text)
@@ -47,7 +47,7 @@ actor TranscriptionDelegateReceiver: MessageReceiver, RoomDelegate {
             }
     }
 
-    private func yield(_ message: Message) {
+    private func yield(_ message: ReceivedMessage) {
         continuation?.yield(message)
     }
 }

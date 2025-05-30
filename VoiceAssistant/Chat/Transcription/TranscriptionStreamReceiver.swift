@@ -75,8 +75,8 @@ actor TranscriptionStreamReceiver: MessageReceiver {
     }
 
     /// Creates a new message stream for the chat topic.
-    func createMessageStream() async throws -> AsyncStream<Message> {
-        let (stream, continuation) = AsyncStream.makeStream(of: Message.self)
+    func createMessageStream() async throws -> AsyncStream<ReceivedMessage> {
+        let (stream, continuation) = AsyncStream.makeStream(of: ReceivedMessage.self)
 
         try await room.registerTextStreamHandler(for: transcriptionTopic) { [weak self] reader, participantIdentity in
             guard let self else { return }
@@ -97,7 +97,7 @@ actor TranscriptionStreamReceiver: MessageReceiver {
 
     /// Aggregates the incoming text into a message, storing the partial content in the `partialMessages` dictionary.
     /// - Note: When the message is finalized, or a new message is started, the dictionary is purged to limit memory usage.
-    private func processIncoming(partialMessage message: String, reader: TextStreamReader, participantIdentity: Participant.Identity) -> Message {
+    private func processIncoming(partialMessage message: String, reader: TextStreamReader, participantIdentity: Participant.Identity) -> ReceivedMessage {
         let segmentID = reader.info.attributes[TranscriptionAttributes.segment.rawValue] ?? reader.info.id
         let participantID = participantIdentity
         let partialID = PartialMessageID(segmentID: segmentID, participantID: participantID)
@@ -136,7 +136,7 @@ actor TranscriptionStreamReceiver: MessageReceiver {
             partialMessages[partialID] = nil
         }
 
-        let newOrUpdatedMessage = Message(
+        let newOrUpdatedMessage = ReceivedMessage(
             id: segmentID,
             timestamp: timestamp,
             content: participantIdentity == room.localParticipant.identity ? .userTranscript(updatedContent) : .agentTranscript(updatedContent)
