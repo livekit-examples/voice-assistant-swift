@@ -26,7 +26,7 @@ struct WarningView: View {
             RoundedRectangle(cornerRadius: .defaultCornerRadius)
                 .stroke(Color.separatorModerate, lineWidth: 1)
         )
-        .padding(4 * .grid)
+        .safeAreaPadding(4 * .grid)
     }
 }
 

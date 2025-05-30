@@ -51,6 +51,7 @@ struct TextInteractionView: View {
             ControlBar()
             #endif
         }
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
         .animation(.default, value: isKeyboardFocused)
     }
 }

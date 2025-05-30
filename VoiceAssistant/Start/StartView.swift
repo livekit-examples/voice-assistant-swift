@@ -18,7 +18,7 @@ struct StartView: View {
             connectButton()
         }
         .multilineTextAlignment(.center)
-        .padding(.horizontal, horizontalSizeClass == .regular ? 128 : 64)
+        .padding(.horizontal, horizontalSizeClass == .regular ? 32 * .grid : 16 * .grid)
         .frame(maxWidth: .infinity, maxHeight: .infinity)
     }
 
@@ -35,7 +35,7 @@ struct StartView: View {
     private func connectButton() -> some View {
         AsyncButton(action: viewModel.connect) {
             Text("connect.start")
-                .frame(width: 232, height: 44)
+                .frame(width: 58 * .grid, height: 11 * .grid)
         } busyLabel: {
             HStack(spacing: .grid) {
                 Spacer()
@@ -43,7 +43,7 @@ struct StartView: View {
                 Text("connect.connecting")
                 Spacer()
             }
-            .frame(width: 232, height: 44)
+            .frame(width: 58 * .grid, height: 11 * .grid)
         }
         .buttonStyle(ProminentButtonStyle())
     }

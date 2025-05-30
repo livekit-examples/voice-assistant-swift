@@ -5,7 +5,7 @@
 //  Created by Blaze Pankowski on 23/05/2025.
 //
 
-import SwiftUI
+import LiveKitComponents
 
 struct ControlBar: View {
     @Environment(AppViewModel.self) private var viewModel
@@ -18,7 +18,7 @@ struct ControlBar: View {
 
     var body: some View {
         HStack(spacing: .zero) {
-            flexibleSpacer()
+            biggerSpacer()
             audioControls()
             flexibleSpacer()
             videoControls()
@@ -28,7 +28,7 @@ struct ControlBar: View {
             textInputButton()
             flexibleSpacer()
             disconnectButton()
-            flexibleSpacer()
+            biggerSpacer()
         }
         .buttonStyle(
             ControlBarButtonStyle(
@@ -39,13 +39,17 @@ struct ControlBar: View {
         )
         .font(.system(size: 17, weight: .medium))
         .frame(height: 15 * .grid)
-        .clipShape(RoundedRectangle(cornerRadius: 7.5 * .grid))
         .overlay(
             RoundedRectangle(cornerRadius: 7.5 * .grid)
                 .stroke(.separator1, lineWidth: 1)
         )
-        .background()
-        .shadow(color: .black.opacity(1), radius: 10, y: 10)
+        .background(
+            RoundedRectangle(cornerRadius: 7.5 * .grid)
+                .fill(.background1)
+                .shadow(color: .black.opacity(0.1), radius: 10, y: 10)
+        )
+        .safeAreaPadding(.bottom, 8 * .grid)
+        .safeAreaPadding(.horizontal, 4 * .grid)
     }
 
     @ViewBuilder
@@ -55,44 +59,59 @@ struct ControlBar: View {
     }
 
     @ViewBuilder
-    private func audioControls() -> some View {
+    private func biggerSpacer() -> some View {
         Spacer()
-            .frame(width: 4 * .grid)
+            .frame(maxWidth: horizontalSizeClass == .regular ? 8 * .grid : 2 * .grid)
+    }
+
+    @ViewBuilder
+    private func separator() -> some View {
+        Rectangle()
+            .fill(.separator1)
+            .frame(width: 1, height: 3 * .grid)
+    }
+
+    @ViewBuilder
+    private func audioControls() -> some View {
         HStack(spacing: 2 * .grid) {
+            Spacer()
             AsyncButton(action: viewModel.toggleMicrophone) {
-                HStack(spacing: 2 * .grid) {
+                HStack(spacing: .grid) {
                     Image(systemName: viewModel.isMicrophoneEnabled ? "microphone.fill" : "microphone.slash.fill")
-                    LocalAudioVisualizer(track: viewModel.audioTrack)
+                    BarAudioVisualizer(audioTrack: viewModel.audioTrack, barColor: .foreground1, barCount: 3, barSpacingFactor: 0.1)
+                        .frame(width: 2 * .grid)
+                        .frame(maxHeight: .infinity)
+                        .scaleEffect(y: 0.5)
+                        .id(viewModel.audioTrack?.id)
                 }
                 .frame(height: Constants.buttonHeight)
             }
             #if os(macOS)
-            Rectangle()
-                .fill(.separator1)
-                .frame(width: 1, height: 3 * .grid)
+            separator()
             AudioDeviceSelector()
                 .frame(height: Constants.buttonHeight)
             #endif
+            Spacer()
         }
-        .frame(minWidth: Constants.buttonWidth)
+        .frame(width: Constants.buttonWidth)
     }
 
     @ViewBuilder
     private func videoControls() -> some View {
         HStack(spacing: 2 * .grid) {
+            Spacer()
             AsyncButton(action: viewModel.toggleCamera) {
                 Image(systemName: viewModel.isCameraEnabled ? "video.fill" : "video.slash.fill")
                     .frame(height: Constants.buttonHeight)
             }
             #if os(macOS)
-            Rectangle()
-                .fill(.separator1)
-                .frame(width: 1, height: 3 * .grid)
+            separator()
             VideoDeviceSelector()
                 .frame(height: Constants.buttonHeight)
             #endif
+            Spacer()
         }
-        .frame(minWidth: Constants.buttonWidth)
+        .frame(width: Constants.buttonWidth)
     }
 
     @ViewBuilder
