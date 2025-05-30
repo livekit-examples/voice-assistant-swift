@@ -32,7 +32,7 @@ final class Dependencies {
 
     // MARK: Error
 
-    lazy var errorHandler: (Error) -> Void = { _ in }
+    lazy var errorHandler: (Error?) -> Void = { _ in }
 }
 
 @MainActor

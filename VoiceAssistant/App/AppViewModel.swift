@@ -6,6 +6,21 @@ import Observation
 @MainActor
 @Observable
 final class AppViewModel {
+    private enum Constants {
+        static let agentConnectionTimeout: TimeInterval = 10
+    }
+
+    enum Error: LocalizedError {
+        case agentNotConnected
+
+        var errorDescription: String? {
+            switch self {
+            case .agentNotConnected:
+                return "Agent did not connect to the Room"
+            }
+        }
+    }
+
     enum InteractionMode {
         case voice
         case text
@@ -93,6 +108,7 @@ final class AppViewModel {
     }
 
     func connect() async {
+        errorHandler(nil)
         resetState()
         do {
             try await room.withPreConnectAudio {
@@ -106,6 +122,8 @@ final class AppViewModel {
                     connectOptions: .init(enableMicrophone: true)
                 )
             }
+
+            try await checkAgentConnection()
         } catch {
             errorHandler(error)
             resetState()
@@ -125,6 +143,14 @@ final class AppViewModel {
             roomName: roomName,
             participantName: participantName
         )!
+    }
+
+    private func checkAgentConnection() async throws {
+        try await Task.sleep(for: .seconds(Constants.agentConnectionTimeout))
+        if connectionState == .connected, agent == nil {
+            await disconnect()
+            throw Error.agentNotConnected
+        }
     }
 
     func enterTextInputMode() {

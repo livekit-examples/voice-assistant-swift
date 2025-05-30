@@ -44,6 +44,7 @@ struct AppView: View {
         .animation(.default, value: viewModel.isCameraEnabled)
         .animation(.default, value: viewModel.isScreenShareEnabled)
         .animation(.default, value: viewModel.agent)
+        .animation(.default, value: error?.localizedDescription)
         .onAppear {
             Dependencies.shared.errorHandler = { error = $0 }
         }
