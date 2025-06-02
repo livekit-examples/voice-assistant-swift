@@ -1,10 +1,3 @@
-//
-//  SampleHandler.swift
-//  BroadcastExtension
-//
-//  Created by Blaze Pankowski on 28/05/2025.
-//
-
 #if os(iOS)
 import LiveKit
 

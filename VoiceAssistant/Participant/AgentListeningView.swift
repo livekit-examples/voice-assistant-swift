@@ -1,10 +1,3 @@
-//
-//  AgentListeningView.swift
-//  VoiceAssistant
-//
-//  Created by Blaze Pankowski on 29/05/2025.
-//
-
 import SwiftUI
 
 struct AgentListeningView: View {

@@ -1,10 +1,3 @@
-//
-//  ObservableObject+.swift
-//  VoiceAssistant
-//
-//  Created by Blaze Pankowski on 26/05/2025.
-//
-
 import Combine
 
 extension ObservableObject {

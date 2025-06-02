@@ -1,10 +1,3 @@
-//
-//  AudioDeviceSelector.swift
-//  VoiceAssistant
-//
-//  Created by Blaze Pankowski on 23/05/2025.
-//
-
 import LiveKitComponents
 
 #if os(macOS)

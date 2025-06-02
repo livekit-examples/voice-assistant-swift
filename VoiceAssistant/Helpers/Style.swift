@@ -1,10 +1,3 @@
-//
-//  Style.swift
-//  VoiceAssistant
-//
-//  Created by Blaze Pankowski on 29/05/2025.
-//
-
 import SwiftUI
 
 extension CGFloat {

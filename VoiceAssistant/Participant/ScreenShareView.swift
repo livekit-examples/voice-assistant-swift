@@ -1,10 +1,3 @@
-//
-//  ScreenShareView.swift
-//  VoiceAssistant
-//
-//  Created by Blaze Pankowski on 28/05/2025.
-//
-
 import LiveKitComponents
 
 struct ScreenShareView: View {
