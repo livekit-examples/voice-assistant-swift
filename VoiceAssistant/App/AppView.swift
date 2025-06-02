@@ -42,7 +42,7 @@ struct AppView: View {
             }
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
-        .background(Color.background1)
+        .background(Color.bg1)
         .animation(.default, value: viewModel.connectionState)
         .animation(.default, value: viewModel.interactionMode)
         .animation(.default, value: viewModel.isCameraEnabled)

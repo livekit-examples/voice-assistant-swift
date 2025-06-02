@@ -28,8 +28,8 @@ struct ErrorView: View {
                 .frame(maxWidth: .infinity, alignment: .leading)
         }
         .padding(3 * .grid)
-        .background(Color.backgroundSerious)
-        .foregroundStyle(Color.foregroundSerious)
+        .background(Color.bgSerious)
+        .foregroundStyle(Color.fgSerious)
         .clipShape(RoundedRectangle(cornerRadius: .defaultCornerRadius))
         .overlay(
             RoundedRectangle(cornerRadius: .defaultCornerRadius)

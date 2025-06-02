@@ -32,8 +32,8 @@ struct ControlBar: View {
         }
         .buttonStyle(
             ControlBarButtonStyle(
-                foregroundColor: .foreground1,
-                backgroundColor: .background2,
+                foregroundColor: .fg1,
+                backgroundColor: .bg2,
                 borderColor: .separator1
             )
         )
@@ -45,7 +45,7 @@ struct ControlBar: View {
         )
         .background(
             RoundedRectangle(cornerRadius: 7.5 * .grid)
-                .fill(.background1)
+                .fill(.bg1)
                 .shadow(color: .black.opacity(0.1), radius: 10, y: 10)
         )
         .safeAreaPadding(.bottom, 8 * .grid)
@@ -78,7 +78,7 @@ struct ControlBar: View {
             AsyncButton(action: viewModel.toggleMicrophone) {
                 HStack(spacing: .grid) {
                     Image(systemName: viewModel.isMicrophoneEnabled ? "microphone.fill" : "microphone.slash.fill")
-                    BarAudioVisualizer(audioTrack: viewModel.audioTrack, barColor: .foreground1, barCount: 3, barSpacingFactor: 0.1)
+                    BarAudioVisualizer(audioTrack: viewModel.audioTrack, barColor: .fg1, barCount: 3, barSpacingFactor: 0.1)
                         .frame(width: 2 * .grid, height: 0.5 * Constants.buttonHeight)
                         .frame(maxHeight: .infinity)
                         .id(viewModel.audioTrack?.id)
@@ -137,8 +137,8 @@ struct ControlBar: View {
         }
         .buttonStyle(
             ControlBarButtonStyle(
-                foregroundColor: .foregroundSerious,
-                backgroundColor: .backgroundSerious,
+                foregroundColor: .fgSerious,
+                backgroundColor: .bgSerious,
                 borderColor: .separatorSerious
             )
         )

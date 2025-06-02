@@ -19,8 +19,8 @@ struct WarningView: View {
                 .frame(maxWidth: .infinity, alignment: .leading)
         }
         .padding(3 * .grid)
-        .foregroundStyle(Color.foregroundModerate)
-        .background(Color.backgroundModerate)
+        .foregroundStyle(Color.fgModerate)
+        .background(Color.bgModerate)
         .clipShape(RoundedRectangle(cornerRadius: .defaultCornerRadius))
         .overlay(
             RoundedRectangle(cornerRadius: .defaultCornerRadius)

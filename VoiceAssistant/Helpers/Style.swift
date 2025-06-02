@@ -18,7 +18,7 @@ struct ProminentButtonStyle: ButtonStyle {
             .textCase(.uppercase)
             .font(.system(size: 14, weight: .semibold, design: .monospaced))
             .foregroundStyle(Color.white)
-            .background(Color.blue500.opacity(configuration.isPressed ? 0.75 : 1))
+            .background(Color.fgAccent.opacity(configuration.isPressed ? 0.75 : 1))
             .cornerRadius(8)
     }
 }
@@ -30,7 +30,7 @@ struct RoundButtonStyle: ButtonStyle {
         configuration.label
             .font(.system(size: 12))
             .foregroundColor(.white)
-            .background(isEnabled ? Color.blue500.opacity(configuration.isPressed ? 0.75 : 1) : Color.gray)
+            .background(isEnabled ? Color.fgAccent.opacity(configuration.isPressed ? 0.75 : 1) : Color.gray)
             .clipShape(Circle())
     }
 }
