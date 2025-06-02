@@ -44,15 +44,13 @@ jobs:
       - name: Swift Version
         run: xcrun swift --version
 
-      - name: Build for Testing
+      - name: Setup .env
         run: |
-          set -o pipefail && xcodebuild build-for-testing \
-            -scheme VoiceAssistant \
-            -destination 'platform=${{ matrix.platform }}' -allowProvisioningUpdates | xcbeautify --renderer github-actions
+          echo "LIVEKIT_SANDBOX_ID=" > .env.xcconfig
 
       - name: Run Tests
         run: |
-          set -o pipefail && xcodebuild test-without-building \
+          set -o pipefail && xcodebuild test \
             -scheme VoiceAssistant \
             -destination 'platform=${{ matrix.platform }}' | xcbeautify --renderer github-actions
 
