@@ -48,9 +48,8 @@ jobs:
         run: |
           set -o pipefail && xcodebuild build-for-testing \
             -scheme VoiceAssistant \
-            -destination 'platform=${{ matrix.platform }}' | xcbeautify --renderer github-actions
+            -destination 'platform=${{ matrix.platform }}' -allowProvisioningUpdates | xcbeautify --renderer github-actions
 
-      # Run all tests in parallel instead of sequentially
       - name: Run Tests
         run: |
           set -o pipefail && xcodebuild test-without-building \
