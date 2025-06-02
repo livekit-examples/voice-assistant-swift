@@ -1,10 +1,3 @@
-//
-//  StartView.swift
-//  VoiceAssistant
-//
-//  Created by Blaze Pankowski on 22/05/2025.
-//
-
 import SwiftUI
 
 struct StartView: View {
@@ -40,7 +33,7 @@ struct StartView: View {
             Text("connect.start")
                 .frame(width: 58 * .grid, height: 11 * .grid)
         } busyLabel: {
-            HStack(spacing: .grid) {
+            HStack(spacing: 4 * .grid) {
                 Spacer()
                 Spinner()
                 Text("connect.connecting")

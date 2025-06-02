@@ -17,7 +17,7 @@ struct ChatTextInputView: View {
                     }
                 }
                 .background(Color.bg2)
-                .padding(.leading)
+                .padding()
 
             AsyncButton(action: sendMessage) {
                 Image(systemName: "arrow.up")
@@ -27,7 +27,7 @@ struct ChatTextInputView: View {
             .disabled(messageText.isEmpty)
             .buttonStyle(RoundButtonStyle())
         }
-        .frame(height: 12 * .grid)
+        .frame(minHeight: 12 * .grid)
         .frame(maxWidth: horizontalSizeClass == .regular ? 128 * .grid : 92 * .grid)
         .background(Color.bg2)
         .clipShape(RoundedRectangle(cornerRadius: 6 * .grid))

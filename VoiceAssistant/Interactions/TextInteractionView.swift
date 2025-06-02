@@ -1,10 +1,3 @@
-//
-//  TextInteractionView.swift
-//  VoiceAssistant
-//
-//  Created by Blaze Pankowski on 23/05/2025.
-//
-
 import SwiftUI
 
 struct TextInteractionView: View {
@@ -27,9 +20,16 @@ struct TextInteractionView: View {
                         .frame(maxWidth: 200)
                     Spacer()
                 }
+                #if os(iOS)
                 .frame(maxHeight: isKeyboardFocused ? 100 : 200)
+                #else
+                .frame(maxHeight: 200)
+                #endif
 
                 ChatView()
+                #if os(macOS)
+                    .frame(maxWidth: 128 * .grid)
+                #endif
                     .mask(
                         LinearGradient(
                             gradient: Gradient(colors: [.clear, .black, .black]),
@@ -39,14 +39,18 @@ struct TextInteractionView: View {
                     )
                     .containerRelativeFrame(.horizontal)
             }
+            #if os(iOS)
             .animation(.default, value: isKeyboardFocused)
             .contentShape(Rectangle())
             .onTapGesture {
                 isKeyboardFocused = false
             }
+            #endif
 
             ChatTextInputView()
+            #if os(iOS)
                 .focused($isKeyboardFocused)
+            #endif
         }
     }
 }

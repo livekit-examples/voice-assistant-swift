@@ -32,7 +32,7 @@ struct ChatView: View {
             }
             .listStyle(.plain)
             .scrollIndicators(.hidden)
-            .allowsHitTesting(false)
+            .scrollContentBackground(.hidden)
         }
         .animation(.default, value: viewModel.messages)
     }
