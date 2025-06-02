@@ -49,19 +49,19 @@ struct ControlBar: View {
                 .shadow(color: .black.opacity(0.1), radius: 10, y: 10)
         )
         .safeAreaPadding(.bottom, 8 * .grid)
-        .safeAreaPadding(.horizontal, 4 * .grid)
+        .safeAreaPadding(.horizontal, 16 * .grid)
     }
 
     @ViewBuilder
     private func flexibleSpacer() -> some View {
         Spacer()
-            .frame(maxWidth: horizontalSizeClass == .regular ? 8 * .grid : .zero)
+            .frame(maxWidth: horizontalSizeClass == .regular ? 8 * .grid : 2 * .grid)
     }
 
     @ViewBuilder
     private func biggerSpacer() -> some View {
         Spacer()
-            .frame(maxWidth: horizontalSizeClass == .regular ? 8 * .grid : 2 * .grid)
+            .frame(maxWidth: horizontalSizeClass == .regular ? 8 * .grid : .infinity)
     }
 
     @ViewBuilder

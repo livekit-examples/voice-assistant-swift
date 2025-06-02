@@ -22,7 +22,6 @@ struct AppView: View {
                 switch viewModel.interactionMode {
                 case .text: TextInteractionView(isKeyboardFocused: $isKeyboardFocused, namespace: transitions)
                     .environment(chatViewModel)
-                    .focused($isKeyboardFocused)
                 case .voice: VoiceInteractionView(namespace: transitions)
                 }
             } else {

@@ -29,7 +29,6 @@ struct VoiceInteractionView: View {
                     AgentParticipantView(namespace: namespace)
                         .frame(maxWidth: .infinity, maxHeight: .infinity)
                         .ignoresSafeArea()
-                        .border(Color.purple)
                     HStack {
                         LocalParticipantView(namespace: namespace)
                             .frame(maxWidth: 120, maxHeight: 200)

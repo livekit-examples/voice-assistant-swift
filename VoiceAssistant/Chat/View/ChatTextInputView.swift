@@ -2,6 +2,7 @@ import SwiftUI
 
 struct ChatTextInputView: View {
     @Environment(ChatViewModel.self) private var chatViewModel
+    @Environment(\.horizontalSizeClass) private var horizontalSizeClass
     @State private var messageText = ""
 
     var body: some View {
@@ -26,10 +27,11 @@ struct ChatTextInputView: View {
             .buttonStyle(RoundButtonStyle())
         }
         .frame(height: 12 * .grid)
+        .frame(maxWidth: horizontalSizeClass == .regular ? 128 * .grid : 92 * .grid)
         .background(Color.background2)
         .clipShape(RoundedRectangle(cornerRadius: 6 * .grid))
         .safeAreaPadding(.horizontal, 4 * .grid)
-        .safeAreaPadding(.vertical, 4 * .grid)
+        .safeAreaPadding(.bottom, 4 * .grid)
     }
 
     private func sendMessage() async {

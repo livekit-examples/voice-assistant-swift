@@ -33,16 +33,13 @@ struct AgentParticipantView: View {
                     .onDisappear {
                         videoTransition = false
                     }
-            } else if let agent = viewModel.agent, let agentAudioTrack = viewModel.agentAudioTrack {
-                BarAudioVisualizer(audioTrack: agentAudioTrack, agentState: agent.agentState, barCount: 5, barSpacingFactor: 0.025)
-                    .frame(width: 75 * .grid)
-                    .frame(maxHeight: 48 * .grid)
+            } else if let agentAudioTrack = viewModel.agentAudioTrack {
+                BarAudioVisualizer(audioTrack: agentAudioTrack, agentState: viewModel.agent?.agentState ?? .listening, barCount: 5, barSpacingFactor: 0.03)
+                    .frame(maxWidth: 75 * .grid, maxHeight: 48 * .grid)
+                    .id(viewModel.agent?.agentState)
             } else {
-                VStack {
-                    BarAudioVisualizer(audioTrack: nil, agentState: .listening, barCount: 1)
-                        .frame(width: 12 * .grid)
-                        .frame(maxHeight: 48 * .grid)
-                }
+                BarAudioVisualizer(audioTrack: nil, agentState: .listening, barCount: 1)
+                    .frame(maxWidth: 12 * .grid, maxHeight: 48 * .grid)
             }
         }
         .matchedGeometryEffect(id: String(describing: Self.self), in: namespace)

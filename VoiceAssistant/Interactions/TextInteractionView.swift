@@ -10,22 +10,24 @@ import SwiftUI
 struct TextInteractionView: View {
     @Environment(AppViewModel.self) private var viewModel
     @Environment(ChatViewModel.self) private var chatViewModel
-    @FocusState.Binding var isKeyboardFocused: Bool
 
+    @FocusState.Binding var isKeyboardFocused: Bool
     var namespace: Namespace.ID
 
     var body: some View {
         VStack {
-            Group {
+            VStack {
                 HStack {
+                    Spacer()
                     AgentParticipantView(namespace: namespace)
                         .frame(maxWidth: 120)
                     LocalParticipantView(namespace: namespace)
                         .frame(maxWidth: 120)
                     ScreenShareView(namespace: namespace)
                         .frame(maxWidth: 200)
+                    Spacer()
                 }
-                .frame(height: 200)
+                .frame(maxHeight: isKeyboardFocused ? 100 : 200)
 
                 ChatView()
                     .mask(
@@ -35,6 +37,7 @@ struct TextInteractionView: View {
                             endPoint: .init(x: 0.5, y: 0.2)
                         )
                     )
+                    .containerRelativeFrame(.horizontal)
             }
             .contentShape(Rectangle())
             .onTapGesture {
@@ -42,7 +45,7 @@ struct TextInteractionView: View {
             }
 
             ChatTextInputView()
+                .focused($isKeyboardFocused)
         }
-        .frame(maxWidth: .infinity, maxHeight: .infinity)
     }
 }
