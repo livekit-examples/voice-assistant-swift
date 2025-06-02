@@ -28,6 +28,17 @@ final class AppViewModel {
 
     private(set) var connectionState: ConnectionState = .disconnected
     private(set) var isListening = false
+    var hasConnection: Bool {
+        switch connectionState {
+        case .disconnected where isListening,
+             .connecting where isListening,
+             .connected,
+             .reconnecting:
+            return true
+        default:
+            return false
+        }
+    }
 
     private(set) var agent: Participant?
 

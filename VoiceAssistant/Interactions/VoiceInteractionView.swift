@@ -41,8 +41,5 @@ struct VoiceInteractionView: View {
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .ignoresSafeArea()
-        .safeAreaInset(edge: .bottom) {
-            ControlBar()
-        }
     }
 }

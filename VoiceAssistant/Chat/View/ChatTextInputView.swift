@@ -29,6 +29,7 @@ struct ChatTextInputView: View {
         .background(Color.background2)
         .clipShape(RoundedRectangle(cornerRadius: 6 * .grid))
         .safeAreaPadding(.horizontal, 4 * .grid)
+        .safeAreaPadding(.vertical, 4 * .grid)
     }
 
     private func sendMessage() async {

@@ -12,21 +12,21 @@ struct AppView: View {
     @State private var chatViewModel = ChatViewModel()
 
     @State private var error: Error?
+    @FocusState private var isKeyboardFocused: Bool
 
     @Namespace private var transitions
 
     var body: some View {
         ZStack(alignment: .top) {
-            switch viewModel.connectionState {
-            case .disconnected where viewModel.isListening,
-                 .connecting where viewModel.isListening,
-                 .connected,
-                 .reconnecting:
+            if viewModel.hasConnection {
                 switch viewModel.interactionMode {
-                case .text: TextInteractionView(namespace: transitions).environment(chatViewModel)
+                case .text: TextInteractionView(isKeyboardFocused: $isKeyboardFocused, namespace: transitions)
+                    .environment(chatViewModel)
+                    .focused($isKeyboardFocused)
                 case .voice: VoiceInteractionView(namespace: transitions)
                 }
-            case .disconnected, .connecting: StartView()
+            } else {
+                StartView()
             }
 
             if case .reconnecting = viewModel.connectionState {
@@ -35,6 +35,11 @@ struct AppView: View {
 
             if let error {
                 ErrorView(error: error) { self.error = nil }
+            }
+        }
+        .safeAreaInset(edge: .bottom) {
+            if viewModel.hasConnection, !isKeyboardFocused {
+                ControlBar()
             }
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)

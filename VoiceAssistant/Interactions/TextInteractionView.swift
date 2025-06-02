@@ -10,7 +10,7 @@ import SwiftUI
 struct TextInteractionView: View {
     @Environment(AppViewModel.self) private var viewModel
     @Environment(ChatViewModel.self) private var chatViewModel
-    @FocusState private var isKeyboardFocused: Bool
+    @FocusState.Binding var isKeyboardFocused: Bool
 
     var namespace: Namespace.ID
 
@@ -25,7 +25,7 @@ struct TextInteractionView: View {
                     ScreenShareView(namespace: namespace)
                         .frame(maxWidth: 200)
                 }
-                .frame(maxHeight: isKeyboardFocused ? 120 : 200)
+                .frame(height: 200)
 
                 ChatView()
                     .mask(
@@ -42,16 +42,7 @@ struct TextInteractionView: View {
             }
 
             ChatTextInputView()
-                .focused($isKeyboardFocused)
-            #if os(iOS)
-            if !isKeyboardFocused {
-                ControlBar()
-            }
-            #else
-            ControlBar()
-            #endif
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
-        .animation(.default, value: isKeyboardFocused)
     }
 }
