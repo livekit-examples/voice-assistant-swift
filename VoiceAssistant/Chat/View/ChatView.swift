@@ -42,26 +42,26 @@ struct ChatView: View {
         Group {
             switch message.content {
             case let .userTranscript(text):
-                userTranscript(text, dark: colorScheme == .dark)
+                userTranscript(text)
             case let .agentTranscript(text):
-                agentTranscript(text).opacity(message.id == viewModel.messages.keys.last ? 1 : 0.8)
+                agentTranscript(text)
             }
         }
         .transition(.blurReplace)
     }
 
     @ViewBuilder
-    private func userTranscript(_ text: String, dark: Bool) -> some View {
+    private func userTranscript(_ text: String) -> some View {
         HStack {
             Spacer(minLength: 4 * .grid)
             Text(text.trimmingCharacters(in: .whitespacesAndNewlines))
                 .font(.system(size: 15))
                 .padding(.horizontal, 4 * .grid)
                 .padding(.vertical, 2 * .grid)
+                .foregroundStyle(.fg1)
                 .background(
-                    RoundedRectangle(cornerRadius: 16)
-                        .fill(.background.secondary)
-                        .stroke(.separator.secondary, lineWidth: dark ? 1 : 0)
+                    RoundedRectangle(cornerRadius: .cornerRadiusLarge)
+                        .fill(.bg2)
                 )
         }
     }

@@ -21,9 +21,9 @@ struct WarningView: View {
         .padding(3 * .grid)
         .foregroundStyle(Color.fgModerate)
         .background(Color.bgModerate)
-        .clipShape(RoundedRectangle(cornerRadius: .defaultCornerRadius))
+        .clipShape(RoundedRectangle(cornerRadius: .cornerRadiusSmall))
         .overlay(
-            RoundedRectangle(cornerRadius: .defaultCornerRadius)
+            RoundedRectangle(cornerRadius: .cornerRadiusSmall)
                 .stroke(Color.separatorModerate, lineWidth: 1)
         )
         .safeAreaPadding(4 * .grid)

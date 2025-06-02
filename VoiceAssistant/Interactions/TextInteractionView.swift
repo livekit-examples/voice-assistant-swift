@@ -39,6 +39,7 @@ struct TextInteractionView: View {
                     )
                     .containerRelativeFrame(.horizontal)
             }
+            .animation(.default, value: isKeyboardFocused)
             .contentShape(Rectangle())
             .onTapGesture {
                 isKeyboardFocused = false

@@ -9,7 +9,9 @@ import SwiftUI
 
 extension CGFloat {
     static let grid: Self = 4
-    static let defaultCornerRadius: Self = 2 * grid
+
+    static let cornerRadiusSmall: Self = 2 * grid
+    static let cornerRadiusLarge: Self = 4 * grid
 }
 
 struct ProminentButtonStyle: ButtonStyle {
@@ -28,9 +30,9 @@ struct RoundButtonStyle: ButtonStyle {
 
     func makeBody(configuration: Configuration) -> some View {
         configuration.label
-            .font(.system(size: 12))
-            .foregroundColor(.white)
-            .background(isEnabled ? Color.fgAccent.opacity(configuration.isPressed ? 0.75 : 1) : Color.gray)
+            .font(.system(size: 12, weight: .semibold))
+            .foregroundStyle(.white)
+            .background(isEnabled ? .fgAccent.opacity(configuration.isPressed ? 0.75 : 1) : .fg4)
             .clipShape(Circle())
     }
 }
@@ -44,9 +46,9 @@ struct ControlBarButtonStyle: ButtonStyle {
     func makeBody(configuration: Configuration) -> some View {
         configuration.label
             .font(.system(size: 17, weight: .medium))
-            .foregroundStyle(configuration.isPressed ? foregroundColor.opacity(0.5) : foregroundColor)
+            .foregroundStyle(configuration.isPressed ? foregroundColor.opacity(0.75) : foregroundColor)
             .background(
-                RoundedRectangle(cornerRadius: .defaultCornerRadius)
+                RoundedRectangle(cornerRadius: .cornerRadiusSmall)
                     .fill(isToggled ? backgroundColor : .clear)
             )
     }

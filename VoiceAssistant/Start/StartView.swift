@@ -14,6 +14,9 @@ struct StartView: View {
     var body: some View {
         VStack(spacing: 4 * .grid) {
             text()
+            #if targetEnvironment(simulator)
+            simulator()
+            #endif
             Spacer().frame(height: 4 * .grid)
             connectButton()
         }
@@ -28,7 +31,7 @@ struct StartView: View {
             .font(.system(size: 56, weight: .thin))
         Text("connect.tip")
             .font(.system(size: 17))
-            .tint(.secondary) // for markdown links
+            .tint(.fg3) // for markdown links
     }
 
     @ViewBuilder
@@ -46,6 +49,13 @@ struct StartView: View {
             .frame(width: 58 * .grid, height: 11 * .grid)
         }
         .buttonStyle(ProminentButtonStyle())
+    }
+
+    @ViewBuilder
+    private func simulator() -> some View {
+        Text("connect.simulator")
+            .font(.system(size: 17))
+            .foregroundStyle(.fg3)
     }
 }
 

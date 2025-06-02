@@ -16,6 +16,7 @@ struct ChatTextInputView: View {
                         await sendMessage()
                     }
                 }
+                .background(Color.bg2)
                 .padding(.leading)
 
             AsyncButton(action: sendMessage) {

@@ -30,9 +30,9 @@ struct ErrorView: View {
         .padding(3 * .grid)
         .background(Color.bgSerious)
         .foregroundStyle(Color.fgSerious)
-        .clipShape(RoundedRectangle(cornerRadius: .defaultCornerRadius))
+        .clipShape(RoundedRectangle(cornerRadius: .cornerRadiusSmall))
         .overlay(
-            RoundedRectangle(cornerRadius: .defaultCornerRadius)
+            RoundedRectangle(cornerRadius: .cornerRadiusSmall)
                 .stroke(Color.separatorSerious, lineWidth: 1)
         )
         .safeAreaPadding(4 * .grid)

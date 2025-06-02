@@ -16,7 +16,7 @@ struct AgentParticipantView: View {
         Group {
             if let avatarCameraTrack = viewModel.avatarCameraTrack {
                 SwiftUIVideoView(avatarCameraTrack)
-                    .clipShape(RoundedRectangle(cornerRadius: .defaultCornerRadius))
+                    .clipShape(RoundedRectangle(cornerRadius: .cornerRadiusSmall))
                     .shadow(radius: 20, y: 10)
                     .mask(
                         GeometryReader { proxy in
