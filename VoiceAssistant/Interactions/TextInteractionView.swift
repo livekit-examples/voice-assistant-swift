@@ -21,11 +21,7 @@ struct TextInteractionView: View {
                     Spacer()
                 }
                 .safeAreaPadding()
-                #if os(iOS)
-                    .frame(maxHeight: isKeyboardFocused ? 40 * .grid : 50 * .grid)
-                #else
-                    .frame(maxHeight: 50 * .grid)
-                #endif
+                .frame(maxHeight: 50 * .grid)
 
                 ChatView()
                 #if os(macOS)
@@ -40,7 +36,6 @@ struct TextInteractionView: View {
                     )
             }
             #if os(iOS)
-            .animation(.default, value: isKeyboardFocused)
             .contentShape(Rectangle())
             .onTapGesture {
                 isKeyboardFocused = false

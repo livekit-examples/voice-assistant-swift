@@ -31,6 +31,8 @@ struct RoundButtonStyle: ButtonStyle {
 }
 
 struct ControlBarButtonStyle: ButtonStyle {
+    @Environment(\.isEnabled) var isEnabled
+
     var isToggled: Bool = false
     let foregroundColor: Color
     let backgroundColor: Color
@@ -39,7 +41,7 @@ struct ControlBarButtonStyle: ButtonStyle {
     func makeBody(configuration: Configuration) -> some View {
         configuration.label
             .font(.system(size: 17, weight: .medium))
-            .foregroundStyle(configuration.isPressed ? foregroundColor.opacity(0.75) : foregroundColor)
+            .foregroundStyle(isEnabled ? foregroundColor.opacity(configuration.isPressed ? 0.75 : 1) : borderColor)
             .background(
                 RoundedRectangle(cornerRadius: .cornerRadiusSmall)
                     .fill(isToggled ? backgroundColor : .clear)

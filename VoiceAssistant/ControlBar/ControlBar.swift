@@ -14,10 +14,12 @@ struct ControlBar: View {
             biggerSpacer()
             audioControls()
             flexibleSpacer()
-            videoControls()
-            flexibleSpacer()
-            screenShareButton()
-            flexibleSpacer()
+            if viewModel.agentFeatures.contains(.video) {
+                videoControls()
+                flexibleSpacer()
+                screenShareButton()
+                flexibleSpacer()
+            }
             textInputButton()
             flexibleSpacer()
             disconnectButton()

@@ -12,3 +12,14 @@ struct VoiceAssistantApp: App {
         }
     }
 }
+
+struct AgentFeatures: OptionSet {
+    let rawValue: Int
+
+    static let voice = Self(rawValue: 1 << 0)
+    static let text = Self(rawValue: 1 << 1)
+    static let video = Self(rawValue: 1 << 2)
+
+//    static let defaults: Self = [.voice, .text]
+    static let defaults: Self = [.voice, .text, .video]
+}

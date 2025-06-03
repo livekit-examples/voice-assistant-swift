@@ -26,6 +26,8 @@ final class AppViewModel {
         case text
     }
 
+    let agentFeatures: AgentFeatures
+
     private(set) var connectionState: ConnectionState = .disconnected
     private(set) var isListening = false
     var hasConnection: Bool {
@@ -69,7 +71,9 @@ final class AppViewModel {
     @ObservationIgnored
     @Dependency(\.errorHandler) private var errorHandler
 
-    init() {
+    init(agentFeatures: AgentFeatures = .defaults) {
+        self.agentFeatures = agentFeatures
+
         Task { @MainActor [weak self] in
             guard let changes = self?.room.changes else { return }
             for await _ in changes {
