@@ -25,7 +25,7 @@ struct RoundButtonStyle: ButtonStyle {
         configuration.label
             .font(.system(size: 12, weight: .semibold))
             .foregroundStyle(.white)
-            .background(isEnabled ? .fgAccent.opacity(configuration.isPressed ? 0.75 : 1) : .fg4)
+            .background(isEnabled ? .fgAccent.opacity(configuration.isPressed ? 0.75 : 1) : .fg4.opacity(0.4))
             .clipShape(Circle())
     }
 }

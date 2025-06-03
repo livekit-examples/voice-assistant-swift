@@ -6,13 +6,11 @@ struct WarningView: View {
     var body: some View {
         VStack(spacing: 2 * .grid) {
             HStack(spacing: 2 * .grid) {
-                Group {
-                    Image(systemName: "exclamationmark.triangle")
-                    Text("warning.title")
-                }
-                .font(.system(size: 15, weight: .semibold))
+                Image(systemName: "exclamationmark.triangle")
+                Text("warning.title")
                 Spacer()
             }
+            .font(.system(size: 15, weight: .semibold))
 
             Text(warning)
                 .font(.system(size: 15))

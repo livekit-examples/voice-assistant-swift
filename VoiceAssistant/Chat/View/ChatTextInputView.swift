@@ -24,7 +24,7 @@ struct ChatTextInputView: View {
                 Image(systemName: "arrow.up")
                     .frame(width: 8 * .grid, height: 8 * .grid)
             }
-            .padding(.trailing, 2 * .grid)
+            .padding(.trailing, 3 * .grid)
             .disabled(messageText.isEmpty)
             .buttonStyle(RoundButtonStyle())
         }

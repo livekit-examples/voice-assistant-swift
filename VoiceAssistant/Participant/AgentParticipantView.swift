@@ -6,7 +6,7 @@ struct AgentParticipantView: View {
     var namespace: Namespace.ID
 
     var body: some View {
-        Group {
+        ZStack {
             if let avatarCameraTrack = viewModel.avatarCameraTrack {
                 SwiftUIVideoView(avatarCameraTrack)
                     .clipShape(RoundedRectangle(cornerRadius: .cornerRadiusSmall))
@@ -27,14 +27,25 @@ struct AgentParticipantView: View {
                         videoTransition = false
                     }
             } else if let agentAudioTrack = viewModel.agentAudioTrack {
-                BarAudioVisualizer(audioTrack: agentAudioTrack, agentState: viewModel.agent?.agentState ?? .listening, barCount: 5, barSpacingFactor: 0.03)
+                BarAudioVisualizer(audioTrack: agentAudioTrack,
+                                   agentState: viewModel.agent?.agentState ?? .listening,
+                                   barCount: 5,
+                                   barSpacingFactor: 0.05,
+                                   barMinOpacity: 0.1)
                     .frame(maxWidth: 75 * .grid, maxHeight: 48 * .grid)
+                    .transition(.opacity)
                     .id(viewModel.agent?.agentState)
             } else {
-                BarAudioVisualizer(audioTrack: nil, agentState: .listening, barCount: 1)
-                    .frame(maxWidth: 12 * .grid, maxHeight: 48 * .grid)
+                BarAudioVisualizer(audioTrack: nil,
+                                   agentState: .listening,
+                                   barCount: 1,
+                                   barMinOpacity: 0.1)
+                    .frame(maxWidth: 10.5 * .grid, maxHeight: 48 * .grid)
+                    .transition(.opacity)
+                    .id(viewModel.agent?.agentState)
             }
         }
+        .animation(.default, value: viewModel.agentAudioTrack?.id)
         .matchedGeometryEffect(id: String(describing: Self.self), in: namespace)
     }
 }

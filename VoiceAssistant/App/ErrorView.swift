@@ -8,12 +8,8 @@ struct ErrorView: View {
     var body: some View {
         VStack(spacing: 2 * .grid) {
             HStack(spacing: 2 * .grid) {
-                Group {
-                    Image(systemName: "exclamationmark.triangle")
-                    Text("error.title")
-                }
-                .font(.system(size: 15, weight: .semibold))
-
+                Image(systemName: "exclamationmark.triangle")
+                Text("error.title")
                 Spacer()
                 Button {
                     onDismiss()
@@ -22,6 +18,7 @@ struct ErrorView: View {
                 }
                 .buttonStyle(.plain)
             }
+            .font(.system(size: 15, weight: .semibold))
 
             Text(error.localizedDescription)
                 .font(.system(size: 15))
