@@ -3,7 +3,7 @@ import Testing
 
 @MainActor
 struct ChatViewModelTests {
-    @Test func testMultipleReceivers() async throws {
+    @Test func multipleReceivers() async throws {
         let receiver1 = MockMessageReceiver()
         let receiver2 = MockMessageReceiver()
 

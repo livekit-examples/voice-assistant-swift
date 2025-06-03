@@ -37,7 +37,6 @@ struct TextInteractionView: View {
                             endPoint: .init(x: 0.5, y: 0.2)
                         )
                     )
-                    .containerRelativeFrame(.horizontal)
             }
             #if os(iOS)
             .animation(.default, value: isKeyboardFocused)

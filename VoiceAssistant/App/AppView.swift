@@ -29,24 +29,32 @@ struct AppView: View {
                 ErrorView(error: error) { self.error = nil }
             }
         }
-        .safeAreaInset(edge: .bottom) {
-            if viewModel.hasConnection, !isKeyboardFocused {
+        #if os(visionOS)
+        .ornament(attachmentAnchor: .scene(.bottom)) {
+            if viewModel.hasConnection {
                 ControlBar()
+                    .glassBackgroundEffect()
             }
         }
-        .frame(maxWidth: .infinity, maxHeight: .infinity)
-        .background(Color.bg1)
-        .animation(.default, value: viewModel.connectionState)
-        .animation(.default, value: viewModel.interactionMode)
-        .animation(.default, value: viewModel.isCameraEnabled)
-        .animation(.default, value: viewModel.isScreenShareEnabled)
-        .animation(.default, value: viewModel.agent)
-        .animation(.default, value: error?.localizedDescription)
-        .onAppear {
-            Dependencies.shared.errorHandler = { error = $0 }
-        }
+        #else
+        .safeAreaInset(edge: .bottom) {
+                if viewModel.hasConnection, !isKeyboardFocused {
+                    ControlBar()
+                }
+            }
+        #endif
+            .background(Color.bg1)
+            .animation(.default, value: viewModel.connectionState)
+            .animation(.default, value: viewModel.interactionMode)
+            .animation(.default, value: viewModel.isCameraEnabled)
+            .animation(.default, value: viewModel.isScreenShareEnabled)
+            .animation(.default, value: viewModel.agent)
+            .animation(.default, value: error?.localizedDescription)
+            .onAppear {
+                Dependencies.shared.errorHandler = { error = $0 }
+            }
         #if os(iOS)
-        .sensoryFeedback(.impact, trigger: viewModel.isListening)
+            .sensoryFeedback(.impact, trigger: viewModel.isListening)
         #endif
     }
 }
