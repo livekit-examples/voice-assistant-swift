@@ -13,15 +13,12 @@ struct TextInteractionView: View {
                 HStack {
                     Spacer()
                     AgentParticipantView(namespace: namespace)
-                        .frame(maxWidth: 50 * .grid)
                     ScreenShareView(namespace: namespace)
-                        .frame(maxWidth: 50 * .grid)
                     LocalParticipantView(namespace: namespace)
-                        .frame(maxWidth: 50 * .grid)
                     Spacer()
                 }
+                .frame(height: 50 * .grid)
                 .safeAreaPadding()
-                .frame(maxHeight: 50 * .grid)
 
                 ChatView()
                 #if os(macOS)
