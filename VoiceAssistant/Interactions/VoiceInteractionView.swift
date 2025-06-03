@@ -6,32 +6,31 @@ struct VoiceInteractionView: View {
     var namespace: Namespace.ID
 
     var body: some View {
-        Group {
-            if horizontalSizeClass == .regular {
-                HStack(alignment: .bottom) {
-                    AgentParticipantView(namespace: namespace)
-                    VStack {
-                        ScreenShareView(namespace: namespace)
-                            .frame(maxWidth: 200, maxHeight: 200)
-                        LocalParticipantView(namespace: namespace)
-                            .frame(maxWidth: 200, maxHeight: 200)
-                    }
-                }
-            } else {
-                ZStack(alignment: .topTrailing) {
-                    AgentParticipantView(namespace: namespace)
-                        .frame(maxWidth: .infinity, maxHeight: .infinity)
-                        .ignoresSafeArea()
-                    HStack {
-                        LocalParticipantView(namespace: namespace)
-                            .frame(maxWidth: 120, maxHeight: 200)
-                        ScreenShareView(namespace: namespace)
-                            .frame(maxWidth: 200, maxHeight: 200)
-                    }
+        if horizontalSizeClass == .regular {
+            HStack(alignment: .bottom) {
+                AgentParticipantView(namespace: namespace)
+                VStack {
+                    ScreenShareView(namespace: namespace)
+                        .frame(maxWidth: 50 * .grid, maxHeight: 50 * .grid)
+                    LocalParticipantView(namespace: namespace)
+                        .frame(maxWidth: 50 * .grid, maxHeight: 50 * .grid)
                 }
             }
+        } else {
+            ZStack(alignment: .bottom) {
+                AgentParticipantView(namespace: namespace)
+                    .frame(maxWidth: .infinity, maxHeight: .infinity)
+                    .ignoresSafeArea()
+                HStack {
+                    Spacer()
+                        .frame(maxWidth: .infinity)
+                    ScreenShareView(namespace: namespace)
+                        .frame(maxWidth: 50 * .grid, maxHeight: 50 * .grid)
+                    LocalParticipantView(namespace: namespace)
+                        .frame(maxWidth: 50 * .grid, maxHeight: 50 * .grid)
+                }
+                .padding()
+            }
         }
-        .frame(maxWidth: .infinity, maxHeight: .infinity)
-        .ignoresSafeArea()
     }
 }

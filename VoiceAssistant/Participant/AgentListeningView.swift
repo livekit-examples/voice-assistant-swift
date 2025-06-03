@@ -17,10 +17,11 @@ struct AgentListeningView: View {
                     startPoint: textShimmer ? UnitPoint(x: -1, y: 0) : UnitPoint(x: 1, y: 0),
                     endPoint: textShimmer ? UnitPoint(x: 0, y: 0) : UnitPoint(x: 2, y: 0)
                 )
-                .animation(.linear(duration: 4).repeatForever(autoreverses: true), value: textShimmer)
+                .animation(.linear(duration: 5).repeatForever(autoreverses: true), value: textShimmer)
             )
             .onAppear {
                 textShimmer = true
             }
+            .transition(.opacity)
     }
 }

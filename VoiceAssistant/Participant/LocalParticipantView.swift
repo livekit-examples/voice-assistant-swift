@@ -15,7 +15,12 @@ struct LocalParticipantView: View {
                     if viewModel.canSwitchCamera {
                         AsyncButton(action: viewModel.switchCamera) {
                             Image(systemName: "arrow.trianglehead.2.clockwise.rotate.90")
+                                .padding(8)
+                                .foregroundStyle(.fg0)
+                                .background(.bg1.opacity(0.8))
+                                .clipShape(Circle())
                         }
+                        .padding(2 * .grid)
                     }
                 }
                 .matchedGeometryEffect(id: String(describing: Self.self), in: namespace)

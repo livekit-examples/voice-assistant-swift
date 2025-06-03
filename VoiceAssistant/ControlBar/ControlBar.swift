@@ -106,6 +106,7 @@ struct ControlBar: View {
             Spacer()
         }
         .frame(width: Constants.buttonWidth)
+        .disabled(viewModel.connectionState != .connected)
     }
 
     @ViewBuilder
@@ -114,6 +115,15 @@ struct ControlBar: View {
             Image(systemName: "arrow.up.square.fill")
                 .frame(width: Constants.buttonWidth, height: Constants.buttonHeight)
         }
+        .buttonStyle(
+            ControlBarButtonStyle(
+                isToggled: viewModel.isScreenShareEnabled,
+                foregroundColor: .fg1,
+                backgroundColor: .bg2,
+                borderColor: .separator1
+            )
+        )
+        .disabled(viewModel.connectionState != .connected)
     }
 
     @ViewBuilder
@@ -122,6 +132,14 @@ struct ControlBar: View {
             Image(systemName: "ellipsis.message.fill")
                 .frame(width: Constants.buttonWidth, height: Constants.buttonHeight)
         }
+        .buttonStyle(
+            ControlBarButtonStyle(
+                isToggled: viewModel.interactionMode == .text,
+                foregroundColor: .fg1,
+                backgroundColor: .bg2,
+                borderColor: .separator1
+            )
+        )
     }
 
     @ViewBuilder

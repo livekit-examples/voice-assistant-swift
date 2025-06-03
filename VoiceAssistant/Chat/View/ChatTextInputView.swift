@@ -16,6 +16,7 @@ struct ChatTextInputView: View {
                         await sendMessage()
                     }
                 }
+                .foregroundStyle(.fg1)
                 .background(Color.bg2)
                 .padding()
 

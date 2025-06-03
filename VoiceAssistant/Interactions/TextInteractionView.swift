@@ -13,17 +13,18 @@ struct TextInteractionView: View {
                 HStack {
                     Spacer()
                     AgentParticipantView(namespace: namespace)
-                        .frame(maxWidth: 120)
-                    LocalParticipantView(namespace: namespace)
-                        .frame(maxWidth: 120)
+                        .frame(maxWidth: 50 * .grid)
                     ScreenShareView(namespace: namespace)
-                        .frame(maxWidth: 200)
+                        .frame(maxWidth: 50 * .grid)
+                    LocalParticipantView(namespace: namespace)
+                        .frame(maxWidth: 50 * .grid)
                     Spacer()
                 }
+                .safeAreaPadding()
                 #if os(iOS)
-                .frame(maxHeight: isKeyboardFocused ? 100 : 200)
+                    .frame(maxHeight: isKeyboardFocused ? 40 * .grid : 50 * .grid)
                 #else
-                .frame(maxHeight: 200)
+                    .frame(maxHeight: 50 * .grid)
                 #endif
 
                 ChatView()

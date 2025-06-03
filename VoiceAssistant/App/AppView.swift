@@ -13,9 +13,21 @@ struct AppView: View {
         ZStack(alignment: .top) {
             if viewModel.hasConnection {
                 switch viewModel.interactionMode {
-                case .text: TextInteractionView(isKeyboardFocused: $isKeyboardFocused, namespace: transitions)
-                    .environment(chatViewModel)
-                case .voice: VoiceInteractionView(namespace: transitions)
+                case .text:
+                    TextInteractionView(isKeyboardFocused: $isKeyboardFocused, namespace: transitions)
+                        .environment(chatViewModel)
+                case .voice:
+                    VoiceInteractionView(namespace: transitions)
+                        .overlay(alignment: .bottom) {
+                            if chatViewModel.messages.isEmpty,
+                               !viewModel.isCameraEnabled,
+                               !viewModel.isScreenShareEnabled
+                            {
+                                AgentListeningView()
+                                    .padding()
+                            }
+                        }
+                        .animation(.default, value: chatViewModel.messages.isEmpty)
                 }
             } else {
                 StartView()
