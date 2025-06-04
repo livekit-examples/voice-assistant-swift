@@ -4,28 +4,31 @@ struct ChatTextInputView: View {
     @Environment(ChatViewModel.self) private var chatViewModel
     @Environment(\.horizontalSizeClass) private var horizontalSizeClass
     @State private var messageText = ""
+    @FocusState.Binding var isKeyboardFocused: Bool
 
     var body: some View {
         HStack(spacing: 12) {
             TextField("message.placeholder", text: $messageText, axis: .vertical)
+            #if os(iOS)
+                .focused($isKeyboardFocused)
+            #endif
             #if os(visionOS)
-                .textFieldStyle(.roundedBorder)
-                .hoverEffectDisabled()
+            .textFieldStyle(.roundedBorder)
+            .hoverEffectDisabled()
             #else
-                .textFieldStyle(.plain)
+            .textFieldStyle(.plain)
             #endif
-                .lineLimit(3)
-                .submitLabel(.send)
-                .onSubmit {
-                    Task {
-                        await sendMessage()
-                    }
+            .lineLimit(3)
+            .submitLabel(.send)
+            .onSubmit {
+                Task {
+                    await sendMessage()
                 }
+            }
             #if !os(visionOS)
-                .foregroundStyle(.fg1)
-//                .background(Color.bg2)
+            .foregroundStyle(.fg1)
             #endif
-                .padding()
+            .padding()
 
             AsyncButton(action: sendMessage) {
                 Image(systemName: "arrow.up")
@@ -41,7 +44,7 @@ struct ChatTextInputView: View {
         }
         .frame(minHeight: 12 * .grid)
         .frame(maxWidth: horizontalSizeClass == .regular ? 128 * .grid : 92 * .grid)
-//        .background(Color.bg2)
+        .background(Color.bg2)
         .clipShape(RoundedRectangle(cornerRadius: 6 * .grid))
         .safeAreaPadding(.horizontal, 4 * .grid)
         .safeAreaPadding(.bottom, 4 * .grid)
@@ -49,12 +52,16 @@ struct ChatTextInputView: View {
 
     private func sendMessage() async {
         guard !messageText.isEmpty else { return }
-        defer { messageText = "" }
+        defer {
+            messageText = ""
+            isKeyboardFocused = false
+        }
         await chatViewModel.sendMessage(messageText)
     }
 }
 
 #Preview {
-    ChatTextInputView()
+    @FocusState var focus
+    ChatTextInputView(isKeyboardFocused: $focus)
         .environment(ChatViewModel())
 }

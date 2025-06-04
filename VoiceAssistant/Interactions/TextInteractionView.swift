@@ -39,10 +39,7 @@ struct TextInteractionView: View {
             }
             #endif
 
-            ChatTextInputView()
-            #if os(iOS)
-                .focused($isKeyboardFocused)
-            #endif
+            ChatTextInputView(isKeyboardFocused: _isKeyboardFocused)
         }
     }
 }

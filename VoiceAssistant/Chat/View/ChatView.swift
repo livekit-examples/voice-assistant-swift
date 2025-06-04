@@ -35,7 +35,7 @@ struct ChatView: View {
         .listRowBackground(EmptyView())
         .listRowSeparator(.hidden)
         .transition(.blurReplace)
-        .id(message.id)
+        .id(message.id) // ScrollViewReader
     }
 
     @ViewBuilder

@@ -22,6 +22,6 @@ struct AgentListeningView: View {
             .onAppear {
                 textShimmer = true
             }
-            .transition(.opacity)
+            .transition(.blurReplace)
     }
 }

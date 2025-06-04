@@ -12,16 +12,20 @@ struct ControlBar: View {
     var body: some View {
         HStack(spacing: .zero) {
             biggerSpacer()
-            audioControls()
-            flexibleSpacer()
+            if viewModel.agentFeatures.contains(.voice) {
+                audioControls()
+                flexibleSpacer()
+            }
             if viewModel.agentFeatures.contains(.video) {
                 videoControls()
                 flexibleSpacer()
                 screenShareButton()
                 flexibleSpacer()
             }
-            textInputButton()
-            flexibleSpacer()
+            if viewModel.agentFeatures.contains(.text) {
+                textInputButton()
+                flexibleSpacer()
+            }
             disconnectButton()
             biggerSpacer()
         }
