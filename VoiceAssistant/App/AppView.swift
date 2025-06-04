@@ -48,6 +48,7 @@ struct AppView: View {
                 StartView()
             }
 
+            #if !os(visionOS)
             if case .reconnecting = viewModel.connectionState {
                 WarningView(warning: "warning.reconnecting")
             }
@@ -55,6 +56,7 @@ struct AppView: View {
             if let error {
                 ErrorView(error: error) { self.error = nil }
             }
+            #endif
         }
         #if os(visionOS)
         .ornament(attachmentAnchor: .scene(.bottom)) {
@@ -62,6 +64,10 @@ struct AppView: View {
                 ControlBar()
                     .glassBackgroundEffect()
             }
+        }
+        .alert("warning.reconnecting", isPresented: .constant(viewModel.connectionState == .reconnecting)) {}
+        .alert(error?.localizedDescription ?? "error.title", isPresented: .constant(error != nil)) {
+            Button("error.ok") { error = nil }
         }
         #else
         .safeAreaInset(edge: .bottom) {

@@ -28,7 +28,7 @@ struct StartView: View {
             .font(.system(size: 56, weight: .thin))
         Text("connect.tip")
             .font(.system(size: 17))
-            .tint(.fg1) // for markdown links
+            .tint(.fg2) // for markdown links
             .multilineTextAlignment(.center)
     }
 

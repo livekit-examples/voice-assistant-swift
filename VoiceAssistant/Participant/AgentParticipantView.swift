@@ -9,7 +9,7 @@ struct AgentParticipantView: View {
         ZStack {
             if let avatarCameraTrack = viewModel.avatarCameraTrack {
                 SwiftUIVideoView(avatarCameraTrack)
-                    .clipShape(RoundedRectangle(cornerRadius: .cornerRadiusSmall))
+                    .clipShape(RoundedRectangle(cornerRadius: .cornerRadiusPerPlatform))
                     .shadow(radius: 20, y: 10)
                     .mask(
                         GeometryReader { proxy in

@@ -56,6 +56,16 @@
         }
       }
     },
+    "error.ok" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "OK"
+          }
+        }
+      }
+    },
     "error.title" : {
       "localizations" : {
         "en" : {

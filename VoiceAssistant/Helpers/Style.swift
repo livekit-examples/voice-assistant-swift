@@ -4,10 +4,11 @@ extension CGFloat {
     static let grid: Self = 4
 
     #if os(visionOS)
-    static let cornerRadiusSmall: Self = 11.5 * grid
+    static let cornerRadiusPerPlatform: Self = 11.5 * grid
     #else
-    static let cornerRadiusSmall: Self = 2 * grid
+    static let cornerRadiusPerPlatform: Self = 2 * grid
     #endif
+    static let cornerRadiusSmall: Self = 2 * grid
     static let cornerRadiusLarge: Self = 4 * grid
 }
 
@@ -47,7 +48,7 @@ struct ControlBarButtonStyle: ButtonStyle {
             .font(.system(size: 17, weight: .medium))
             .foregroundStyle(isEnabled ? foregroundColor.opacity(configuration.isPressed ? 0.75 : 1) : borderColor)
             .background(
-                RoundedRectangle(cornerRadius: .cornerRadiusSmall)
+                RoundedRectangle(cornerRadius: .cornerRadiusPerPlatform)
                     .fill(isToggled ? backgroundColor : .clear)
             )
     }
