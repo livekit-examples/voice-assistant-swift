@@ -126,15 +126,25 @@ final class AppViewModel {
         errorHandler(nil)
         resetState()
         do {
-            try await room.withPreConnectAudio {
-                await MainActor.run { self.isListening = true }
+            if agentFeatures.contains(.voice) {
+                try await room.withPreConnectAudio {
+                    await MainActor.run { self.isListening = true }
 
-                let connectionDetails = try await self.getConnection()
+                    let connectionDetails = try await self.getConnection()
 
-                try await self.room.connect(
+                    try await self.room.connect(
+                        url: connectionDetails.serverUrl,
+                        token: connectionDetails.participantToken,
+                        connectOptions: .init(enableMicrophone: true)
+                    )
+                }
+            } else {
+                let connectionDetails = try await getConnection()
+
+                try await room.connect(
                     url: connectionDetails.serverUrl,
                     token: connectionDetails.participantToken,
-                    connectOptions: .init(enableMicrophone: true)
+                    connectOptions: .init(enableMicrophone: false)
                 )
             }
 

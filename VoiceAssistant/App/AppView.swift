@@ -73,15 +73,15 @@ struct AppView: View {
         .safeAreaInset(edge: .bottom) {
                 if viewModel.hasConnection, !isKeyboardFocused {
                     ControlBar()
+                        .transition(.asymmetric(insertion: .move(edge: .bottom).combined(with: .opacity), removal: .opacity))
                 }
             }
         #endif
             .background(Color.bg1)
-            .animation(.default, value: viewModel.connectionState)
+            .animation(.default, value: viewModel.hasConnection)
             .animation(.default, value: viewModel.interactionMode)
             .animation(.default, value: viewModel.isCameraEnabled)
             .animation(.default, value: viewModel.isScreenShareEnabled)
-            .animation(.default, value: viewModel.agent)
             .animation(.default, value: error?.localizedDescription)
             .onAppear {
                 Dependencies.shared.errorHandler = { error = $0 }

@@ -79,6 +79,7 @@ struct ControlBar: View {
             AsyncButton(action: viewModel.toggleMicrophone) {
                 HStack(spacing: .grid) {
                     Image(systemName: viewModel.isMicrophoneEnabled ? "microphone.fill" : "microphone.slash.fill")
+                        .transition(.symbolEffect)
                     BarAudioVisualizer(audioTrack: viewModel.audioTrack, barColor: .fg1, barCount: 3, barSpacingFactor: 0.1)
                         .frame(width: 2 * .grid, height: 0.5 * Constants.buttonHeight)
                         .frame(maxHeight: .infinity)
@@ -102,6 +103,7 @@ struct ControlBar: View {
             Spacer()
             AsyncButton(action: viewModel.toggleCamera) {
                 Image(systemName: viewModel.isCameraEnabled ? "video.fill" : "video.slash.fill")
+                    .transition(.symbolEffect)
                     .frame(height: Constants.buttonHeight)
             }
             #if os(macOS)

@@ -3,6 +3,7 @@ import SwiftUI
 struct StartView: View {
     @Environment(AppViewModel.self) private var viewModel
     @Environment(\.horizontalSizeClass) private var horizontalSizeClass
+    @Namespace private var transitions
 
     var body: some View {
         VStack(spacing: 4 * .grid) {
@@ -35,13 +36,20 @@ struct StartView: View {
     @ViewBuilder
     private func connectButton() -> some View {
         AsyncButton(action: viewModel.connect) {
-            Text("connect.start")
-                .frame(width: 58 * .grid, height: 11 * .grid)
+            HStack {
+                Spacer()
+                Text("connect.start")
+                    .matchedGeometryEffect(id: "connect", in: transitions)
+                Spacer()
+            }
+            .frame(width: 58 * .grid, height: 11 * .grid)
         } busyLabel: {
             HStack(spacing: 4 * .grid) {
                 Spacer()
                 Spinner()
+                    .transition(.scale.combined(with: .opacity))
                 Text("connect.connecting")
+                    .matchedGeometryEffect(id: "connect", in: transitions)
                 Spacer()
             }
             .frame(width: 58 * .grid, height: 11 * .grid)

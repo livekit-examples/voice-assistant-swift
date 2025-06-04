@@ -2,7 +2,7 @@ import LiveKitComponents
 
 struct AgentParticipantView: View {
     @Environment(AppViewModel.self) private var viewModel
-    @State private var videoTransition = false
+    @SceneStorage("videoTransition") private var videoTransition = false
     var namespace: Namespace.ID
 
     var body: some View {
@@ -16,15 +16,13 @@ struct AgentParticipantView: View {
                             let targetSize = max(proxy.size.width, proxy.size.height)
                             Circle()
                                 .frame(width: videoTransition ? targetSize : 6 * .grid)
+                                .position(x: 0.5 * proxy.size.width, y: 0.5 * proxy.size.height)
                                 .scaleEffect(2)
                                 .animation(.smooth(duration: 1.5), value: videoTransition)
                         }
                     )
                     .onAppear {
                         videoTransition = true
-                    }
-                    .onDisappear {
-                        videoTransition = false
                     }
             } else if let agentAudioTrack = viewModel.agentAudioTrack {
                 BarAudioVisualizer(audioTrack: agentAudioTrack,
