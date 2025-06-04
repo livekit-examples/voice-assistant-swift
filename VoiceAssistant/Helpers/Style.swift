@@ -3,7 +3,11 @@ import SwiftUI
 extension CGFloat {
     static let grid: Self = 4
 
+    #if os(visionOS)
+    static let cornerRadiusSmall: Self = 11.5 * grid
+    #else
     static let cornerRadiusSmall: Self = 2 * grid
+    #endif
     static let cornerRadiusLarge: Self = 4 * grid
 }
 

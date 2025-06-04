@@ -12,6 +12,20 @@ struct AppView: View {
     var body: some View {
         ZStack(alignment: .top) {
             if viewModel.hasConnection {
+                #if os(visionOS)
+                VisionInteractionView(namespace: transitions)
+                    .environment(chatViewModel)
+                    .overlay(alignment: .bottom) {
+                        if chatViewModel.messages.isEmpty,
+                           !viewModel.isCameraEnabled,
+                           !viewModel.isScreenShareEnabled
+                        {
+                            AgentListeningView()
+                                .padding(16 * .grid)
+                        }
+                    }
+                    .animation(.default, value: chatViewModel.messages.isEmpty)
+                #else
                 switch viewModel.interactionMode {
                 case .text:
                     TextInteractionView(isKeyboardFocused: $isKeyboardFocused, namespace: transitions)
@@ -29,6 +43,7 @@ struct AppView: View {
                         }
                         .animation(.default, value: chatViewModel.messages.isEmpty)
                 }
+                #endif
             } else {
                 StartView()
             }

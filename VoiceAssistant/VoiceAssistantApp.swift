@@ -10,6 +10,11 @@ struct VoiceAssistantApp: App {
             AppView()
                 .environment(viewModel)
         }
+        #if os(visionOS)
+        .windowStyle(.plain)
+        .windowResizability(.contentMinSize)
+        .defaultSize(width: 1500, height: 500)
+        #endif
     }
 }
 

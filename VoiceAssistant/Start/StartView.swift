@@ -10,11 +10,16 @@ struct StartView: View {
             Spacer().frame(height: 4 * .grid)
             connectButton()
             #if targetEnvironment(simulator)
+            Spacer().frame(height: 4 * .grid)
             simulator()
             #endif
         }
         .padding(.horizontal, horizontalSizeClass == .regular ? 32 * .grid : 16 * .grid)
         .frame(maxWidth: .infinity, maxHeight: .infinity)
+        #if os(visionOS)
+            .glassBackgroundEffect()
+            .frame(maxWidth: 175 * .grid)
+        #endif
     }
 
     @ViewBuilder
@@ -41,12 +46,20 @@ struct StartView: View {
             }
             .frame(width: 58 * .grid, height: 11 * .grid)
         }
+        #if os(visionOS)
+        .buttonStyle(.borderedProminent)
+        .controlSize(.extraLarge)
+        #else
         .buttonStyle(ProminentButtonStyle())
+        #endif
     }
 
     @ViewBuilder
     private func simulator() -> some View {
-        WarningView(warning: "connect.simulator")
+        Text("connect.simulator")
+            .font(.system(size: 17))
+            .foregroundStyle(.fgModerate)
+            .multilineTextAlignment(.center)
     }
 }
 

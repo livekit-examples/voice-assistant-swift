@@ -8,7 +8,12 @@ struct ChatTextInputView: View {
     var body: some View {
         HStack(spacing: 12) {
             TextField("message.placeholder", text: $messageText, axis: .vertical)
+            #if os(visionOS)
+                .textFieldStyle(.roundedBorder)
+                .hoverEffectDisabled()
+            #else
                 .textFieldStyle(.plain)
+            #endif
                 .lineLimit(3)
                 .submitLabel(.send)
                 .onSubmit {
@@ -16,8 +21,10 @@ struct ChatTextInputView: View {
                         await sendMessage()
                     }
                 }
+            #if !os(visionOS)
                 .foregroundStyle(.fg1)
-                .background(Color.bg2)
+//                .background(Color.bg2)
+            #endif
                 .padding()
 
             AsyncButton(action: sendMessage) {
@@ -26,11 +33,15 @@ struct ChatTextInputView: View {
             }
             .padding(.trailing, 3 * .grid)
             .disabled(messageText.isEmpty)
-            .buttonStyle(RoundButtonStyle())
+            #if os(visionOS)
+                .buttonStyle(.plain)
+            #else
+                .buttonStyle(RoundButtonStyle())
+            #endif
         }
         .frame(minHeight: 12 * .grid)
         .frame(maxWidth: horizontalSizeClass == .regular ? 128 * .grid : 92 * .grid)
-        .background(Color.bg2)
+//        .background(Color.bg2)
         .clipShape(RoundedRectangle(cornerRadius: 6 * .grid))
         .safeAreaPadding(.horizontal, 4 * .grid)
         .safeAreaPadding(.bottom, 4 * .grid)
