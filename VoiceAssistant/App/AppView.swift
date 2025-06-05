@@ -5,7 +5,7 @@ struct AppView: View {
     @State private var chatViewModel = ChatViewModel()
 
     @State private var error: Error?
-    @FocusState private var isKeyboardFocused: Bool
+    @FocusState private var keyboardFocus: Bool
 
     @Namespace private var namespace
 
@@ -22,7 +22,7 @@ struct AppView: View {
         .environment(\.namespace, namespace)
         #if os(visionOS)
             .ornament(attachmentAnchor: .scene(.bottom)) {
-                if viewModel.hasConnection {
+                if viewModel.isInteractive {
                     ControlBar()
                         .glassBackgroundEffect()
                 }
@@ -33,7 +33,7 @@ struct AppView: View {
             }
         #else
             .safeAreaInset(edge: .bottom) {
-                if viewModel.isInteractive, !isKeyboardFocused {
+                if viewModel.isInteractive, !keyboardFocus {
                     ControlBar()
                         .transition(.asymmetric(insertion: .move(edge: .bottom).combined(with: .opacity), removal: .opacity))
                 }
@@ -61,7 +61,7 @@ struct AppView: View {
     @ViewBuilder
     private func interactions() -> some View {
         #if os(visionOS)
-        VisionInteractionView()
+        VisionInteractionView(keyboardFocus: $keyboardFocus)
             .environment(chatViewModel)
             .overlay(alignment: .bottom) {
                 agentListening()
@@ -70,7 +70,7 @@ struct AppView: View {
         #else
         switch viewModel.interactionMode {
         case .text:
-            TextInteractionView(isKeyboardFocused: $isKeyboardFocused)
+            TextInteractionView(keyboardFocus: $keyboardFocus)
                 .environment(chatViewModel)
         case .voice:
             VoiceInteractionView()

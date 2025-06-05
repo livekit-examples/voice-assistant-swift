@@ -5,7 +5,7 @@ struct ChatTextInputView: View {
     @Environment(ChatViewModel.self) private var chatViewModel
     @Environment(\.horizontalSizeClass) private var horizontalSizeClass
 
-    @FocusState.Binding var isKeyboardFocused: Bool
+    @FocusState.Binding var keyboardFocus: Bool
 
     @State private var messageText = ""
 
@@ -16,17 +16,19 @@ struct ChatTextInputView: View {
         }
         .frame(minHeight: 12 * .grid)
         .frame(maxWidth: horizontalSizeClass == .regular ? 128 * .grid : 92 * .grid)
-        .background(.bg2)
-        .clipShape(RoundedRectangle(cornerRadius: 6 * .grid))
-        .safeAreaPadding(.horizontal, 4 * .grid)
-        .safeAreaPadding(.bottom, 4 * .grid)
+        #if !os(visionOS)
+            .background(.bg2)
+        #endif
+            .clipShape(RoundedRectangle(cornerRadius: 6 * .grid))
+            .safeAreaPadding(.horizontal, 4 * .grid)
+            .safeAreaPadding(.bottom, 4 * .grid)
     }
 
     @ViewBuilder
     private func textField() -> some View {
         TextField("message.placeholder", text: $messageText, axis: .vertical)
         #if os(iOS)
-            .focused($isKeyboardFocused)
+            .focused($keyboardFocus)
         #endif
         #if os(visionOS)
         .textFieldStyle(.roundedBorder)
@@ -66,7 +68,7 @@ struct ChatTextInputView: View {
         guard !messageText.isEmpty else { return }
         defer {
             messageText = ""
-            isKeyboardFocused = false
+            keyboardFocus = false
         }
         await chatViewModel.sendMessage(messageText)
     }
@@ -74,6 +76,6 @@ struct ChatTextInputView: View {
 
 #Preview {
     @FocusState var focus
-    ChatTextInputView(isKeyboardFocused: $focus)
+    ChatTextInputView(keyboardFocus: $focus)
         .environment(ChatViewModel())
 }

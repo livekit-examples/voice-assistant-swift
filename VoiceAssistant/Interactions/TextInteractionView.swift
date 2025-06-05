@@ -9,21 +9,12 @@ import SwiftUI
 ///
 /// Additionally, the view shows a complete chat view with text input capabilities.
 struct TextInteractionView: View {
-    @FocusState.Binding var isKeyboardFocused: Bool
+    @FocusState.Binding var keyboardFocus: Bool
 
     var body: some View {
         VStack {
             VStack {
-                HStack {
-                    Spacer()
-                    AgentParticipantView()
-                    ScreenShareView()
-                    LocalParticipantView()
-                    Spacer()
-                }
-                .frame(height: 50 * .grid)
-                .safeAreaPadding()
-
+                participants()
                 ChatView()
                 #if os(macOS)
                     .frame(maxWidth: 128 * .grid)
@@ -33,11 +24,23 @@ struct TextInteractionView: View {
             #if os(iOS)
             .contentShape(Rectangle())
             .onTapGesture {
-                isKeyboardFocused = false
+                keyboardFocus = false
             }
             #endif
-
-            ChatTextInputView(isKeyboardFocused: _isKeyboardFocused)
+            ChatTextInputView(keyboardFocus: _keyboardFocus)
         }
+    }
+
+    @ViewBuilder
+    private func participants() -> some View {
+        HStack {
+            Spacer()
+            AgentParticipantView()
+            ScreenShareView()
+            LocalParticipantView()
+            Spacer()
+        }
+        .frame(height: 50 * .grid)
+        .safeAreaPadding()
     }
 }
