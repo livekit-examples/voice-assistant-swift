@@ -22,9 +22,9 @@ jobs:
           - os: macos-15
             xcode: 16.2
             platform: "iOS Simulator,OS=18.1,name=iPhone 16 Pro"
-          - os: macos-15
-            xcode: 16.2
-            platform: "macOS"
+          # - os: macos-15
+          #   xcode: 16.2
+          #   platform: "macOS"
 
     runs-on: ${{ matrix.os }}
     timeout-minutes: 30

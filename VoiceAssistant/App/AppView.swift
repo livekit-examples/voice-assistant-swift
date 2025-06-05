@@ -16,15 +16,9 @@ struct AppView: View {
                 VisionInteractionView(namespace: transitions)
                     .environment(chatViewModel)
                     .overlay(alignment: .bottom) {
-                        if chatViewModel.messages.isEmpty,
-                           !viewModel.isCameraEnabled,
-                           !viewModel.isScreenShareEnabled
-                        {
-                            AgentListeningView()
-                                .padding(16 * .grid)
-                        }
+                        agentListening()
+                            .padding(16 * .grid)
                     }
-                    .animation(.default, value: chatViewModel.messages.isEmpty)
                 #else
                 switch viewModel.interactionMode {
                 case .text:
@@ -33,15 +27,9 @@ struct AppView: View {
                 case .voice:
                     VoiceInteractionView(namespace: transitions)
                         .overlay(alignment: .bottom) {
-                            if chatViewModel.messages.isEmpty,
-                               !viewModel.isCameraEnabled,
-                               !viewModel.isScreenShareEnabled
-                            {
-                                AgentListeningView()
-                                    .padding()
-                            }
+                            agentListening()
+                                .padding()
                         }
-                        .animation(.default, value: chatViewModel.messages.isEmpty)
                 }
                 #endif
             } else {
@@ -89,6 +77,19 @@ struct AppView: View {
         #if os(iOS)
             .sensoryFeedback(.impact, trigger: viewModel.isListening)
         #endif
+    }
+
+    @ViewBuilder
+    private func agentListening() -> some View {
+        ZStack {
+            if chatViewModel.messages.isEmpty,
+               !viewModel.isCameraEnabled,
+               !viewModel.isScreenShareEnabled
+            {
+                AgentListeningView()
+            }
+        }
+        .animation(.default, value: chatViewModel.messages.isEmpty)
     }
 }
 
