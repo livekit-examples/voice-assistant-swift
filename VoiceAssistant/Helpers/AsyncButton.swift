@@ -1,23 +1,30 @@
 import SwiftUI
 
+/// A drop-in replacement `Button` that executes an async action and shows a busy label when in progress.
+///
+/// - Parameters:
+///   - action: The async action to execute.
+///   - label: The label to show when not busy.
+///   - busyLabel: The label to show when busy. Defaults to an empty view.
 struct AsyncButton<Label: View, BusyLabel: View>: View {
     private let action: () async -> Void
-    private let label: () -> Label
-    private let busyLabel: () -> BusyLabel
+
+    @ViewBuilder private let label: Label
+    @ViewBuilder private let busyLabel: BusyLabel
 
     @State private var isBusy = false
 
-    public init(
+    init(
         action: @escaping () async -> Void,
-        @ViewBuilder label: @escaping () -> Label,
-        @ViewBuilder busyLabel: @escaping () -> BusyLabel = { EmptyView() }
+        @ViewBuilder label: () -> Label,
+        @ViewBuilder busyLabel: () -> BusyLabel = EmptyView.init
     ) {
         self.action = action
-        self.label = label
-        self.busyLabel = busyLabel
+        self.label = label()
+        self.busyLabel = busyLabel()
     }
 
-    public var body: some View {
+    var body: some View {
         Button {
             isBusy = true
             Task {
@@ -26,14 +33,13 @@ struct AsyncButton<Label: View, BusyLabel: View>: View {
             }
         } label: {
             if isBusy {
-                let busyLabel = busyLabel()
                 if busyLabel is EmptyView {
-                    label()
+                    label
                 } else {
                     busyLabel
                 }
             } else {
-                label()
+                label
             }
         }
         .disabled(isBusy)
