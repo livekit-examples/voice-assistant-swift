@@ -1,7 +1,13 @@
 import Foundation
 import LiveKit
 
-actor TopicMessageSender: MessageSender, MessageReceiver {
+/// An actor that sends local messages to the agent.
+/// Currently, it only supports sending text messages.
+///
+/// It also serves as the loopback for the local messages,
+/// so that they can be displayed in the message feed
+/// without relying on the agent-side transcription.
+actor LocalMessageSender: MessageSender, MessageReceiver {
     private let room: Room
     private let topic: String
 
@@ -18,8 +24,8 @@ actor TopicMessageSender: MessageSender, MessageReceiver {
         try await room.localParticipant.sendText(text, for: topic)
 
         let loopbackMessage = ReceivedMessage(
-            id: UUID().uuidString,
-            timestamp: Date(),
+            id: message.id,
+            timestamp: message.timestamp,
             content: .userTranscript(text)
         )
 

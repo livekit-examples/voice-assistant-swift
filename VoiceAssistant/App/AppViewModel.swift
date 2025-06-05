@@ -160,7 +160,7 @@ final class AppViewModel {
         resetState()
     }
 
-    private func getConnection() async throws -> ConnectionDetails {
+    private func getConnection() async throws -> TokenService.ConnectionDetails {
         let roomName = "room-\(Int.random(in: 1000 ... 9999))"
         let participantName = "user-\(Int.random(in: 1000 ... 9999))"
 

@@ -1,6 +1,6 @@
-import LiveKit
 import SwiftUI
 
+/// A view that shows an error snackbar.
 struct ErrorView: View {
     let error: Error
     let onDismiss: () -> Void

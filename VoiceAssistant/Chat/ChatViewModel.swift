@@ -4,13 +4,20 @@ import Foundation
 import LiveKit
 import Observation
 
-/// A class that aggregates messages from multiple message providers
-/// and exposes a single entry point for the UI to observe the message feed.
-/// - Note: It may handle future interactions with the chat e.g. text input, etc.
+/// A class that aggregates messages from multiple message providers (senders and receivers)
+/// and exposes a single entry point for the UI to interact with the message feed.
 @MainActor
 @Observable
 final class ChatViewModel {
+    private enum Constants {
+        static let throttle: Duration = .milliseconds(100)
+    }
+
+    // MARK: - State
+
     private(set) var messages: OrderedDictionary<ReceivedMessage.ID, ReceivedMessage> = [:]
+
+    // MARK: - Dependencies
 
     @ObservationIgnored
     @Dependency(\.room) private var room
@@ -20,28 +27,36 @@ final class ChatViewModel {
     @Dependency(\.messageSenders) private var messageSenders
     @ObservationIgnored
     @Dependency(\.errorHandler) private var errorHandler
-    @ObservationIgnored
-    private var messageObservers: [Task<Void, Never>] = []
+
+    // MARK: - Initialization
 
     init() {
+        observeMessageReceivers()
+        observeRoom()
+    }
+
+    // MARK: - Private
+
+    private func observeMessageReceivers() {
         for messageReceiver in messageReceivers {
-            let observer = Task { [weak self] in
-                guard let self else { return }
+            Task { [weak self] in
                 do {
                     for await message in try await messageReceiver
                         .createMessageStream()
-                        ._throttle(for: .milliseconds(100))
+                        ._throttle(for: Constants.throttle)
                     {
+                        guard let self else { return }
                         messages.updateValue(message, forKey: message.id)
                     }
                 } catch {
-                    errorHandler(error)
+                    self?.errorHandler(error)
                 }
             }
-            messageObservers.append(observer)
         }
+    }
 
-        Task { @MainActor [weak self] in
+    private func observeRoom() {
+        Task { [weak self] in
             guard let changes = self?.room.changes else { return }
             for await _ in changes {
                 guard let self else { return }
@@ -52,13 +67,11 @@ final class ChatViewModel {
         }
     }
 
-    deinit {
-        messageObservers.forEach { $0.cancel() }
-    }
-
     private func clearHistory() {
         messages.removeAll()
     }
+
+    // MARK: - Actions
 
     func sendMessage(_ text: String) async {
         let message = SentMessage(id: UUID().uuidString, timestamp: Date(), content: .userText(text))

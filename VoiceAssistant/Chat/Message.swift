@@ -1,5 +1,6 @@
 import Foundation
 
+/// A message received from the agent.
 struct ReceivedMessage: Identifiable, Equatable, Sendable {
     let id: String
     let timestamp: Date
@@ -11,6 +12,7 @@ struct ReceivedMessage: Identifiable, Equatable, Sendable {
     }
 }
 
+/// A message sent to the agent.
 struct SentMessage: Identifiable, Equatable, Sendable {
     let id: String
     let timestamp: Date

@@ -1,5 +1,6 @@
 import SwiftUI
 
+/// A view that shows a warning snackbar.
 struct WarningView: View {
     let warning: LocalizedStringKey
 

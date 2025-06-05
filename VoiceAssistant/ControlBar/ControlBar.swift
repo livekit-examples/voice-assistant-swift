@@ -1,5 +1,8 @@
 import LiveKitComponents
 
+/// A multiplatform view that shows the control bar: audio/video and chat controls.
+/// Available controls depend on the agent features and the track availability.
+/// - SeeAlso: ``AgentFeatures``
 struct ControlBar: View {
     @Environment(AppViewModel.self) private var viewModel
     @Environment(\.horizontalSizeClass) private var horizontalSizeClass

@@ -1,6 +1,7 @@
-import LiveKitComponents
+import SwiftUI
 
 #if os(macOS)
+/// A platform-specific view that shows a list of available audio devices.
 struct AudioDeviceSelector: View {
     @Environment(AppViewModel.self) private var viewModel
 

@@ -1,3 +1,5 @@
+import Foundation
+
 /// An example service for fetching LiveKit authentication tokens
 ///
 /// To use the LiveKit Cloud sandbox (development only)
@@ -13,17 +15,15 @@
 /// - Modify or replace this class as needed to connect to your new token server
 /// - Rejoice in your new production-ready LiveKit application!
 ///
-/// See https://docs.livekit.io/home/get-started/authentication for more information
-import Foundation
-
-struct ConnectionDetails: Codable {
-    let serverUrl: String
-    let roomName: String
-    let participantName: String
-    let participantToken: String
-}
-
+/// See [docs](https://docs.livekit.io/home/get-started/authentication) for more information.
 actor TokenService {
+    struct ConnectionDetails: Codable {
+        let serverUrl: String
+        let roomName: String
+        let participantName: String
+        let participantToken: String
+    }
+
     func fetchConnectionDetails(roomName: String, participantName: String) async throws -> ConnectionDetails? {
         if let hardcodedConnectionDetails = fetchHardcodedConnectionDetails(roomName: roomName, participantName: participantName) {
             return hardcodedConnectionDetails
