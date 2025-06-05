@@ -139,7 +139,7 @@ struct ControlBar: View {
 
     @ViewBuilder
     private func textInputButton() -> some View {
-        AsyncButton(action: viewModel.enterTextInputMode) {
+        AsyncButton(action: viewModel.toggleTextInput) {
             Image(systemName: "ellipsis.message.fill")
                 .frame(width: Constants.buttonWidth, height: Constants.buttonHeight)
         }

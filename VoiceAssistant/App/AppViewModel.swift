@@ -3,12 +3,21 @@ import Combine
 import LiveKit
 import Observation
 
+/// The main view model encapsulating root states and behaviors of the app
+/// such as connection, published tracks, etc.
+///
+/// It consumes `LiveKit.Room` object, observing its internal state and propagating appropriate changes.
+/// It does not expose any publicly mutable state, encouraging unidirectional data flow.
 @MainActor
 @Observable
 final class AppViewModel {
+    // MARK: - Constants
+
     private enum Constants {
         static let agentConnectionTimeout: TimeInterval = 10
     }
+
+    // MARK: - Errors
 
     enum Error: LocalizedError {
         case agentNotConnected
@@ -21,12 +30,18 @@ final class AppViewModel {
         }
     }
 
+    // MARK: - Modes
+
     enum InteractionMode {
         case voice
         case text
     }
 
     let agentFeatures: AgentFeatures
+
+    // MARK: - State
+
+    // MARK: Connection
 
     private(set) var connectionState: ConnectionState = .disconnected
     private(set) var isListening = false
@@ -46,6 +61,8 @@ final class AppViewModel {
 
     private(set) var interactionMode: InteractionMode = .voice
 
+    // MARK: Tracks
+
     private(set) var isMicrophoneEnabled = false
     private(set) var audioTrack: (any AudioTrack)?
     private(set) var isCameraEnabled = false
@@ -56,13 +73,17 @@ final class AppViewModel {
     private(set) var agentAudioTrack: (any AudioTrack)?
     private(set) var avatarCameraTrack: (any VideoTrack)?
 
+    // MARK: Devices
+
     private(set) var audioDevices: [AudioDevice] = AudioManager.shared.inputDevices
-    private(set) var selectedDevice: AudioDevice = AudioManager.shared.inputDevice
+    private(set) var selectedAudioDeviceID: String = AudioManager.shared.inputDevice.deviceId
 
     private(set) var videoDevices: [AVCaptureDevice] = []
-    private(set) var selectedVideoDevice: AVCaptureDevice?
+    private(set) var selectedVideoDeviceID: String?
 
     private(set) var canSwitchCamera = false
+
+    // MARK: - Dependencies
 
     @ObservationIgnored
     @Dependency(\.room) private var room
@@ -71,10 +92,17 @@ final class AppViewModel {
     @ObservationIgnored
     @Dependency(\.errorHandler) private var errorHandler
 
-    init(agentFeatures: AgentFeatures = .defaults) {
+    // MARK: - Initialization
+
+    init(agentFeatures: AgentFeatures = .current) {
         self.agentFeatures = agentFeatures
 
-        Task { @MainActor [weak self] in
+        observeRoom()
+        observeDevices()
+    }
+
+    private func observeRoom() {
+        Task { [weak self] in
             guard let changes = self?.room.changes else { return }
             for await _ in changes {
                 guard let self else { return }
@@ -93,23 +121,30 @@ final class AppViewModel {
                 avatarCameraTrack = room.agentParticipant?.avatarWorker?.firstCameraVideoTrack
             }
         }
+    }
 
+    private func observeDevices() {
         do {
             try AudioManager.shared.setRecordingAlwaysPreparedMode(true)
         } catch {
             errorHandler(error)
         }
-        AudioManager.shared.onDeviceUpdate = { _ in
+
+        AudioManager.shared.onDeviceUpdate = { [weak self] _ in
             Task { @MainActor in
-                self.audioDevices = AudioManager.shared.inputDevices
-                self.selectedDevice = AudioManager.shared.inputDevice
+                self?.audioDevices = AudioManager.shared.inputDevices
+                self?.selectedAudioDeviceID = AudioManager.shared.defaultInputDevice.deviceId
             }
         }
 
-        Task { @MainActor in
-            canSwitchCamera = try await CameraCapturer.canSwitchPosition()
-            videoDevices = try await CameraCapturer.captureDevices()
-            selectedVideoDevice = videoDevices.first
+        Task {
+            do {
+                canSwitchCamera = try await CameraCapturer.canSwitchPosition()
+                videoDevices = try await CameraCapturer.captureDevices()
+                selectedVideoDeviceID = videoDevices.first?.uniqueID
+            } catch {
+                errorHandler(error)
+            }
         }
     }
 
@@ -122,11 +157,14 @@ final class AppViewModel {
         interactionMode = .voice
     }
 
+    // MARK: - Connection
+
     func connect() async {
         errorHandler(nil)
         resetState()
         do {
             if agentFeatures.contains(.voice) {
+                // Connect and enable microphone, capture pre-connect audio
                 try await room.withPreConnectAudio {
                     await MainActor.run { self.isListening = true }
 
@@ -139,6 +177,7 @@ final class AppViewModel {
                     )
                 }
             } else {
+                // Connect without enabling microphone
                 let connectionDetails = try await getConnection()
 
                 try await room.connect(
@@ -148,7 +187,7 @@ final class AppViewModel {
                 )
             }
 
-            try await checkAgentConnection()
+            try await checkAgentConnected()
         } catch {
             errorHandler(error)
             resetState()
@@ -170,7 +209,7 @@ final class AppViewModel {
         )!
     }
 
-    private func checkAgentConnection() async throws {
+    private func checkAgentConnected() async throws {
         try await Task.sleep(for: .seconds(Constants.agentConnectionTimeout))
         if connectionState == .connected, agent == nil {
             await disconnect()
@@ -178,7 +217,9 @@ final class AppViewModel {
         }
     }
 
-    func enterTextInputMode() {
+    // MARK: - Actions
+
+    func toggleTextInput() {
         switch interactionMode {
         case .voice:
             interactionMode = .text
@@ -197,7 +238,8 @@ final class AppViewModel {
 
     func toggleCamera() async {
         do {
-            try await room.localParticipant.setCamera(enabled: !isCameraEnabled, captureOptions: CameraCaptureOptions(device: selectedVideoDevice))
+            let device = try await CameraCapturer.captureDevices().first(where: { $0.uniqueID == selectedVideoDeviceID })
+            try await room.localParticipant.setCamera(enabled: !isCameraEnabled, captureOptions: CameraCaptureOptions(device: device))
         } catch {
             errorHandler(error)
         }
@@ -211,18 +253,18 @@ final class AppViewModel {
         }
     }
 
+    #if os(macOS)
     func select(audioDevice: AudioDevice) {
-        selectedDevice = audioDevice
+        selectedAudioDeviceID = audioDevice.deviceId
 
-        AudioManager.shared.inputDevice = audioDevice
+        let device = AudioManager.shared.inputDevices.first(where: { $0.deviceId == selectedAudioDeviceID }) ?? AudioManager.shared.defaultInputDevice
+        AudioManager.shared.inputDevice = device
     }
 
     func select(videoDevice: AVCaptureDevice) async {
-        selectedVideoDevice = videoDevice
+        selectedVideoDeviceID = videoDevice.uniqueID
 
-        guard let cameraTrack = cameraTrack as? LocalVideoTrack,
-              let cameraCapturer = cameraTrack.capturer as? CameraCapturer else { return }
-
+        guard let cameraCapturer = getCameraCapturer() else { return }
         do {
             let captureOptions = CameraCaptureOptions(device: videoDevice)
             try await cameraCapturer.set(options: captureOptions)
@@ -230,14 +272,19 @@ final class AppViewModel {
             errorHandler(error)
         }
     }
+    #endif
 
     func switchCamera() async {
-        guard let cameraTrack = cameraTrack as? LocalVideoTrack,
-              let cameraCapturer = cameraTrack.capturer as? CameraCapturer else { return }
+        guard let cameraCapturer = getCameraCapturer() else { return }
         do {
             try await cameraCapturer.switchCameraPosition()
         } catch {
             errorHandler(error)
         }
+    }
+
+    private func getCameraCapturer() -> CameraCapturer? {
+        guard let cameraTrack = cameraTrack as? LocalVideoTrack else { return nil }
+        return cameraTrack.capturer as? CameraCapturer
     }
 }

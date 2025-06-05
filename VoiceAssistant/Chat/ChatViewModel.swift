@@ -4,11 +4,15 @@ import Foundation
 import LiveKit
 import Observation
 
-/// A class that aggregates messages from multiple message providers (senders and receivers)
+/// A view model that aggregates messages from multiple message providers (senders and receivers)
 /// and exposes a single entry point for the UI to interact with the message feed.
+///
+/// It does not expose any publicly mutable state, encouraging unidirectional data flow.
 @MainActor
 @Observable
 final class ChatViewModel {
+    // MARK: - Constants
+
     private enum Constants {
         static let throttle: Duration = .milliseconds(100)
     }
@@ -31,13 +35,13 @@ final class ChatViewModel {
     // MARK: - Initialization
 
     init() {
-        observeMessageReceivers()
+        observeMessages()
         observeRoom()
     }
 
     // MARK: - Private
 
-    private func observeMessageReceivers() {
+    private func observeMessages() {
         for messageReceiver in messageReceivers {
             Task { [weak self] in
                 do {

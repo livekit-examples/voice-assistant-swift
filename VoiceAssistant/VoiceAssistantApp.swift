@@ -3,6 +3,7 @@ import SwiftUI
 
 @main
 struct VoiceAssistantApp: App {
+    // Create the root view model
     private let viewModel = AppViewModel()
 
     var body: some Scene {
@@ -18,6 +19,8 @@ struct VoiceAssistantApp: App {
     }
 }
 
+/// A set of flags that define the features supported by the agent.
+/// Enable them based on your agent capabilities.
 struct AgentFeatures: OptionSet {
     let rawValue: Int
 
@@ -25,6 +28,6 @@ struct AgentFeatures: OptionSet {
     static let text = Self(rawValue: 1 << 1)
     static let video = Self(rawValue: 1 << 2)
 
-//    static let defaults: Self = [.voice, .text]
-    static let defaults: Self = [.voice, .text, .video]
+//    static let current: Self = [.voice, .text]
+    static let current: Self = [.voice, .text, .video]
 }
