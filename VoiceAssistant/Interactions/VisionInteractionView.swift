@@ -1,31 +1,32 @@
 import SwiftUI
 
 #if os(visionOS)
+/// A platform-specific view that shows all interaction controls with optional chat.
 struct VisionInteractionView: View {
     @Environment(AppViewModel.self) private var viewModel
-    @Environment(ChatViewModel.self) private var chatViewModel
 
     var body: some View {
         HStack {
             VStack {
                 Spacer()
-                ScreenShareView(namespace: namespace)
-                LocalParticipantView(namespace: namespace)
+                ScreenShareView()
+                LocalParticipantView()
                 Spacer()
             }
             .frame(width: 125 * .grid)
-            AgentParticipantView(namespace: namespace)
+            AgentParticipantView()
                 .frame(width: 175 * .grid)
                 .frame(maxHeight: .infinity)
                 .glassBackgroundEffect()
-            VStack {
-                if case .text = viewModel.interactionMode {
+
+            if case .text = viewModel.interactionMode {
+                VStack {
                     ChatView()
                     ChatTextInputView()
                 }
+                .frame(width: 125 * .grid)
+                .glassBackgroundEffect()
             }
-            .frame(width: 125 * .grid)
-            .glassBackgroundEffect()
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
     }

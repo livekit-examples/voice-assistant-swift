@@ -1,8 +1,13 @@
 import LiveKitComponents
 
+/// A view that combines the avatar camera view (if available)
+/// or the audio visualizer (if available).
+/// - Note: If both are unavailable, the view will show a placeholder visualizer.
 struct AgentParticipantView: View {
     @Environment(AppViewModel.self) private var viewModel
     @Environment(\.namespace) private var namespace
+
+    /// Reveals the avatar camera view when true.
     @SceneStorage("videoTransition") private var videoTransition = false
 
     var body: some View {
@@ -42,6 +47,6 @@ struct AgentParticipantView: View {
             }
         }
         .animation(.default, value: viewModel.agentAudioTrack?.id)
-        .matchedGeometryEffect(id: "agent", in: namespace)
+        .matchedGeometryEffect(id: "agent", in: namespace!)
     }
 }

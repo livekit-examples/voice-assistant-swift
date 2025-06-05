@@ -1,5 +1,6 @@
 import LiveKitComponents
 
+/// A view that shows the local participant's camera view with flip control.
 struct LocalParticipantView: View {
     @Environment(AppViewModel.self) private var viewModel
     @Environment(\.namespace) private var namespace
@@ -23,14 +24,7 @@ struct LocalParticipantView: View {
                         .padding(2 * .grid)
                     }
                 }
-                .matchedGeometryEffect(id: "camera", in: namespace)
+                .matchedGeometryEffect(id: "camera", in: namespace!)
         }
-    }
-}
-
-extension VideoTrack {
-    var aspectRatio: CGFloat {
-        guard let dimensions else { return 1 }
-        return CGFloat(dimensions.width) / CGFloat(dimensions.height)
     }
 }

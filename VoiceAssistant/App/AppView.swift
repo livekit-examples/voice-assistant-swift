@@ -12,39 +12,12 @@ struct AppView: View {
     var body: some View {
         ZStack(alignment: .top) {
             if viewModel.hasConnection {
-                #if os(visionOS)
-                VisionInteractionView(namespace: transitions)
-                    .environment(chatViewModel)
-                    .overlay(alignment: .bottom) {
-                        agentListening()
-                            .padding(16 * .grid)
-                    }
-                #else
-                switch viewModel.interactionMode {
-                case .text:
-                    TextInteractionView(isKeyboardFocused: $isKeyboardFocused)
-                        .environment(chatViewModel)
-                case .voice:
-                    VoiceInteractionView()
-                        .overlay(alignment: .bottom) {
-                            agentListening()
-                                .padding()
-                        }
-                }
-                #endif
+                interactions()
             } else {
-                StartView()
+                start()
             }
 
-            #if !os(visionOS)
-            if case .reconnecting = viewModel.connectionState {
-                WarningView(warning: "warning.reconnecting")
-            }
-
-            if let error {
-                ErrorView(error: error) { self.error = nil }
-            }
-            #endif
+            errors()
         }
         .environment(\.namespace, namespace)
         #if os(visionOS)
@@ -77,6 +50,48 @@ struct AppView: View {
             }
         #if os(iOS)
             .sensoryFeedback(.impact, trigger: viewModel.isListening)
+        #endif
+    }
+
+    @ViewBuilder
+    private func start() -> some View {
+        StartView()
+    }
+
+    @ViewBuilder
+    private func interactions() -> some View {
+        #if os(visionOS)
+        VisionInteractionView()
+            .environment(chatViewModel)
+            .overlay(alignment: .bottom) {
+                agentListening()
+                    .padding(16 * .grid)
+            }
+        #else
+        switch viewModel.interactionMode {
+        case .text:
+            TextInteractionView(isKeyboardFocused: $isKeyboardFocused)
+                .environment(chatViewModel)
+        case .voice:
+            VoiceInteractionView()
+                .overlay(alignment: .bottom) {
+                    agentListening()
+                        .padding()
+                }
+        }
+        #endif
+    }
+
+    @ViewBuilder
+    private func errors() -> some View {
+        #if !os(visionOS)
+        if case .reconnecting = viewModel.connectionState {
+            WarningView(warning: "warning.reconnecting")
+        }
+
+        if let error {
+            ErrorView(error: error) { self.error = nil }
+        }
         #endif
     }
 

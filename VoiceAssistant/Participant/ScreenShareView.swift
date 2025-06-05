@@ -1,5 +1,6 @@
 import LiveKitComponents
 
+/// A view that shows the screen share preview.
 struct ScreenShareView: View {
     @Environment(AppViewModel.self) private var viewModel
     @Environment(\.namespace) private var namespace
@@ -10,8 +11,8 @@ struct ScreenShareView: View {
                 .clipShape(RoundedRectangle(cornerRadius: .cornerRadiusPerPlatform))
                 .aspectRatio(screenShareTrack.aspectRatio, contentMode: .fit)
                 .shadow(radius: 20, y: 10)
-                .matchedGeometryEffect(id: "screen", in: namespace)
                 .transition(.scale.combined(with: .opacity))
+                .matchedGeometryEffect(id: "screen", in: namespace!)
         }
     }
 }

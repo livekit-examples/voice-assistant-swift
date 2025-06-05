@@ -1,9 +1,11 @@
 import SwiftUI
 
+/// The initial view that is shown when the app is not connected to the server.
 struct StartView: View {
     @Environment(AppViewModel.self) private var viewModel
     @Environment(\.horizontalSizeClass) private var horizontalSizeClass
-    @Namespace private var transitions
+
+    @Namespace private var button
 
     var body: some View {
         VStack(spacing: 4 * .grid) {
@@ -39,7 +41,7 @@ struct StartView: View {
             HStack {
                 Spacer()
                 Text("connect.start")
-                    .matchedGeometryEffect(id: "connect", in: transitions)
+                    .matchedGeometryEffect(id: "connect", in: button)
                 Spacer()
             }
             .frame(width: 58 * .grid, height: 11 * .grid)
@@ -49,7 +51,7 @@ struct StartView: View {
                 Spinner()
                     .transition(.scale.combined(with: .opacity))
                 Text("connect.connecting")
-                    .matchedGeometryEffect(id: "connect", in: transitions)
+                    .matchedGeometryEffect(id: "connect", in: button)
                 Spacer()
             }
             .frame(width: 58 * .grid, height: 11 * .grid)

@@ -1,14 +1,21 @@
 import SwiftUI
 
 extension CGFloat {
+    /// The grid spacing used as a design unit.
     static let grid: Self = 4
 
     #if os(visionOS)
+    /// The corner radius for the platform-specific UI elements.
     static let cornerRadiusPerPlatform: Self = 11.5 * grid
     #else
+    /// The corner radius for the platform-specific UI elements.
     static let cornerRadiusPerPlatform: Self = 2 * grid
     #endif
+
+    /// The corner radius for the small UI elements.
     static let cornerRadiusSmall: Self = 2 * grid
+
+    /// The corner radius for the large UI elements.
     static let cornerRadiusLarge: Self = 4 * grid
 }
 

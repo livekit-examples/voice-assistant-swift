@@ -1,5 +1,6 @@
 import SwiftUI
 
+/// A simple replacement for the native circular progress indicator.
 struct Spinner: View {
     @State private var rotation: Double = 0
 
