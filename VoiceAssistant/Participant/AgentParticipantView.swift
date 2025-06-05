@@ -2,8 +2,8 @@ import LiveKitComponents
 
 struct AgentParticipantView: View {
     @Environment(AppViewModel.self) private var viewModel
+    @Environment(\.namespace) private var namespace
     @SceneStorage("videoTransition") private var videoTransition = false
-    var namespace: Namespace.ID
 
     var body: some View {
         ZStack {
@@ -42,6 +42,6 @@ struct AgentParticipantView: View {
             }
         }
         .animation(.default, value: viewModel.agentAudioTrack?.id)
-        .matchedGeometryEffect(id: String(describing: Self.self), in: namespace)
+        .matchedGeometryEffect(id: "agent", in: namespace)
     }
 }

@@ -5,16 +5,15 @@ struct TextInteractionView: View {
     @Environment(ChatViewModel.self) private var chatViewModel
 
     @FocusState.Binding var isKeyboardFocused: Bool
-    var namespace: Namespace.ID
 
     var body: some View {
         VStack {
             VStack {
                 HStack {
                     Spacer()
-                    AgentParticipantView(namespace: namespace)
-                    ScreenShareView(namespace: namespace)
-                    LocalParticipantView(namespace: namespace)
+                    AgentParticipantView()
+                    ScreenShareView()
+                    LocalParticipantView()
                     Spacer()
                 }
                 .frame(height: 50 * .grid)

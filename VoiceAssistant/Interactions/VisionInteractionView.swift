@@ -5,8 +5,6 @@ struct VisionInteractionView: View {
     @Environment(AppViewModel.self) private var viewModel
     @Environment(ChatViewModel.self) private var chatViewModel
 
-    var namespace: Namespace.ID
-
     var body: some View {
         HStack {
             VStack {

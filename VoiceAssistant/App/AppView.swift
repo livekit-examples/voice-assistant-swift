@@ -7,7 +7,7 @@ struct AppView: View {
     @State private var error: Error?
     @FocusState private var isKeyboardFocused: Bool
 
-    @Namespace private var transitions
+    @Namespace private var namespace
 
     var body: some View {
         ZStack(alignment: .top) {
@@ -22,10 +22,10 @@ struct AppView: View {
                 #else
                 switch viewModel.interactionMode {
                 case .text:
-                    TextInteractionView(isKeyboardFocused: $isKeyboardFocused, namespace: transitions)
+                    TextInteractionView(isKeyboardFocused: $isKeyboardFocused)
                         .environment(chatViewModel)
                 case .voice:
-                    VoiceInteractionView(namespace: transitions)
+                    VoiceInteractionView()
                         .overlay(alignment: .bottom) {
                             agentListening()
                                 .padding()
@@ -46,19 +46,20 @@ struct AppView: View {
             }
             #endif
         }
+        .environment(\.namespace, namespace)
         #if os(visionOS)
-        .ornament(attachmentAnchor: .scene(.bottom)) {
-            if viewModel.hasConnection {
-                ControlBar()
-                    .glassBackgroundEffect()
+            .ornament(attachmentAnchor: .scene(.bottom)) {
+                if viewModel.hasConnection {
+                    ControlBar()
+                        .glassBackgroundEffect()
+                }
             }
-        }
-        .alert("warning.reconnecting", isPresented: .constant(viewModel.connectionState == .reconnecting)) {}
-        .alert(error?.localizedDescription ?? "error.title", isPresented: .constant(error != nil)) {
-            Button("error.ok") { error = nil }
-        }
+            .alert("warning.reconnecting", isPresented: .constant(viewModel.connectionState == .reconnecting)) {}
+            .alert(error?.localizedDescription ?? "error.title", isPresented: .constant(error != nil)) {
+                Button("error.ok") { error = nil }
+            }
         #else
-        .safeAreaInset(edge: .bottom) {
+            .safeAreaInset(edge: .bottom) {
                 if viewModel.hasConnection, !isKeyboardFocused {
                     ControlBar()
                         .transition(.asymmetric(insertion: .move(edge: .bottom).combined(with: .opacity), removal: .opacity))

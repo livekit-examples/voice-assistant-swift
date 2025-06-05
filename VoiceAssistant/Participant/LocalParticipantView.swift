@@ -2,7 +2,7 @@ import LiveKitComponents
 
 struct LocalParticipantView: View {
     @Environment(AppViewModel.self) private var viewModel
-    var namespace: Namespace.ID
+    @Environment(\.namespace) private var namespace
 
     var body: some View {
         if let cameraTrack = viewModel.cameraTrack {
@@ -23,7 +23,7 @@ struct LocalParticipantView: View {
                         .padding(2 * .grid)
                     }
                 }
-                .matchedGeometryEffect(id: String(describing: Self.self), in: namespace)
+                .matchedGeometryEffect(id: "camera", in: namespace)
         }
     }
 }
