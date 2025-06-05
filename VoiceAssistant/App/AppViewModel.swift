@@ -45,7 +45,7 @@ final class AppViewModel {
 
     private(set) var connectionState: ConnectionState = .disconnected
     private(set) var isListening = false
-    var hasConnection: Bool {
+    var isInteractive: Bool {
         switch connectionState {
         case .disconnected where isListening,
              .connecting where isListening,
@@ -164,27 +164,9 @@ final class AppViewModel {
         resetState()
         do {
             if agentFeatures.contains(.voice) {
-                // Connect and enable microphone, capture pre-connect audio
-                try await room.withPreConnectAudio {
-                    await MainActor.run { self.isListening = true }
-
-                    let connectionDetails = try await self.getConnection()
-
-                    try await self.room.connect(
-                        url: connectionDetails.serverUrl,
-                        token: connectionDetails.participantToken,
-                        connectOptions: .init(enableMicrophone: true)
-                    )
-                }
+                try await connectWithVoice()
             } else {
-                // Connect without enabling microphone
-                let connectionDetails = try await getConnection()
-
-                try await room.connect(
-                    url: connectionDetails.serverUrl,
-                    token: connectionDetails.participantToken,
-                    connectOptions: .init(enableMicrophone: false)
-                )
+                try await connectWithoutVoice()
             }
 
             try await checkAgentConnected()
@@ -194,9 +176,30 @@ final class AppViewModel {
         }
     }
 
-    func disconnect() async {
-        await room.disconnect()
-        resetState()
+    /// Connect and enable microphone, capture pre-connect audio
+    private func connectWithVoice() async throws {
+        try await room.withPreConnectAudio {
+            await MainActor.run { self.isListening = true }
+
+            let connectionDetails = try await self.getConnection()
+
+            try await self.room.connect(
+                url: connectionDetails.serverUrl,
+                token: connectionDetails.participantToken,
+                connectOptions: .init(enableMicrophone: true)
+            )
+        }
+    }
+
+    /// Connect without enabling microphone
+    private func connectWithoutVoice() async throws {
+        let connectionDetails = try await getConnection()
+
+        try await room.connect(
+            url: connectionDetails.serverUrl,
+            token: connectionDetails.participantToken,
+            connectOptions: .init(enableMicrophone: false)
+        )
     }
 
     private func getConnection() async throws -> TokenService.ConnectionDetails {
@@ -207,6 +210,11 @@ final class AppViewModel {
             roomName: roomName,
             participantName: participantName
         )!
+    }
+
+    func disconnect() async {
+        await room.disconnect()
+        resetState()
     }
 
     private func checkAgentConnected() async throws {

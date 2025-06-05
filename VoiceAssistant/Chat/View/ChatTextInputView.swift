@@ -16,7 +16,7 @@ struct ChatTextInputView: View {
         }
         .frame(minHeight: 12 * .grid)
         .frame(maxWidth: horizontalSizeClass == .regular ? 128 * .grid : 92 * .grid)
-        .background(Color.bg2)
+        .background(.bg2)
         .clipShape(RoundedRectangle(cornerRadius: 6 * .grid))
         .safeAreaPadding(.horizontal, 4 * .grid)
         .safeAreaPadding(.bottom, 4 * .grid)

@@ -31,8 +31,8 @@ struct VoiceInteractionView: View {
                 LocalParticipantView()
             }
             .frame(width: 50 * .grid)
-            .safeAreaPadding()
         }
+        .safeAreaPadding()
         .frame(maxWidth: .infinity, maxHeight: .infinity)
     }
 

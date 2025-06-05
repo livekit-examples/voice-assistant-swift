@@ -18,12 +18,12 @@ struct WarningView: View {
                 .frame(maxWidth: .infinity, alignment: .leading)
         }
         .padding(3 * .grid)
-        .foregroundStyle(Color.fgModerate)
-        .background(Color.bgModerate)
+        .foregroundStyle(.fgModerate)
+        .background(.bgModerate)
         .clipShape(RoundedRectangle(cornerRadius: .cornerRadiusSmall))
         .overlay(
             RoundedRectangle(cornerRadius: .cornerRadiusSmall)
-                .stroke(Color.separatorModerate, lineWidth: 1)
+                .stroke(.separatorModerate, lineWidth: 1)
         )
         .safeAreaPadding(4 * .grid)
     }

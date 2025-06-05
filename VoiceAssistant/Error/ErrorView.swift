@@ -25,12 +25,12 @@ struct ErrorView: View {
                 .frame(maxWidth: .infinity, alignment: .leading)
         }
         .padding(3 * .grid)
-        .background(Color.bgSerious)
-        .foregroundStyle(Color.fgSerious)
+        .background(.bgSerious)
+        .foregroundStyle(.fgSerious)
         .clipShape(RoundedRectangle(cornerRadius: .cornerRadiusSmall))
         .overlay(
             RoundedRectangle(cornerRadius: .cornerRadiusSmall)
-                .stroke(Color.separatorSerious, lineWidth: 1)
+                .stroke(.separatorSerious, lineWidth: 1)
         )
         .safeAreaPadding(4 * .grid)
     }

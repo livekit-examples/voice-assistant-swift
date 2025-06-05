@@ -24,8 +24,8 @@ struct ProminentButtonStyle: ButtonStyle {
         configuration.label
             .textCase(.uppercase)
             .font(.system(size: 14, weight: .semibold, design: .monospaced))
-            .foregroundStyle(Color.white)
-            .background(Color.fgAccent.opacity(configuration.isPressed ? 0.75 : 1))
+            .foregroundStyle(.white)
+            .background(.fgAccent.opacity(configuration.isPressed ? 0.75 : 1))
             .cornerRadius(8)
     }
 }

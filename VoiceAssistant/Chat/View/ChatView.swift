@@ -35,8 +35,7 @@ struct ChatView: View {
         .upsideDown()
         .listRowBackground(EmptyView())
         .listRowSeparator(.hidden)
-        .transition(.blurReplace)
-        .id(message.id) // ScrollViewReader
+        .id(message.id) // for the ScrollViewReader to work
     }
 
     @ViewBuilder

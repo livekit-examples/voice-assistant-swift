@@ -11,7 +11,7 @@ struct AppView: View {
 
     var body: some View {
         ZStack(alignment: .top) {
-            if viewModel.hasConnection {
+            if viewModel.isInteractive {
                 interactions()
             } else {
                 start()
@@ -33,14 +33,14 @@ struct AppView: View {
             }
         #else
             .safeAreaInset(edge: .bottom) {
-                if viewModel.hasConnection, !isKeyboardFocused {
+                if viewModel.isInteractive, !isKeyboardFocused {
                     ControlBar()
                         .transition(.asymmetric(insertion: .move(edge: .bottom).combined(with: .opacity), removal: .opacity))
                 }
             }
         #endif
-            .background(Color.bg1)
-            .animation(.default, value: viewModel.hasConnection)
+            .background(.bg1)
+            .animation(.default, value: viewModel.isInteractive)
             .animation(.default, value: viewModel.interactionMode)
             .animation(.default, value: viewModel.isCameraEnabled)
             .animation(.default, value: viewModel.isScreenShareEnabled)
