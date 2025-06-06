@@ -166,6 +166,7 @@ struct ControlBar: View {
                 borderColor: .separatorSerious
             )
         )
+        .disabled(viewModel.connectionState == .disconnected)
     }
 }
 
