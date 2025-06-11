@@ -7,17 +7,61 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		ACAEBA5B2DE6EE970072E93E /* ReplayKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = ACAEBA5A2DE6EE970072E93E /* ReplayKit.framework */; };
+		ACAEBA622DE6EE970072E93E /* BroadcastExtension.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = ACAEBA582DE6EE970072E93E /* BroadcastExtension.appex */; platformFilters = (ios, xros, ); settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		ACAEBA692DE6EF4B0072E93E /* LiveKit in Frameworks */ = {isa = PBXBuildFile; productRef = ACAEBA682DE6EF4B0072E93E /* LiveKit */; };
 		ACBC177A2D8C34B5007EE71F /* AsyncAlgorithms in Frameworks */ = {isa = PBXBuildFile; productRef = ACBC17792D8C34B5007EE71F /* AsyncAlgorithms */; };
 		ACFBA1DB2D8D5CBE0021202B /* Collections in Frameworks */ = {isa = PBXBuildFile; productRef = ACFBA1DA2D8D5CBE0021202B /* Collections */; };
 		B5E1B90F2D14E9EC00A38CB6 /* LiveKitComponents in Frameworks */ = {isa = PBXBuildFile; productRef = B5E1B90E2D14E9EC00A38CB6 /* LiveKitComponents */; };
 		B5E1B9122D14E9F500A38CB6 /* LiveKit in Frameworks */ = {isa = PBXBuildFile; productRef = B5E1B9112D14E9F500A38CB6 /* LiveKit */; };
 /* End PBXBuildFile section */
 
+/* Begin PBXContainerItemProxy section */
+		ACAEBA602DE6EE970072E93E /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = B5B5E3AA2D124AE00099C9BE /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = ACAEBA572DE6EE970072E93E;
+			remoteInfo = BroadcastExtension;
+		};
+		ACC2802B2DEDDA1D0023C137 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = B5B5E3AA2D124AE00099C9BE /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = B5B5E3B12D124AE00099C9BE;
+			remoteInfo = VoiceAssistant;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		ACAEBA672DE6EE970072E93E /* Embed Foundation Extensions */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 13;
+			files = (
+				ACAEBA622DE6EE970072E93E /* BroadcastExtension.appex in Embed Foundation Extensions */,
+			);
+			name = "Embed Foundation Extensions";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
 /* Begin PBXFileReference section */
+		ACAEBA582DE6EE970072E93E /* BroadcastExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = BroadcastExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
+		ACAEBA5A2DE6EE970072E93E /* ReplayKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ReplayKit.framework; path = System/Library/Frameworks/ReplayKit.framework; sourceTree = SDKROOT; };
+		ACC280272DEDDA1D0023C137 /* VoiceAssistantTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = VoiceAssistantTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		B5B5E3B22D124AE00099C9BE /* VoiceAssistant.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = VoiceAssistant.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
+		ACAEBA662DE6EE970072E93E /* Exceptions for "BroadcastExtension" folder in "BroadcastExtension" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Info.plist,
+			);
+			target = ACAEBA572DE6EE970072E93E /* BroadcastExtension */;
+		};
 		B577A91F2D15FDB800B59A0B /* Exceptions for "VoiceAssistant" folder in "VoiceAssistant" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
@@ -31,6 +75,19 @@
 /* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
+		ACAEBA5C2DE6EE970072E93E /* BroadcastExtension */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				ACAEBA662DE6EE970072E93E /* Exceptions for "BroadcastExtension" folder in "BroadcastExtension" target */,
+			);
+			path = BroadcastExtension;
+			sourceTree = "<group>";
+		};
+		ACC280282DEDDA1D0023C137 /* VoiceAssistantTests */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = VoiceAssistantTests;
+			sourceTree = "<group>";
+		};
 		B5B5E3B42D124AE00099C9BE /* VoiceAssistant */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			exceptions = (
@@ -42,6 +99,22 @@
 /* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		ACAEBA552DE6EE970072E93E /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				ACAEBA5B2DE6EE970072E93E /* ReplayKit.framework in Frameworks */,
+				ACAEBA692DE6EF4B0072E93E /* LiveKit in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		ACC280242DEDDA1D0023C137 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		B5B5E3AF2D124AE00099C9BE /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -56,10 +129,21 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		ACAEBA592DE6EE970072E93E /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				ACAEBA5A2DE6EE970072E93E /* ReplayKit.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 		B5B5E3A92D124AE00099C9BE = {
 			isa = PBXGroup;
 			children = (
 				B5B5E3B42D124AE00099C9BE /* VoiceAssistant */,
+				ACAEBA5C2DE6EE970072E93E /* BroadcastExtension */,
+				ACC280282DEDDA1D0023C137 /* VoiceAssistantTests */,
+				ACAEBA592DE6EE970072E93E /* Frameworks */,
 				B5B5E3B32D124AE00099C9BE /* Products */,
 			);
 			sourceTree = "<group>";
@@ -68,6 +152,8 @@
 			isa = PBXGroup;
 			children = (
 				B5B5E3B22D124AE00099C9BE /* VoiceAssistant.app */,
+				ACAEBA582DE6EE970072E93E /* BroadcastExtension.appex */,
+				ACC280272DEDDA1D0023C137 /* VoiceAssistantTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -75,6 +161,52 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
+		ACAEBA572DE6EE970072E93E /* BroadcastExtension */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = ACAEBA632DE6EE970072E93E /* Build configuration list for PBXNativeTarget "BroadcastExtension" */;
+			buildPhases = (
+				ACAEBA542DE6EE970072E93E /* Sources */,
+				ACAEBA552DE6EE970072E93E /* Frameworks */,
+				ACAEBA562DE6EE970072E93E /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			fileSystemSynchronizedGroups = (
+				ACAEBA5C2DE6EE970072E93E /* BroadcastExtension */,
+			);
+			name = BroadcastExtension;
+			packageProductDependencies = (
+				ACAEBA682DE6EF4B0072E93E /* LiveKit */,
+			);
+			productName = BroadcastExtension;
+			productReference = ACAEBA582DE6EE970072E93E /* BroadcastExtension.appex */;
+			productType = "com.apple.product-type.app-extension";
+		};
+		ACC280262DEDDA1D0023C137 /* VoiceAssistantTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = ACC2802F2DEDDA1D0023C137 /* Build configuration list for PBXNativeTarget "VoiceAssistantTests" */;
+			buildPhases = (
+				ACC280232DEDDA1D0023C137 /* Sources */,
+				ACC280242DEDDA1D0023C137 /* Frameworks */,
+				ACC280252DEDDA1D0023C137 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				ACC2802C2DEDDA1D0023C137 /* PBXTargetDependency */,
+			);
+			fileSystemSynchronizedGroups = (
+				ACC280282DEDDA1D0023C137 /* VoiceAssistantTests */,
+			);
+			name = VoiceAssistantTests;
+			packageProductDependencies = (
+			);
+			productName = VoiceAssistantTests;
+			productReference = ACC280272DEDDA1D0023C137 /* VoiceAssistantTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
 		B5B5E3B12D124AE00099C9BE /* VoiceAssistant */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = B5B5E3C12D124AE20099C9BE /* Build configuration list for PBXNativeTarget "VoiceAssistant" */;
@@ -82,10 +214,12 @@
 				B5B5E3AE2D124AE00099C9BE /* Sources */,
 				B5B5E3AF2D124AE00099C9BE /* Frameworks */,
 				B5B5E3B02D124AE00099C9BE /* Resources */,
+				ACAEBA672DE6EE970072E93E /* Embed Foundation Extensions */,
 			);
 			buildRules = (
 			);
 			dependencies = (
+				ACAEBA612DE6EE970072E93E /* PBXTargetDependency */,
 			);
 			fileSystemSynchronizedGroups = (
 				B5B5E3B42D124AE00099C9BE /* VoiceAssistant */,
@@ -108,9 +242,16 @@
 			isa = PBXProject;
 			attributes = {
 				BuildIndependentTargetsInParallel = 1;
-				LastSwiftUpdateCheck = 1620;
-				LastUpgradeCheck = 1620;
+				LastSwiftUpdateCheck = 1630;
+				LastUpgradeCheck = 1630;
 				TargetAttributes = {
+					ACAEBA572DE6EE970072E93E = {
+						CreatedOnToolsVersion = 16.3;
+					};
+					ACC280262DEDDA1D0023C137 = {
+						CreatedOnToolsVersion = 16.3;
+						TestTargetID = B5B5E3B12D124AE00099C9BE;
+					};
 					B5B5E3B12D124AE00099C9BE = {
 						CreatedOnToolsVersion = 16.2;
 					};
@@ -137,11 +278,27 @@
 			projectRoot = "";
 			targets = (
 				B5B5E3B12D124AE00099C9BE /* VoiceAssistant */,
+				ACC280262DEDDA1D0023C137 /* VoiceAssistantTests */,
+				ACAEBA572DE6EE970072E93E /* BroadcastExtension */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
+		ACAEBA562DE6EE970072E93E /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		ACC280252DEDDA1D0023C137 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		B5B5E3B02D124AE00099C9BE /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -152,6 +309,20 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		ACAEBA542DE6EE970072E93E /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		ACC280232DEDDA1D0023C137 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		B5B5E3AE2D124AE00099C9BE /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -161,7 +332,145 @@
 		};
 /* End PBXSourcesBuildPhase section */
 
+/* Begin PBXTargetDependency section */
+		ACAEBA612DE6EE970072E93E /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			platformFilters = (
+				ios,
+				xros,
+			);
+			target = ACAEBA572DE6EE970072E93E /* BroadcastExtension */;
+			targetProxy = ACAEBA602DE6EE970072E93E /* PBXContainerItemProxy */;
+		};
+		ACC2802C2DEDDA1D0023C137 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = B5B5E3B12D124AE00099C9BE /* VoiceAssistant */;
+			targetProxy = ACC2802B2DEDDA1D0023C137 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
 /* Begin XCBuildConfiguration section */
+		ACAEBA642DE6EE970072E93E /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_ENTITLEMENTS = BroadcastExtension/BroadcastExtension.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 6;
+				DEVELOPMENT_TEAM = 76TVFCUKK7;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = BroadcastExtension/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = VoiceAssistant;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				IPHONEOS_DEPLOYMENT_TARGET = 18.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.livekit.example.VoiceAssistant.broadcast;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator xros xrsimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2,7";
+				XROS_DEPLOYMENT_TARGET = 2.0;
+			};
+			name = Debug;
+		};
+		ACAEBA652DE6EE970072E93E /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_ENTITLEMENTS = BroadcastExtension/BroadcastExtension.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 6;
+				DEVELOPMENT_TEAM = 76TVFCUKK7;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = BroadcastExtension/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = VoiceAssistant;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				IPHONEOS_DEPLOYMENT_TARGET = 18.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.livekit.example.VoiceAssistant.broadcast;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator xros xrsimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2,7";
+				VALIDATE_PRODUCT = YES;
+				XROS_DEPLOYMENT_TARGET = 2.0;
+			};
+			name = Release;
+		};
+		ACC2802D2DEDDA1D0023C137 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_IDENTITY = "Apple Development";
+				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEAD_CODE_STRIPPING = YES;
+				DEVELOPMENT_TEAM = 76TVFCUKK7;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 18.0;
+				MACOSX_DEPLOYMENT_TARGET = 15.0;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.livekit.VoiceAssistantTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
+				SDKROOT = auto;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx xros xrsimulator";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2,7";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/VoiceAssistant.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/VoiceAssistant";
+				XROS_DEPLOYMENT_TARGET = 2.0;
+			};
+			name = Debug;
+		};
+		ACC2802E2DEDDA1D0023C137 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_IDENTITY = "Apple Development";
+				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEAD_CODE_STRIPPING = YES;
+				DEVELOPMENT_TEAM = 76TVFCUKK7;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 18.0;
+				MACOSX_DEPLOYMENT_TARGET = 15.0;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.livekit.VoiceAssistantTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
+				SDKROOT = auto;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx xros xrsimulator";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2,7";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/VoiceAssistant.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/VoiceAssistant";
+				XROS_DEPLOYMENT_TARGET = 2.0;
+			};
+			name = Release;
+		};
 		B5B5E3BF2D124AE20099C9BE /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -196,6 +505,7 @@
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = NO;
+				DEAD_CODE_STRIPPING = YES;
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
@@ -219,6 +529,7 @@
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 6.0;
 			};
@@ -258,6 +569,7 @@
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = NO;
+				DEAD_CODE_STRIPPING = YES;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
@@ -274,6 +586,7 @@
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 6.0;
 			};
 			name = Release;
@@ -284,10 +597,11 @@
 			baseConfigurationReferenceRelativePath = VoiceAssistant.xcconfig;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = fgAccent;
 				CODE_SIGN_ENTITLEMENTS = VoiceAssistant/VoiceAssistant.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 6;
+				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_ASSET_PATHS = "\"VoiceAssistant/Preview Content\"";
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;
@@ -307,17 +621,18 @@
 				"INFOPLIST_KEY_UIStatusBarStyle[sdk=iphonesimulator*]" = UIStatusBarStyleDefault;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
-				IPHONEOS_DEPLOYMENT_TARGET = 18.2;
+				IPHONEOS_DEPLOYMENT_TARGET = 18.0;
 				LD_RUNPATH_SEARCH_PATHS = "@executable_path/Frameworks";
 				"LD_RUNPATH_SEARCH_PATHS[sdk=macosx*]" = "@executable_path/../Frameworks";
-				MACOSX_DEPLOYMENT_TARGET = 15.2;
+				MACOSX_DEPLOYMENT_TARGET = 15.0;
 				MARKETING_VERSION = 1.0;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				REGISTER_APP_GROUPS = YES;
 				SDKROOT = auto;
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx xros xrsimulator";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				TARGETED_DEVICE_FAMILY = "1,2,7";
-				XROS_DEPLOYMENT_TARGET = 2.2;
+				XROS_DEPLOYMENT_TARGET = 2.0;
 			};
 			name = Debug;
 		};
@@ -327,10 +642,11 @@
 			baseConfigurationReferenceRelativePath = VoiceAssistant.xcconfig;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = fgAccent;
 				CODE_SIGN_ENTITLEMENTS = VoiceAssistant/VoiceAssistant.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 6;
+				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_ASSET_PATHS = "\"VoiceAssistant/Preview Content\"";
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;
@@ -350,23 +666,42 @@
 				"INFOPLIST_KEY_UIStatusBarStyle[sdk=iphonesimulator*]" = UIStatusBarStyleDefault;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
-				IPHONEOS_DEPLOYMENT_TARGET = 18.2;
+				IPHONEOS_DEPLOYMENT_TARGET = 18.0;
 				LD_RUNPATH_SEARCH_PATHS = "@executable_path/Frameworks";
 				"LD_RUNPATH_SEARCH_PATHS[sdk=macosx*]" = "@executable_path/../Frameworks";
-				MACOSX_DEPLOYMENT_TARGET = 15.2;
+				MACOSX_DEPLOYMENT_TARGET = 15.0;
 				MARKETING_VERSION = 1.0;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				REGISTER_APP_GROUPS = YES;
 				SDKROOT = auto;
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx xros xrsimulator";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				TARGETED_DEVICE_FAMILY = "1,2,7";
-				XROS_DEPLOYMENT_TARGET = 2.2;
+				XROS_DEPLOYMENT_TARGET = 2.0;
 			};
 			name = Release;
 		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		ACAEBA632DE6EE970072E93E /* Build configuration list for PBXNativeTarget "BroadcastExtension" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				ACAEBA642DE6EE970072E93E /* Debug */,
+				ACAEBA652DE6EE970072E93E /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		ACC2802F2DEDDA1D0023C137 /* Build configuration list for PBXNativeTarget "VoiceAssistantTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				ACC2802D2DEDDA1D0023C137 /* Debug */,
+				ACC2802E2DEDDA1D0023C137 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		B5B5E3AD2D124AE00099C9BE /* Build configuration list for PBXProject "VoiceAssistant" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
@@ -408,8 +743,8 @@
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/livekit/components-swift";
 			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 0.1.3;
+				branch = blaze/redesign;
+				kind = branch;
 			};
 		};
 		B5E1B9102D14E9F500A38CB6 /* XCRemoteSwiftPackageReference "client-sdk-swift" */ = {
@@ -423,6 +758,10 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		ACAEBA682DE6EF4B0072E93E /* LiveKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = LiveKit;
+		};
 		ACBC17792D8C34B5007EE71F /* AsyncAlgorithms */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = ACBC17782D8C34B5007EE71F /* XCRemoteSwiftPackageReference "swift-async-algorithms" */;
