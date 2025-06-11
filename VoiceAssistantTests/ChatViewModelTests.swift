@@ -41,7 +41,7 @@ struct ChatViewModelTests {
 actor MockMessageReceiver: MessageReceiver {
     private var continuation: AsyncStream<ReceivedMessage>.Continuation?
 
-    func createMessageStream() async throws -> AsyncStream<ReceivedMessage> {
+    func messages() async throws -> AsyncStream<ReceivedMessage> {
         let (stream, continuation) = AsyncStream.makeStream(of: ReceivedMessage.self)
         self.continuation = continuation
         return stream

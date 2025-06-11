@@ -75,7 +75,7 @@ actor TranscriptionStreamReceiver: MessageReceiver {
     }
 
     /// Creates a new message stream for the chat topic.
-    func createMessageStream() async throws -> AsyncStream<ReceivedMessage> {
+    func messages() async throws -> AsyncStream<ReceivedMessage> {
         let (stream, continuation) = AsyncStream.makeStream(of: ReceivedMessage.self)
 
         try await room.registerTextStreamHandler(for: transcriptionTopic) { [weak self] reader, participantIdentity in

@@ -7,5 +7,5 @@ import Foundation
 ///
 /// - SeeAlso: ``ReceivedMessage``
 protocol MessageReceiver: Sendable {
-    func createMessageStream() async throws -> AsyncStream<ReceivedMessage>
+    func messages() async throws -> AsyncStream<ReceivedMessage>
 }

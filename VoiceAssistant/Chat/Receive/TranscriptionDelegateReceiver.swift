@@ -26,7 +26,7 @@ actor TranscriptionDelegateReceiver: MessageReceiver, RoomDelegate {
     }
 
     /// Creates a new message stream for the transcription delegate receiver.
-    func createMessageStream() -> AsyncStream<ReceivedMessage> {
+    func messages() -> AsyncStream<ReceivedMessage> {
         let (stream, continuation) = AsyncStream.makeStream(of: ReceivedMessage.self)
         self.continuation = continuation
         return stream

@@ -32,7 +32,7 @@ actor LocalMessageSender: MessageSender, MessageReceiver {
         messageContinuation?.yield(loopbackMessage)
     }
 
-    func createMessageStream() async throws -> AsyncStream<ReceivedMessage> {
+    func messages() async throws -> AsyncStream<ReceivedMessage> {
         let (stream, continuation) = AsyncStream<ReceivedMessage>.makeStream()
         messageContinuation = continuation
         return stream

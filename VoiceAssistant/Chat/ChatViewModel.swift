@@ -46,7 +46,7 @@ final class ChatViewModel {
             Task { [weak self] in
                 do {
                     for await message in try await messageReceiver
-                        .createMessageStream()
+                        .messages()
                         ._throttle(for: Constants.throttle)
                     {
                         guard let self else { return }
