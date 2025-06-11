@@ -45,8 +45,7 @@ jobs:
         run: xcrun swift --version
 
       - name: Setup .env
-        run: |
-          echo "LIVEKIT_SANDBOX_ID=" > .env.xcconfig
+        run: cat VoiceAssistant/.env.example.xcconfig > VoiceAssistant/.env.xcconfig
 
       - name: Run Tests
         run: |
