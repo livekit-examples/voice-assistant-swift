@@ -15,8 +15,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/livekit/components-swift",
       "state" : {
-        "branch" : "blaze/redesign",
-        "revision" : "baef47a4c8ed89fad82262b43613d84c968acdd4"
+        "revision" : "1f3a5ef0dab1b5d8d27dde9a0ca97ac687226154",
+        "version" : "0.1.4"
       }
     },
     {
