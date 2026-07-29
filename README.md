@@ -25,7 +25,7 @@ The app is configured to connect to the LiveKit homepage agent by default, which
 
 ## Connect to your agent
 
-First, you'll need a LiveKit agent to speak with. Try our starter agent for [Python](https://github.com/livekit-examples/agent-starter-python), [Node.js](https://github.com/livekit-examples/agent-starter-node), or [create your own from scratch](https://docs.livekit.io/agents/start/voice-ai/).
+To switch from the default agent to your own, first, you'll need to create the LiveKit agent to speak with. Try our starter agent for [Python](https://github.com/livekit-examples/agent-starter-python), [Node.js](https://github.com/livekit-examples/agent-starter-node), or [create your own from scratch](https://docs.livekit.io/agents/start/voice-ai/).
 
 Second, you need a token server. The easiest way to set this up is with a [token server](https://docs.livekit.io/frontends/authentication/tokens/sandbox-token-server/) and the [LiveKit CLI](https://docs.livekit.io/home/cli/cli-setup/).
 
@@ -72,7 +72,7 @@ If your agent publishes a [virtual avatar](https://docs.livekit.io/agents/integr
 
 ## Token generation in production
 
-In production, you'll need to develop a solution to [generate tokens for your users](https://docs.livekit.io/home/server/generating-tokens/) that integrates with your authentication system. You should replace your `SandboxTokenSource` with an `EndpointTokenSource` or your own `TokenSourceFixed` or `TokenSourceConfigurable` implementation. Additionally, you can use the `.cached()` extension to cache valid tokens and avoid unnecessary token requests.
+In production, you'll need to develop a solution to [generate tokens for your users](https://docs.livekit.io/home/server/generating-tokens/) that integrates with your authentication system. If used, you should replace your `SandboxTokenSource` with an `EndpointTokenSource` or your own `TokenSourceFixed` or `TokenSourceConfigurable` implementation. Additionally, you can use the `.cached()` extension to cache valid tokens and avoid unnecessary token requests.
 
 ## Running on Simulator
 
