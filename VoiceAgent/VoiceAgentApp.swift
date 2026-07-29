@@ -19,7 +19,9 @@ struct VoiceAgentApp: App {
     ) as? String ?? ""
 
     /// For development, switch back to the sandbox with
-    /// `SandboxTokenSource(id: Self.sandboxID).cached()`.
+    /// `SandboxTokenSource(id: Self.sandboxID).cached()`
+    /// instead of the TokenSourceEndpoint of the LiveKit
+    /// homepage agent.
     private let session = Session(
         tokenSource: TokenSourceEndpoint(url: URL(string: "https://livekit.com/api/homepage-agent/token")!).cached(),
         options: SessionOptions(room: Room(roomOptions: RoomOptions(

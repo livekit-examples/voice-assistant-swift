@@ -10,21 +10,28 @@ This template is compatible with iOS, iPadOS, macOS, and visionOS and is free fo
 
 ## Getting started
 
+Run the following command to automatically clone this template and connect it to LiveKit Cloud. This will create a new Xcode project in the current directory.
+
+```bash
+lk app create --template agent-starter-swift
+```
+
+Then, build and run the app from Xcode by opening `VoiceAgent.xcodeproj`. You may need to adjust your app signing settings to run the app on your device.
+
+The app is configured to connect to the LiveKit homepage agent by default, which you can also try at [livekit.com](https://www.livekit.com). To connect to your own agent, see below.
+
+> [!NOTE]
+> To set up without the LiveKit CLI, clone the repository via git.
+
+## Connect to your agent
+
 First, you'll need a LiveKit agent to speak with. Try our starter agent for [Python](https://github.com/livekit-examples/agent-starter-python), [Node.js](https://github.com/livekit-examples/agent-starter-node), or [create your own from scratch](https://docs.livekit.io/agents/start/voice-ai/).
 
 Second, you need a token server. The easiest way to set this up is with a [token server](https://docs.livekit.io/frontends/authentication/tokens/sandbox-token-server/) and the [LiveKit CLI](https://docs.livekit.io/home/cli/cli-setup/).
 
 Enable the token server from your project's **Options** on the [Settings](https://cloud.livekit.io/projects/p_/settings/project) page in LiveKit Cloud and copy the `sandboxId`.
-Then, run the following command to automatically clone this template and connect it to LiveKit Cloud. This will create a new Xcode project in the current directory.
 
-```bash
-lk app create --template agent-starter-swift --sandbox <token_server_sandbox_id>
-```
-
-Then, build and run the app from Xcode by opening `VoiceAgent.xcodeproj`. You may need to adjust your app signing settings to run the app on your device.
-
-> [!NOTE]
-> To set up without the LiveKit CLI, clone the repository and then either create a `VoiceAgent/.env.xcconfig` with a `LIVEKIT_SANDBOX_ID` (from your project's **Options** on the [Settings](https://cloud.livekit.io/projects/p_/settings/project) page), or modify `VoiceAgent/VoiceAgentApp.swift` to replace the `SandboxTokenSource` with a custom token source implementation.
+Then either create a `VoiceAgent/.env.xcconfig` with a `LIVEKIT_SANDBOX_ID` (from your project's **Options** on the [Settings](https://cloud.livekit.io/projects/p_/settings/project) page), and modify `VoiceAgent/VoiceAgentApp.swift` to replace the `TokenSourceEndpoint` with your development token server or custom token source implementation.
 
 ## Feature overview
 
