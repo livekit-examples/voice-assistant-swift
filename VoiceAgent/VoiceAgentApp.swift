@@ -1,6 +1,13 @@
 import LiveKit
 import SwiftUI
 
+/// Fetches connection details from a custom backend token endpoint.
+/// The `EndpointTokenSource` protocol provides the POST request and
+/// JSON encoding/decoding; only the URL needs to be supplied.
+struct TokenSourceEndpoint: EndpointTokenSource {
+    let url: URL
+}
+
 @main
 struct VoiceAgentApp: App {
     /// To use the LiveKit Cloud sandbox (development only):
@@ -11,10 +18,10 @@ struct VoiceAgentApp: App {
         forInfoDictionaryKey: "LiveKitSandboxId"
     ) as? String ?? ""
 
-    /// For production, replace the `SandboxTokenSource` with an
-    /// `EndpointTokenSource` or your own `TokenSourceConfigurable`.
+    /// For development, switch back to the sandbox with
+    /// `SandboxTokenSource(id: Self.sandboxID).cached()`.
     private let session = Session(
-        tokenSource: SandboxTokenSource(id: Self.sandboxID).cached(),
+        tokenSource: TokenSourceEndpoint(url: URL(string: "https://livekit.com/api/homepage-agent/token")!).cached(),
         options: SessionOptions(room: Room(roomOptions: RoomOptions(
             defaultScreenShareCaptureOptions: ScreenShareCaptureOptions(useBroadcastExtension: true)
         )))
