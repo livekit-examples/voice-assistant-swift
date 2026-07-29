@@ -4,8 +4,6 @@
 <dict>
 	<key>ITSAppUsesNonExemptEncryption</key>
 	<false/>
-	<key>LiveKitSandboxId</key>
-	<string>$(LIVEKIT_SANDBOX_ID)</string>
 	<key>UIBackgroundModes</key>
 	<array>
 		<string>audio</string>

@@ -61,6 +61,4 @@ fastlane/Preview.html
 fastlane/screenshots/**/*.png
 fastlane/test_output
 
-.env.xcconfig
-
 .DS_Store
