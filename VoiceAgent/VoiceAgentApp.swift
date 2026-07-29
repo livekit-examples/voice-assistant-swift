@@ -24,9 +24,9 @@ enum AgentToConnect {
     var tokenSource: any TokenSourceConfigurable {
         switch self {
         case .liveKitHomepage:
-            HomepageTokenSource().cached()
+            HomepageTokenSource()
         case let .sandbox(id):
-            SandboxTokenSource(id: id).cached()
+            SandboxTokenSource(id: id)
         }
     }
 

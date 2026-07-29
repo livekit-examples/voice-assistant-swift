@@ -76,7 +76,7 @@ If your agent publishes a [virtual avatar](https://docs.livekit.io/agents/integr
 
 ## Token generation in production
 
-In production, you'll need to develop a solution to [generate tokens for your users](https://docs.livekit.io/home/server/generating-tokens/) that integrates with your authentication system. Replace the `SandboxTokenSource` in `AgentToConnect.tokenSource` with an `EndpointTokenSource` (as the homepage agent case does) or your own `TokenSourceFixed` or `TokenSourceConfigurable` implementation. Additionally, you can use the `.cached()` extension to cache valid tokens and avoid unnecessary token requests.
+In production, you'll need to develop a solution to [generate tokens for your users](https://docs.livekit.io/home/server/generating-tokens/) that integrates with your authentication system. Replace the `SandboxTokenSource` in `AgentToConnect.tokenSource` with an `EndpointTokenSource` (as the homepage agent case does) or your own `TokenSourceFixed` or `TokenSourceConfigurable` implementation.
 
 ## Running on Simulator
 
