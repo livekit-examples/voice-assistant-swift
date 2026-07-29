@@ -10,7 +10,7 @@ This template is compatible with iOS, iPadOS, macOS, and visionOS and is free fo
 
 ## Getting started
 
-Run the following command to automatically clone this template and connect it to LiveKit Cloud. This will create a new Xcode project in the current directory.
+Run the following command to clone this template using the LiveKit CLI. This will create a new Xcode project in the current directory.
 
 ```bash
 lk app create --template agent-starter-swift
@@ -18,14 +18,14 @@ lk app create --template agent-starter-swift
 
 Then, build and run the app from Xcode by opening `VoiceAgent.xcodeproj`. You may need to adjust your app signing settings to run the app on your device.
 
-The app is configured to connect to the LiveKit homepage agent by default, which you can also try at [livekit.com](https://www.livekit.com). That agent takes voice and text input only, so video and screen sharing are hidden until you point the app at your own agent, see below.
+The app is configured to connect to the LiveKit homepage agent by default, which you can also try at [livekit.com](https://www.livekit.com). That agent takes voice and text input only, so video and screen sharing are hidden until you point the app at your own agent (see [Connect to your agent](#connect-to-your-agent)).
 
 > [!NOTE]
 > To set up without the LiveKit CLI, clone the repository via git.
 
 ## Connect to your agent
 
-To switch from the default agent to your own, first, you'll need to create the LiveKit agent to speak with. Try our starter agent for [Python](https://github.com/livekit-examples/agent-starter-python), [Node.js](https://github.com/livekit-examples/agent-starter-node), or [create your own from scratch](https://docs.livekit.io/agents/start/voice-ai/).
+To switch from the default agent to your own, you first need a LiveKit agent to speak with. Try our starter agent for [Python](https://github.com/livekit-examples/agent-starter-python), [Node.js](https://github.com/livekit-examples/agent-starter-node), or [create your own from scratch](https://docs.livekit.io/agents/start/voice-ai/).
 
 Second, you need a token server. For development, the easiest option is the [sandbox token server](https://docs.livekit.io/frontends/authentication/tokens/sandbox-token-server/): enable it from your project's **Options** on the [Settings](https://cloud.livekit.io/projects/p_/settings/project) page in LiveKit Cloud and copy the `sandboxId`.
 
@@ -35,7 +35,7 @@ Then edit `AgentToConnect.current` in `VoiceAgent/VoiceAgentApp.swift`:
 static let current: Self = .sandbox(id: "your-sandbox-id")
 ```
 
-That single value picks the token source and enables video and screen share input. For any other setup, add a case with your own [token source](#token-generation-in-production).
+That single value picks the token source and determines whether video and screen share input are enabled. For any other setup, add a case with your own [token source](#token-generation-in-production).
 
 ## Feature overview
 
@@ -46,12 +46,12 @@ This starter app supports several features of the agents framework and is easily
 This app supports text, video, and/or voice input according to the needs of your agent. To update the features enabled in the app, edit `VoiceAgent/VoiceAgentApp.swift` and modify the `.environment()` modifiers to enable or disable features:
 
 ```swift
-.environment(\.voiceEnabled, true)   // Enable voice input
-.environment(\.videoEnabled, false)  // Disable video and screen share input
-.environment(\.textEnabled, true)    // Enable text input
+.environment(\.voiceEnabled, true)                                 // Enable voice input
+.environment(\.videoEnabled, AgentToConnect.current.videoEnabled)  // Video and screen share input
+.environment(\.textEnabled, true)                                  // Enable text input
 ```
 
-Voice and text are enabled by default; video follows `AgentToConnect.current`, since the default homepage agent does not accept it.
+Voice and text are enabled by default; video follows `AgentToConnect.current`, since the default homepage agent does not accept it. To override a feature, replace its value with `true` or `false`.
 
 Available input types:
 - `.voice`: Allows the user to speak to the agent using their microphone. **Requires microphone permissions.**
