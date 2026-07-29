@@ -13,6 +13,8 @@ struct ControlBar: View {
     @Environment(\.videoEnabled) private var videoEnabled
     @Environment(\.textEnabled) private var textEnabled
 
+    @State private var audioOptionsPresented = false
+
     private enum Constants {
         static let buttonWidth: CGFloat = 16 * .grid
         static let buttonHeight: CGFloat = 11 * .grid
@@ -23,6 +25,8 @@ struct ControlBar: View {
             biggerSpacer()
             if voiceEnabled {
                 audioControls()
+                flexibleSpacer()
+                audioOptionsButton()
                 flexibleSpacer()
             }
             if videoEnabled {
@@ -107,6 +111,19 @@ struct ControlBar: View {
             Spacer()
         }
         .frame(width: Constants.buttonWidth)
+    }
+
+    private func audioOptionsButton() -> some View {
+        Button {
+            audioOptionsPresented = true
+        } label: {
+            Image(systemName: "slider.horizontal.3")
+                .frame(width: Constants.buttonWidth, height: Constants.buttonHeight)
+                .contentShape(Rectangle())
+        }
+        .sheet(isPresented: $audioOptionsPresented) {
+            AudioOptionsSheet()
+        }
     }
 
     private func videoControls() -> some View {

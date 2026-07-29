@@ -8,10 +8,13 @@ struct StartView: View {
     @Environment(\.horizontalSizeClass) private var horizontalSizeClass
     @Namespace private var button
 
+    @State private var audioOptionsPresented = false
+
     var body: some View {
         VStack(spacing: 8 * .grid) {
             bars()
             connectButton()
+            audioOptionsButton()
         }
         .padding(.horizontal, horizontalSizeClass == .regular ? 32 * .grid : 16 * .grid)
         .frame(maxWidth: .infinity, maxHeight: .infinity)
@@ -77,6 +80,24 @@ struct StartView: View {
         #else
         .buttonStyle(ProminentButtonStyle())
         #endif
+    }
+
+    private func audioOptionsButton() -> some View {
+        Button {
+            audioOptionsPresented = true
+        } label: {
+            HStack(spacing: .grid) {
+                Image(systemName: "slider.horizontal.3")
+                Text("audio.title")
+            }
+            .font(.system(size: 13))
+            .foregroundStyle(.fg3)
+            .contentShape(Rectangle())
+        }
+        .buttonStyle(.plain)
+        .sheet(isPresented: $audioOptionsPresented) {
+            AudioOptionsSheet()
+        }
     }
 }
 
