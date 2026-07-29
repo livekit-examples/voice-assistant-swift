@@ -14,7 +14,9 @@ enum VoiceProcessingMode: CaseIterable, Identifiable {
     /// for the microphone.
     case software
 
-    var id: Self { self }
+    var id: Self {
+        self
+    }
 }
 
 /// Stores the selected audio options and applies them to the local microphone.
@@ -42,7 +44,7 @@ final class AudioOptions: ObservableObject {
         cancellable = localMedia.$microphoneTrack
             .map { $0 as? LocalAudioTrack }
             .removeDuplicates { $0 === $1 }
-            .compactMap { $0 }
+            .compactMap(\.self)
             .sink { [weak self] track in
                 guard let self, voiceProcessingMode != .automatic else { return }
                 apply(to: track)
