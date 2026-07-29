@@ -40,9 +40,6 @@ jobs:
       - name: Swift Version
         run: xcrun swift --version
 
-      - name: Setup .env
-        run: cat VoiceAgent/.env.example.xcconfig > VoiceAgent/.env.xcconfig
-
       - name: Build
         run: |
           set -o pipefail && xcodebuild build \
