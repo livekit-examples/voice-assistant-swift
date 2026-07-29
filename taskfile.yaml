@@ -1,9 +1,5 @@
 version: "3"
 
-vars:
-  env_file: "VoiceAgent/.env.xcconfig"
-  env_example: "VoiceAgent/.env.example.xcconfig"
-
 tasks:
   post_create:
     desc: "Runs after this template is instantiated as a Sandbox or Bootstrap"

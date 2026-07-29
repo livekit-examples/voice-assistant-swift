@@ -10,21 +10,32 @@ This template is compatible with iOS, iPadOS, macOS, and visionOS and is free fo
 
 ## Getting started
 
-First, you'll need a LiveKit agent to speak with. Try our starter agent for [Python](https://github.com/livekit-examples/agent-starter-python), [Node.js](https://github.com/livekit-examples/agent-starter-node), or [create your own from scratch](https://docs.livekit.io/agents/start/voice-ai/).
-
-Second, you need a token server. The easiest way to set this up is with a [token server](https://docs.livekit.io/frontends/authentication/tokens/sandbox-token-server/) and the [LiveKit CLI](https://docs.livekit.io/home/cli/cli-setup/).
-
-Enable the token server from your project's **Options** on the [Settings](https://cloud.livekit.io/projects/p_/settings/project) page in LiveKit Cloud and copy the `sandboxId`.
-Then, run the following command to automatically clone this template and connect it to LiveKit Cloud. This will create a new Xcode project in the current directory.
+Run the following command to clone this template using the LiveKit CLI. This will create a new Xcode project in the current directory.
 
 ```bash
-lk app create --template agent-starter-swift --sandbox <token_server_sandbox_id>
+lk app create --template agent-starter-swift
 ```
 
 Then, build and run the app from Xcode by opening `VoiceAgent.xcodeproj`. You may need to adjust your app signing settings to run the app on your device.
 
+The app is configured to connect to the LiveKit homepage agent by default, which you can also try at [livekit.com](https://www.livekit.com). That agent takes voice and text input only, so video and screen sharing are hidden until you point the app at your own agent (see [Connect to your agent](#connect-to-your-agent)).
+
 > [!NOTE]
-> To set up without the LiveKit CLI, clone the repository and then either create a `VoiceAgent/.env.xcconfig` with a `LIVEKIT_SANDBOX_ID` (from your project's **Options** on the [Settings](https://cloud.livekit.io/projects/p_/settings/project) page), or modify `VoiceAgent/VoiceAgentApp.swift` to replace the `SandboxTokenSource` with a custom token source implementation.
+> To set up without the LiveKit CLI, clone the repository via git.
+
+## Connect to your agent
+
+To switch from the default agent to your own, you first need a LiveKit agent to speak with. Try our starter agent for [Python](https://github.com/livekit-examples/agent-starter-python), [Node.js](https://github.com/livekit-examples/agent-starter-node), or [create your own from scratch](https://docs.livekit.io/agents/start/voice-ai/).
+
+Second, you need a token server. For development, the easiest option is the [sandbox token server](https://docs.livekit.io/frontends/authentication/tokens/sandbox-token-server/): enable it from your project's **Options** on the [Settings](https://cloud.livekit.io/projects/p_/settings/project) page in LiveKit Cloud and copy the `sandboxId`.
+
+Then edit `AgentToConnect.current` in `VoiceAgent/VoiceAgentApp.swift`:
+
+```swift
+static let current: Self = .sandbox(id: "your-sandbox-id")
+```
+
+That single value picks the token source and determines whether video and screen share input are enabled. For any other setup, add a case with your own [token source](#token-generation-in-production).
 
 ## Feature overview
 
@@ -32,15 +43,15 @@ This starter app supports several features of the agents framework and is easily
 
 ### Text, video, and voice input
 
-This app supports text, video, and/or voice input according to the needs of your agent. To update the features enabled in the app, edit `VoiceAgent/VoiceAgentApp.swift` and modify the `.environment()` modifiers to enable or disable features.
-
-By default, all features (voice, video, and text input) are enabled. To disable a feature, change the value from `true` to `false`:
+This app supports text, video, and/or voice input according to the needs of your agent. To update the features enabled in the app, edit `VoiceAgent/VoiceAgentApp.swift` and modify the `.environment()` modifiers to enable or disable features:
 
 ```swift
-.environment(\.voiceEnabled, true)   // Enable voice input
-.environment(\.videoEnabled, false)  // Disable video input
-.environment(\.textEnabled, true)    // Enable text input
+.environment(\.voiceEnabled, true)                                 // Enable voice input
+.environment(\.videoEnabled, AgentToConnect.current.videoEnabled)  // Video and screen share input
+.environment(\.textEnabled, true)                                  // Enable text input
 ```
+
+Voice and text are enabled by default; video follows `AgentToConnect.current`, since the default homepage agent does not accept it. To override a feature, replace its value with `true` or `false`.
 
 Available input types:
 - `.voice`: Allows the user to speak to the agent using their microphone. **Requires microphone permissions.**
@@ -65,7 +76,7 @@ If your agent publishes a [virtual avatar](https://docs.livekit.io/agents/integr
 
 ## Token generation in production
 
-In production, you'll need to develop a solution to [generate tokens for your users](https://docs.livekit.io/home/server/generating-tokens/) that integrates with your authentication system. You should replace your `SandboxTokenSource` with an `EndpointTokenSource` or your own `TokenSourceFixed` or `TokenSourceConfigurable` implementation. Additionally, you can use the `.cached()` extension to cache valid tokens and avoid unnecessary token requests.
+In production, you'll need to develop a solution to [generate tokens for your users](https://docs.livekit.io/home/server/generating-tokens/) that integrates with your authentication system. Replace the `SandboxTokenSource` in `AgentToConnect.tokenSource` with an `EndpointTokenSource` (as the homepage agent case does) or your own `TokenSourceFixed` or `TokenSourceConfigurable` implementation.
 
 ## Running on Simulator
 

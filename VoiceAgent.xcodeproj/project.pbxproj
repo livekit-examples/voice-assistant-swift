@@ -55,8 +55,6 @@
 		B577A91F2D15FDB800B59A0B /* Exceptions for "VoiceAgent" folder in "VoiceAgent" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
-				.env.example.xcconfig,
-				.env.xcconfig,
 				Info.plist,
 				VoiceAgent.xcconfig,
 			);

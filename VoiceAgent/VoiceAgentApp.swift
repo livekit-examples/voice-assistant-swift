@@ -1,20 +1,48 @@
 import LiveKit
 import SwiftUI
 
-@main
-struct VoiceAgentApp: App {
-    /// To use the LiveKit Cloud sandbox (development only):
+/// The agent this app talks to. Edit ``current`` to switch.
+enum AgentToConnect {
+    struct HomepageTokenSource: EndpointTokenSource {
+        let url = URL(string: "https://livekit.com/api/homepage-agent/token")!
+    }
+
+    /// The LiveKit homepage agent you can also try at https://livekit.com.
+    /// Voice and text only: it does not accept video input.
+    case liveKitHomepage
+
+    /// Your own agent, reached through the LiveKit Cloud sandbox token server
+    /// (development only):
     /// - Enable the token server from your project's Options on the
     ///   Settings page: https://cloud.livekit.io/projects/p_/settings/project
-    /// - Create a .env.xcconfig file with your LIVEKIT_SANDBOX_ID
-    private static let sandboxID = Bundle.main.object(
-        forInfoDictionaryKey: "LiveKitSandboxId"
-    ) as? String ?? ""
+    /// - Pass the sandbox ID from that page here.
+    case sandbox(id: String)
 
-    /// For production, replace the `SandboxTokenSource` with an
-    /// `EndpointTokenSource` or your own `TokenSourceConfigurable`.
+    /// Change this to `.sandbox(id: "your-sandbox-id")` to talk to your own agent.
+    static let current: Self = .liveKitHomepage
+
+    var tokenSource: any TokenSourceConfigurable {
+        switch self {
+        case .liveKitHomepage:
+            HomepageTokenSource()
+        case let .sandbox(id):
+            SandboxTokenSource(id: id)
+        }
+    }
+
+    /// Camera and screen share input, which requires a vision-capable agent.
+    var videoEnabled: Bool {
+        switch self {
+        case .liveKitHomepage: false
+        case .sandbox: true
+        }
+    }
+}
+
+@main
+struct VoiceAgentApp: App {
     private let session = Session(
-        tokenSource: SandboxTokenSource(id: Self.sandboxID).cached(),
+        tokenSource: AgentToConnect.current.tokenSource,
         options: SessionOptions(room: Room(roomOptions: RoomOptions(
             defaultScreenShareCaptureOptions: ScreenShareCaptureOptions(useBroadcastExtension: true)
         )))
@@ -26,7 +54,7 @@ struct VoiceAgentApp: App {
                 .environmentObject(session)
                 .environmentObject(LocalMedia(session: session))
                 .environment(\.voiceEnabled, true)
-                .environment(\.videoEnabled, true)
+                .environment(\.videoEnabled, AgentToConnect.current.videoEnabled)
                 .environment(\.textEnabled, true)
         }
         #if os(macOS)
