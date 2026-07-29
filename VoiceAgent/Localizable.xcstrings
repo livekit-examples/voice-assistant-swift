@@ -1,13 +1,24 @@
 {
   "sourceLanguage" : "en",
   "strings" : {
+    "agent.waiting" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Waiting for agent, start talking"
+          }
+        }
+      }
+    },
     "agent.listening" : {
       "extractionState" : "manual",
       "localizations" : {
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Agent is listening, start talking"
+            "value" : "Agent is listening"
           }
         }
       }

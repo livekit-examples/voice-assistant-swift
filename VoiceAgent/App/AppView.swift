@@ -117,12 +117,19 @@ struct AppView: View {
                !localMedia.isCameraEnabled,
                !localMedia.isScreenShareEnabled
             {
-                Text("agent.listening")
-                    .font(.system(size: 15))
-                    .shimmering()
-                    .transition(.blurReplace)
+                Group {
+                    if session.agent.isConnected {
+                        Text("agent.listening")
+                    } else {
+                        Text("agent.waiting")
+                    }
+                }
+                .font(.system(size: 15))
+                .shimmering()
+                .transition(.blurReplace)
             }
         }
         .animation(.default, value: session.messages.isEmpty)
+        .animation(.default, value: session.agent.isConnected)
     }
 }
