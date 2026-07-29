@@ -27,12 +27,7 @@ enum VoiceProcessingMode: CaseIterable, Identifiable {
 /// processing options, pass them as room defaults instead. See the comment
 /// on `RoomOptions` in `VoiceAgentApp`.
 final class AudioOptions: ObservableObject {
-    @Published var voiceProcessingMode: VoiceProcessingMode = .automatic {
-        didSet {
-            guard oldValue != voiceProcessingMode else { return }
-            applyToMicrophone()
-        }
-    }
+    @Published private(set) var voiceProcessingMode: VoiceProcessingMode = .automatic
 
     /// The last error from applying the selection, if any.
     @Published private(set) var applyError: Swift.Error?
@@ -75,9 +70,11 @@ final class AudioOptions: ObservableObject {
         }
     }
 
-    private func applyToMicrophone() {
+    /// Applies the given mode to the local microphone.
+    /// Without a track the selection is stored and applied on the next publish.
+    func apply(_ mode: VoiceProcessingMode) {
+        voiceProcessingMode = mode
         applyError = nil
-        // Without a track the selection is stored and applied on the next publish
         guard let track = localMedia.microphoneTrack as? LocalAudioTrack else { return }
         apply(to: track)
     }

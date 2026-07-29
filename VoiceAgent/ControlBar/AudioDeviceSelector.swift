@@ -6,6 +6,8 @@ import SwiftUI
     struct AudioDeviceSelector: View {
         @EnvironmentObject private var localMedia: LocalMedia
 
+        @State private var audioOptionsPresented = false
+
         var body: some View {
             Menu {
                 ForEach(localMedia.audioDevices, id: \.deviceId) { device in
@@ -20,11 +22,16 @@ import SwiftUI
                         }
                     }
                 }
+                Divider()
+                Button("audio.title") { audioOptionsPresented = true }
             } label: {
                 Image(systemName: "chevron.down")
                     .frame(height: 11 * .grid)
                     .font(.system(size: 12, weight: .semibold))
                     .contentShape(Rectangle())
+            }
+            .sheet(isPresented: $audioOptionsPresented) {
+                AudioOptionsSheet()
             }
         }
     }

@@ -26,8 +26,6 @@ struct ControlBar: View {
             if voiceEnabled {
                 audioControls()
                 flexibleSpacer()
-                audioOptionsButton()
-                flexibleSpacer()
             }
             if videoEnabled {
                 videoControls()
@@ -103,6 +101,9 @@ struct ControlBar: View {
                 .padding(.horizontal, 2 * .grid)
                 .contentShape(Rectangle())
             }
+            .contextMenu {
+                Button("audio.title") { audioOptionsPresented = true }
+            }
             #if os(macOS)
                 separator()
                 AudioDeviceSelector()
@@ -111,16 +112,6 @@ struct ControlBar: View {
             Spacer()
         }
         .frame(width: Constants.buttonWidth)
-    }
-
-    private func audioOptionsButton() -> some View {
-        Button {
-            audioOptionsPresented = true
-        } label: {
-            Image(systemName: "slider.horizontal.3")
-                .frame(width: Constants.buttonWidth, height: Constants.buttonHeight)
-                .contentShape(Rectangle())
-        }
         .sheet(isPresented: $audioOptionsPresented) {
             AudioOptionsSheet()
         }

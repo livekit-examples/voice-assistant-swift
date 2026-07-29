@@ -23,13 +23,24 @@
         }
       }
     },
-    "audio.done" : {
+    "audio.apply" : {
       "extractionState" : "manual",
       "localizations" : {
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Done"
+            "value" : "Apply"
+          }
+        }
+      }
+    },
+    "audio.close" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Close"
           }
         }
       }
