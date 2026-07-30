@@ -108,6 +108,19 @@ struct ControlBar: View {
                 separator()
                 AudioDeviceSelector()
                     .frame(height: Constants.buttonHeight)
+            #else
+                // The context menu above is not discoverable on touch platforms,
+                // show an explicit affordance for the audio options.
+                separator()
+                Button {
+                    audioOptionsPresented = true
+                } label: {
+                    Image(systemName: "chevron.up")
+                        .font(.system(size: 12, weight: .semibold))
+                        .frame(height: Constants.buttonHeight)
+                        .padding(.horizontal, .grid)
+                        .contentShape(Rectangle())
+                }
             #endif
             Spacer()
         }

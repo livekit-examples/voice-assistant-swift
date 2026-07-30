@@ -65,6 +65,10 @@ final class AudioOptions: ObservableObject {
             )
         case .software:
             AudioProcessingOptions(
+                echoCancellation: true,
+                autoGainControl: true,
+                noiseSuppression: true,
+                highpassFilter: false,
                 echoCancellationMode: .software,
                 autoGainControlMode: .software,
                 noiseSuppressionMode: .software
