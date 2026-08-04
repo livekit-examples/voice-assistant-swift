@@ -13,6 +13,8 @@ struct ControlBar: View {
     @Environment(\.videoEnabled) private var videoEnabled
     @Environment(\.textEnabled) private var textEnabled
 
+    @State private var audioOptionsPresented = false
+
     private enum Constants {
         static let buttonWidth: CGFloat = 16 * .grid
         static let buttonHeight: CGFloat = 11 * .grid
@@ -99,14 +101,33 @@ struct ControlBar: View {
                 .padding(.horizontal, 2 * .grid)
                 .contentShape(Rectangle())
             }
+            .contextMenu {
+                Button("audio.title") { audioOptionsPresented = true }
+            }
             #if os(macOS)
                 separator()
                 AudioDeviceSelector()
                     .frame(height: Constants.buttonHeight)
+            #else
+                // The context menu above is not discoverable on touch platforms,
+                // show an explicit affordance for the audio options.
+                separator()
+                Button {
+                    audioOptionsPresented = true
+                } label: {
+                    Image(systemName: "chevron.up")
+                        .font(.system(size: 12, weight: .semibold))
+                        .frame(height: Constants.buttonHeight)
+                        .padding(.horizontal, .grid)
+                        .contentShape(Rectangle())
+                }
             #endif
             Spacer()
         }
         .frame(width: Constants.buttonWidth)
+        .popover(isPresented: $audioOptionsPresented) {
+            AudioOptionsSheet()
+        }
     }
 
     private func videoControls() -> some View {
