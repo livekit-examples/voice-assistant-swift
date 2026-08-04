@@ -95,7 +95,7 @@ struct StartView: View {
             .contentShape(Rectangle())
         }
         .buttonStyle(.plain)
-        .sheet(isPresented: $audioOptionsPresented) {
+        .popover(isPresented: $audioOptionsPresented) {
             AudioOptionsSheet()
         }
     }

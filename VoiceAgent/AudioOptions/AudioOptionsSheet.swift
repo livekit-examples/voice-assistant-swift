@@ -4,6 +4,9 @@ import SwiftUI
 /// A minimal panel with audio options, shared between the start screen
 /// and the in-call microphone menu.
 ///
+/// Presented as a popover, which sizes itself to this content. Dismissing
+/// by tapping outside discards the selection, so there is no close button.
+///
 /// The selection takes effect on Apply, not while changing the picker.
 struct AudioOptionsSheet: View {
     @EnvironmentObject private var audioOptions: AudioOptions
@@ -12,47 +15,60 @@ struct AudioOptionsSheet: View {
     @State private var selectedMode: VoiceProcessingMode = .automatic
 
     var body: some View {
-        NavigationStack {
-            Form {
-                Section {
-                    Picker("audio.mode.title", selection: $selectedMode) {
-                        Text("audio.mode.automatic").tag(VoiceProcessingMode.automatic)
-                        Text("audio.mode.platform").tag(VoiceProcessingMode.platform)
-                        Text("audio.mode.software").tag(VoiceProcessingMode.software)
-                    }
-                    .pickerStyle(.segmented)
-                    .labelsHidden()
-                } header: {
-                    Text("audio.mode.title")
-                } footer: {
-                    VStack(alignment: .leading, spacing: .grid) {
-                        Text(modeDescription)
-                        if let error = audioOptions.applyError {
-                            Text(error.localizedDescription)
-                                .foregroundStyle(.fgSerious)
-                        }
-                    }
-                }
+        VStack(alignment: .leading, spacing: 2 * .grid) {
+            Text("audio.mode.title")
+                .font(.subheadline)
+                .foregroundStyle(.fg3)
+
+            Picker("audio.mode.title", selection: $selectedMode) {
+                Text("audio.mode.automatic").tag(VoiceProcessingMode.automatic)
+                Text("audio.mode.platform").tag(VoiceProcessingMode.platform)
+                Text("audio.mode.software").tag(VoiceProcessingMode.software)
             }
-            .formStyle(.grouped)
-            .navigationTitle("audio.title")
-            #if os(iOS)
-                .navigationBarTitleDisplayMode(.inline)
-            #endif
-                .toolbar {
-                    ToolbarItem(placement: .cancellationAction) {
-                        Button("audio.close") { dismiss() }
-                    }
-                    ToolbarItem(placement: .confirmationAction) {
-                        Button("audio.apply") { audioOptions.apply(selectedMode) }
-                    }
-                }
-                .onAppear { selectedMode = audioOptions.voiceProcessingMode }
+            .pickerStyle(.segmented)
+            .labelsHidden()
+
+            Text(modeDescription)
+                .font(.footnote)
+                .foregroundStyle(.fg3)
+                .fixedSize(horizontal: false, vertical: true)
+
+            if let error = audioOptions.applyError {
+                Text(error.localizedDescription)
+                    .font(.footnote)
+                    .foregroundStyle(.fgSerious)
+                    .fixedSize(horizontal: false, vertical: true)
+            }
+
+            applyButton()
+                .padding(.top, 2 * .grid)
         }
-        #if os(macOS)
-        .frame(minWidth: 105 * .grid, minHeight: 45 * .grid)
+        .padding(4 * .grid)
+        // A fixed width keeps the description wrapping predictable, since a
+        // popover otherwise sizes itself around the widest line.
+        .frame(width: 70 * .grid)
+        .presentationCompactAdaptation(.popover)
+        .onAppear { selectedMode = audioOptions.voiceProcessingMode }
+    }
+
+    /// Styled as the primary action, matching the start screen button.
+    private func applyButton() -> some View {
+        Button {
+            audioOptions.apply(selectedMode)
+            dismiss()
+        } label: {
+            HStack {
+                Spacer()
+                Text("audio.apply")
+                Spacer()
+            }
+            .frame(height: 11 * .grid)
+        }
+        #if os(visionOS)
+        .buttonStyle(.borderedProminent)
+        #else
+        .buttonStyle(ProminentButtonStyle())
         #endif
-        .presentationDetents([.medium])
     }
 
     private var modeDescription: LocalizedStringKey {

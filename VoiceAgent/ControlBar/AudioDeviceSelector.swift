@@ -30,7 +30,7 @@ import SwiftUI
                     .font(.system(size: 12, weight: .semibold))
                     .contentShape(Rectangle())
             }
-            .sheet(isPresented: $audioOptionsPresented) {
+            .popover(isPresented: $audioOptionsPresented) {
                 AudioOptionsSheet()
             }
         }

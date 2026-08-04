@@ -125,7 +125,7 @@ struct ControlBar: View {
             Spacer()
         }
         .frame(width: Constants.buttonWidth)
-        .sheet(isPresented: $audioOptionsPresented) {
+        .popover(isPresented: $audioOptionsPresented) {
             AudioOptionsSheet()
         }
     }
