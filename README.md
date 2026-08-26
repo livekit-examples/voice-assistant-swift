@@ -27,12 +27,12 @@ The app is configured to connect to the LiveKit homepage agent by default, which
 
 To switch from the default agent to your own, you first need a LiveKit agent to speak with. For a no-code setup, use the [Agent Builder](https://docs.livekit.io/agents/start/builder/). For more customization, try our starter agent for [Python](https://github.com/livekit-examples/agent-starter-python), [Node.js](https://github.com/livekit-examples/agent-starter-node), or [create your own from scratch](https://docs.livekit.io/agents/start/voice-ai/).
 
-Second, you need a token server. For development, the easiest option is the [sandbox token server](https://docs.livekit.io/frontends/authentication/tokens/sandbox-token-server/): enable it from your project's **Options** on the [Settings](https://cloud.livekit.io/projects/p_/settings/project) page in LiveKit Cloud and copy the `sandboxId`.
+Second, you need a token server. For development, the easiest option is the [development token server](https://docs.livekit.io/frontends/build/authentication/development-token-server/): switch on the **Development token server** toggle on your project's [Settings](https://cloud.livekit.io/projects/p_/settings/project) page in LiveKit Cloud and copy the **Token server ID** below it.
 
 Then edit `AgentToConnect.current` in `VoiceAgent/VoiceAgentApp.swift`:
 
 ```swift
-static let current: Self = .sandbox(id: "your-sandbox-id")
+static let current: Self = .development(id: "your-token-server-id")
 ```
 
 That single value picks the token source and determines whether video and screen share input are enabled. For any other setup, add a case with your own [token source](#token-generation-in-production).
@@ -76,7 +76,7 @@ If your agent publishes a [virtual avatar](https://docs.livekit.io/agents/integr
 
 ## Token generation in production
 
-In production, you'll need to develop a solution to [generate tokens for your users](https://docs.livekit.io/home/server/generating-tokens/) that integrates with your authentication system. Replace the `SandboxTokenSource` in `AgentToConnect.tokenSource` with an `EndpointTokenSource` (as the homepage agent case does) or your own `TokenSourceFixed` or `TokenSourceConfigurable` implementation.
+In production, you'll need to develop a solution to [generate tokens for your users](https://docs.livekit.io/home/server/generating-tokens/) that integrates with your authentication system. Replace the `DevelopmentTokenSource` in `AgentToConnect.tokenSource` with an `EndpointTokenSource` (as the homepage agent case does) or your own `TokenSourceFixed` or `TokenSourceConfigurable` implementation.
 
 ## Running on Simulator
 

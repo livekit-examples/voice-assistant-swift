@@ -11,22 +11,23 @@ enum AgentToConnect {
     /// Voice and text only: it does not accept video input.
     case liveKitHomepage
 
-    /// Your own agent, reached through the LiveKit Cloud sandbox token server
+    /// Your own agent, reached through the LiveKit Cloud
+    /// [development token server](https://docs.livekit.io/frontends/build/authentication/development-token-server/)
     /// (development only):
-    /// - Enable the token server from your project's Options on the
+    /// - Switch on the Development token server toggle on your project's
     ///   Settings page: https://cloud.livekit.io/projects/p_/settings/project
-    /// - Pass the sandbox ID from that page here.
-    case sandbox(id: String)
+    /// - Pass the Token server ID shown below the toggle here.
+    case development(id: String)
 
-    /// Change this to `.sandbox(id: "your-sandbox-id")` to talk to your own agent.
+    /// Change this to `.development(id: "your-token-server-id")` to talk to your own agent.
     static let current: Self = .liveKitHomepage
 
     var tokenSource: any TokenSourceConfigurable {
         switch self {
         case .liveKitHomepage:
             HomepageTokenSource()
-        case let .sandbox(id):
-            SandboxTokenSource(id: id)
+        case let .development(id):
+            DevelopmentTokenSource(id: id)
         }
     }
 
@@ -34,7 +35,7 @@ enum AgentToConnect {
     var videoEnabled: Bool {
         switch self {
         case .liveKitHomepage: false
-        case .sandbox: true
+        case .development: true
         }
     }
 }
